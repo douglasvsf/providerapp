@@ -50,7 +50,7 @@ export default function SignIn({ navigation }) {
           <FormInput
             icon="lock-outline"
             secureTextEntry
-            placeholder="Sua senha secreta"
+            placeholder="Sua senha"
             ref={passwordRef}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}
@@ -64,7 +64,7 @@ export default function SignIn({ navigation }) {
         </Form>
 
         <SignLink onPress={() => navigation.navigate('SignUp')}>
-          <SignLinkText>Criar conta gratuita</SignLinkText>
+          <SignLinkText>Criar conta</SignLinkText>
         </SignLink>
       </Container>
     </Background>

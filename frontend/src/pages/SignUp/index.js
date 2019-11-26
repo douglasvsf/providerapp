@@ -7,6 +7,7 @@ import logo from '~/assets/logo.png';
 import Background from '~/components/Background';
 import { signUpRequest } from '~/store/modules/auth/actions';
 
+
 import {
   Container,
   Form,
@@ -65,7 +66,7 @@ export default function SignUp({ navigation }) {
           <FormInput
             icon="lock-outline"
             secureTextEntry
-            placeholder="Sua senha secreta"
+            placeholder="Sua senha"
             ref={passwordRef}
             returnKeyType="send"
             onSubmitEditing={handleSubmit}

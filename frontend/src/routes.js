@@ -4,6 +4,7 @@ import {
   createSwitchNavigator,
   createBottomTabNavigator,
   createStackNavigator,
+  createDrawerNavigator,
 } from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -26,52 +27,20 @@ export default (isSigned = false) =>
           SignIn,
           SignUp,
         }),
-        App: createBottomTabNavigator(
-          {
-            Dashboard,
-            New: {
-              screen: createStackNavigator(
-                {
-                  SelectProvider,
-                  SelectDateTime,
-                  Confirm,
-                },
-                {
-                  defaultNavigationOptions: {
-                    headerTransparent: true,
-                    headerTintColor: '#FFF',
-                    headerLeftContainerStyle: {
-                      marginLeft: 20,
-                    },
-                  },
-                }
-              ),
-              navigationOptions: {
-                tabBarVisible: false,
-                tabBarLabel: 'Agendar',
-                tabBarIcon: (
-                  <Icon
-                    name="add-circle-outline"
-                    size={20}
-                    color="rgba(255, 255, 255, 0.6)"
-                  />
-                ),
-              },
-            },
-            Profile,
+        App: createDrawerNavigator({
+          Profile: {
+            screen: Profile,
+            navigationOptions: () => ({
+              drawerIcon: <Icon name="lock" size={20} color="#7159c1" />,
+            }),
           },
-          {
-            resetOnBlur: true,
-            tabBarOptions: {
-              keyboardHidesTabBar: true,
-              activeTintColor: '#FFF',
-              inactiveTintColor: 'rgba(255, 255, 255, 0.6)',
-              style: {
-                backgroundColor: '#8d41a8',
-              },
-            },
-          }
-        ),
+          Dashboard: {
+            screen: Dashboard,
+            navigationOptions: () => ({
+              drawerIcon: <Icon name="rocket" size={20} color="#7159c1" />,
+            }),
+          },
+        }),
       },
       {
         initialRouteName: isSigned ? 'App' : 'Sign',
