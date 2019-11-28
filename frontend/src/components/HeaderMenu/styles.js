@@ -5,20 +5,13 @@ export const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-export const ProvidersList = styled.FlatList.attrs({
-  showsVerticalScrollIndicator: false,
-  numColumns: 2,
-})`
-  margin-top: 60px;
-  padding: 0 20px;
-`;
 
 export const Provider = styled(RectButton)`
   background: #fff;
   border-radius: 4px;
   padding: 20px;
   flex: 1;
-
+width:90%;
   align-items: center;
   margin: 0 10px 20px;
 `;
