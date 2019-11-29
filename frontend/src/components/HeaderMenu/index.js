@@ -1,33 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
+import { parseISO, formatRelative } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { DrawerItems } from 'react-navigation';
 
 
-import api from '~/services/api';
+import { Container, SignLink, SignLinkText } from './styles';
 
-import Background from '~/components/Background';
-
-import { Container, ProvidersList, Provider, Avatar, Name } from './styles';
-
-export default function MenuHeader({ ...props }) {
+export default function HeaderMenu({ ...props }) {
 
   return (
-    <Background>
-      <Container>
-        <ProvidersList>
+    <Container>
+      <SignLink onPress={() => { props.navigation.openDrawer() }}>
+        <SignLinkText>Criar conta</SignLinkText>
+      </SignLink>
 
-          <Provider >
-            <Avatar
-              source={{ uri: 'https://api.adorable.io/avatar/50/teste.png' }}
-            />
-            <Name>teste</Name>
-          </Provider>
-          <DrawerItems {...props} />
-        </ProvidersList>
-      </Container>
+    </Container>
 
-    </Background>
   );
 }

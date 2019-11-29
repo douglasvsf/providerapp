@@ -30,65 +30,99 @@ import Service from './pages/Service';
 
 import SocialMedia from './pages/SocialMedia';
 
-import MenuHeader from '~/components/Appointment';
+import ContentMenu from '~/components/ContentMenu';
+import HeaderMenu from '~/components/HeaderMenu';
+
+
+
 
 export default (isSigned = false) =>
+
+
+
   createAppContainer(
+
+
     createSwitchNavigator(
       {
         Sign: createSwitchNavigator({
           SignIn,
           SignUp,
         }),
-        App: createDrawerNavigator(
-          {
+        NewApp: createStackNavigator({
+          App: createDrawerNavigator(
+            {
 
-            Dashboard: {
-              screen: Dashboard,
-              navigationOptions: () => ({
-                drawerIcon: <Icon name="dashboard" size={20} color="#7159c1" />,
+              Painel: {
+                screen: Dashboard,
+              },
+              Perfil: createBottomTabNavigator({
+                Profile: {
+                  screen: Profile,
+                },
+                SocialMedia: {
+                  screen: SocialMedia,
+                },
+                AdditionalInfo: {
+                  screen: AdditionalInfo,
+                },
+
+
               }),
+              Serviços: createBottomTabNavigator({
+
+                Service: {
+                  screen: Service,
+                },
+                Payment: {
+                  screen: Payment,
+                },
+                Qualification: {
+                  screen: Qualification,
+                },
+
+
+              }),
+
             },
-            Perfil: createBottomTabNavigator({
-              Profile: {
-                screen: Profile,
-              },
-              SocialMedia: {
-                screen: SocialMedia,
-              },
-              AdditionalInfo: {
-                screen: AdditionalInfo,
-              },
+            {
+
+              contentComponent: ContentMenu,
+            }
 
 
-            }),
-            Serviços: createBottomTabNavigator({
+          ),
+        }, {
+            defaultNavigationOptions: ({ navigation }) => {
 
-              Service: {
-                screen: Service,
-              },
-              Payment: {
-                screen: Payment,
-              },
-              Qualification: {
-                screen: Qualification,
-              },
+              const pathAndParams = navigation.router.getPathAndParamsForState(navigation.state) || {}
+              const activePath = pathAndParams.path
+              const NameRoute = activePath.split('/')
+              const FinalRoute = NameRoute[0]
 
+              return {
+                headerTitle: FinalRoute,
+                headerTitleStyle: {
+                  width: '90%',
+                  textAlign: 'center',
+                },
+                headerLeft: (<Icon
+                  style={{ paddingLeft: 10, color: 'black' }}
+                  onPress={() => navigation.toggleDrawer()}
+                  name="menu"
+                  size={30} />
+                ),
+                headerRight: (<>< />),
 
-            }),
+              }
+            }
 
-          },
-          {
-
-            contentComponent: MenuHeader,
           }
-
-
-        ),
+        )
       },
       {
-        initialRouteName: isSigned ? 'App' : 'Sign',
+                    initialRouteName: isSigned ? 'NewApp' : 'Sign',
       }
-    )
-  );
+          )
+        );
 
