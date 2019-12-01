@@ -1,14 +1,65 @@
-import React from 'react';
+import React, { Component } from "react";
+import { Picker, View, TextInput, Text, Button } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { View } from 'react-native';
+import { estados } from '../../jsons/estados-cidades.json'
+import SelectEstados from '../../components/Estados'
+import SelectCidades from '../../components/Cidades'
+import Background from "../../components/Background";
+import { Container, Form, FormInput, Submit,Separator,SubmitButton,Title } from "./styles";
 
-// import { Container } from './styles';
+export default class Service extends Component {
 
-export default function Service() {
-  return (
-    <View />
-  );
+  state = { uf: null, selectedValueEstado: null, selectedValueCidade: null }
+
+  componentDidMount() {
+    this.setState({
+      uf: estados,
+      selectedValueEstado: '',
+      selectedValueCidade: ''
+    })
+  }
+
+  renderValueChangeEstado = (value) => {
+    console.warn(value.sigla)
+    this.setState({
+      selectedValueEstado: value
+    })
+  }
+
+
+  renderValueChangeCidade = (value) => {
+    console.warn(value)
+    this.setState({
+      selectedValueCidade: value
+    })
+  }
+
+  render() {
+    const { selectedValueCidade, selectedValueEstado, uf } = this.state;
+    return (
+      <Background>
+        <Container>
+          <Title> Ocupação </Title>
+      <View>
+        <View >
+          <SelectEstados
+            selectedValue={selectedValueEstado}
+            data={uf}
+            onValueChange={this.renderValueChangeEstado} />
+        </View>
+        <View>
+          <SelectCidades selectedValue={selectedValueCidade}
+            data={selectedValueEstado}
+            onValueChange={this.renderValueChangeCidade} />
+        </View>
+      </View>
+      </Container>
+      </Background>
+    );
+  }
 }
+
+
 
 Service.navigationOptions = {
   tabBarLabel: 'Ocupação',

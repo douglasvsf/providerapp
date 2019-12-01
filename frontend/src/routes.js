@@ -9,7 +9,9 @@ import {
 } from 'react-navigation';
 
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
+//import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -21,8 +23,9 @@ import Confirm from './pages/New/Confirm';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
-import AdditionalInfo from './pages/AdditionalInfo';
+import Address from './pages/Address';
 
+import Statistics from './pages/Statistics';
 import Payment from './pages/Payment';
 import Qualification from './pages/Qualification';
 import Service from './pages/Service';
@@ -31,7 +34,7 @@ import Service from './pages/Service';
 import SocialMedia from './pages/SocialMedia';
 
 import ContentMenu from '~/components/ContentMenu';
-import HeaderMenu from '~/components/HeaderMenu';
+//import HeaderMenu from '~/components/HeaderMenu';
 
 
 
@@ -53,9 +56,15 @@ export default (isSigned = false) =>
           App: createDrawerNavigator(
             {
 
-              Painel: {
+              Painel: createBottomTabNavigator({
+               Agendamentos:{
                 screen: Dashboard,
-              },
+               },
+               Estatisticas:{
+                 screen: Statistics,
+               },
+              
+              }),
               Perfil: createBottomTabNavigator({
                 Profile: {
                   screen: Profile,
@@ -63,17 +72,14 @@ export default (isSigned = false) =>
                 SocialMedia: {
                   screen: SocialMedia,
                 },
-                AdditionalInfo: {
-                  screen: AdditionalInfo,
-                },
+                Address: Address,
+               
 
 
               }),
               Serviços: createBottomTabNavigator({
 
-                Service: {
-                  screen: Service,
-                },
+                Service: Service,
                 Payment: {
                   screen: Payment,
                 },
@@ -109,10 +115,13 @@ export default (isSigned = false) =>
                 headerLeft: (<Icon
                   style={{ paddingLeft: 10, color: 'black' }}
                   onPress={() => navigation.toggleDrawer()}
-                  name="menu"
-                  size={30} />
+                  name="bars"
+                  size={25} />
                 ),
-                headerRight: (<>< />),
+                headerRight: (<Icon
+                  style={{ paddingRight: 10, color: 'black' }}
+                  name="bell"
+                  size={25} />),
 
               }
             }

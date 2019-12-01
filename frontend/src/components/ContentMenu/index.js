@@ -4,7 +4,7 @@ import pt from 'date-fns/locale/pt';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-
+import { Rating,AirbnbRating  } from 'react-native-elements';
 
 import { DrawerItems } from 'react-navigation';
 
@@ -22,8 +22,17 @@ export default function ContentMenu({ ...props }) {
         />
 
         <Info>
-          <Name>teste</Name>
+          <Name>Usuario Final teste</Name>
+          <AirbnbRating
+  count={5}
+  reviews={["Péssimo", "Ruim", "Regular", "Bom", "Ótimo"]}
+  defaultRating={5}
+  size={15}
+  showRating={false}
+/>
         </Info>
+       
+  
       </Left>
 
       <DrawerItems {...props} />
