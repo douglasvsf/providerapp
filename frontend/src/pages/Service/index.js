@@ -40,19 +40,23 @@ export default class Service extends Component {
       <Background>
         <Container>
           <Title> Ocupação </Title>
-      <View>
+      <Form>
+
         <View >
           <SelectEstados
             selectedValue={selectedValueEstado}
             data={uf}
             onValueChange={this.renderValueChangeEstado} />
         </View>
+
         <View>
           <SelectCidades selectedValue={selectedValueCidade}
             data={selectedValueEstado}
             onValueChange={this.renderValueChangeCidade} />
         </View>
-      </View>
+
+      </Form>
+      
       </Container>
       </Background>
     );

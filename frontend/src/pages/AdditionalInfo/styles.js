@@ -1,11 +1,49 @@
+import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { TextInputMask } from 'react-native-masked-text'
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 
 
-export const Container = styled.SafeAreaView`
+
+export const Container = styled.View`
+  padding: 0 15px;
+  height: 46px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ContainerText = styled.View`
+  padding: 5px;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.1);;
+  border-width: 1px;
+
+`;
+
+export const Form = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { padding: 30 },
+})`
+  align-self: stretch;
+`;
+
+
+
+export const TInput = styled(TextInputMask)`
+  flex: 1;
+  font-size: 15px;
+  margin-left: 10px;
+  color: #fff;
+`;
+
+
+
+export const ContainerFull = styled.SafeAreaView`
   flex: 1;
 `;
 
@@ -18,12 +56,6 @@ export const Title = styled.Text`
 `;
 
 
-export const Form = styled.ScrollView.attrs({
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: { padding: 30 },
-})`
-  align-self: stretch;
-`;
 
 export const SubmitButton = styled(Button)`
   margin-top: 5px;

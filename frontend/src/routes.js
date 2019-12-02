@@ -24,7 +24,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
 import Address from './pages/Address';
-
+import AdditionalInfo from './pages/AdditionalInfo';
 import Statistics from './pages/Statistics';
 import Payment from './pages/Payment';
 import Qualification from './pages/Qualification';
@@ -57,13 +57,13 @@ export default (isSigned = false) =>
             {
 
               Painel: createBottomTabNavigator({
-               Agendamentos:{
-                screen: Dashboard,
-               },
-               Estatisticas:{
-                 screen: Statistics,
-               },
-              
+                Agendamentos: {
+                  screen: Dashboard,
+                },
+                Estatisticas: {
+                  screen: Statistics,
+                },
+
               }),
               Perfil: createBottomTabNavigator({
                 Profile: {
@@ -73,8 +73,8 @@ export default (isSigned = false) =>
                   screen: SocialMedia,
                 },
                 Address: Address,
-               
 
+                AdditionalInfo: AdditionalInfo,
 
               }),
               Serviços: createBottomTabNavigator({
@@ -130,8 +130,8 @@ export default (isSigned = false) =>
         )
       },
       {
-                    initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        initialRouteName: isSigned ? 'NewApp' : 'Sign',
       }
-          )
-        );
+    )
+  );
 

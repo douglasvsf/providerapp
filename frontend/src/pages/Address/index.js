@@ -69,6 +69,6 @@ export default class AdditionalInfo extends PureComponent {
 AdditionalInfo.navigationOptions = {
   tabBarLabel: 'Endereço',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
+    <Icon name="home" size={20} color={tintColor} />
   ),
 };

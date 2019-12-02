@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Background from '~/components/Background';
 import { signOut } from '~/store/modules/auth/actions';
@@ -119,6 +119,6 @@ export default function SocialMedia() {
 SocialMedia.navigationOptions = {
   tabBarLabel: 'Redes Sociais',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
+    <Icon name="share-alt" size={20} color={tintColor} />
   ),
 };

@@ -674,6 +674,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.4.tgz#a87b4b04e5ae14a88d48ebef15015f6b7d1f5677"
   integrity sha512-kBa+cDHOR9jpRJ+kcGMsysrls0leukrm68DmFQoMIWQcXdr2cZvyvypWuGYT7U+9kAExUE7+T7r6G3C3A6L8MQ==
 
+"@freakycoder/react-native-text-area@^0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@freakycoder/react-native-text-area/-/react-native-text-area-0.0.11.tgz#107a94215580b69f715cfea4d4fbfeb2d454c227"
+  integrity sha512-TC6T9ikacdf0ZQMouP9AUSY0A1XNk4ZzKwLYmBG14eoikLHPH26BxOOJnJlFjxRLPDQh3MspItUK6TkaXRxRnA==
+
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
@@ -5727,6 +5732,13 @@ react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   integrity sha512-Bke8KkDcDhvB/z0AS7MnQKMD2p6Kwfc1rSKlMOvg9CC5CnClQ2QEnhPSbwegKDYhUkBI92iH/BYy7hNSm5kbUQ==
   dependencies:
     prop-types "^15.6.1"
+
+react-native-textarea@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-native-textarea/-/react-native-textarea-1.0.3.tgz#aaf66735afa70f2cfc039496a25fa0ae232ceb1e"
+  integrity sha512-0aZsZUgjCbXDIYZ7ESHjJWZ8fQhzrt0gNL3hJDVqv/4jC13id4Zcuex5aZzqY83JUK3uZr7gqWtFDpO4HVQWOw==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-vector-icons@^6.6.0:
   version "6.6.0"
