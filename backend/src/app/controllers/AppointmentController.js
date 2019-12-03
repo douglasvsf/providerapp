@@ -14,7 +14,7 @@ class AppointmentController {
     const { page = 1 } = req.query;
 
     const appointments = await Appointment.findAll({
-      where: { user_id: req.userId, canceled_at: null },
+      where: { provider_id: req.userId, canceled_at: null },
       order: ['date'],
       attributes: ['id', 'date', 'past', 'cancelable'],
       limit: 20,

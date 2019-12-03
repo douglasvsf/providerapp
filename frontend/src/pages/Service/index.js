@@ -34,6 +34,7 @@ export default class Service extends Component {
     })
   }
 
+
   render() {
     const { selectedValueCidade, selectedValueEstado, uf } = this.state;
     return (
