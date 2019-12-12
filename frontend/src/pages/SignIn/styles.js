@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import styled from 'styled-components/native';
-
+import { SvgXml } from 'react-native-svg';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 
@@ -14,9 +14,22 @@ export const Container = styled.KeyboardAvoidingView.attrs({
   padding: 0 30px;
 `;
 
+export const Cima = styled(SvgXml)`
+  justify-content: center;
+  align-items: center;
+
+
+`;
+export const Meio = styled(SvgXml)`
+margin: 0px;
+
+`;
+
+
 export const Form = styled.View`
   align-self: stretch;
-  margin-top: 50px;
+  margin-top: 200px;
+
 `;
 
 export const FormInput = styled(Input)`
