@@ -5,15 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Background from '~/components/Background';
 
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
-// import { Container } from './styles';
+import { LineChart, Grid, BarChart, PieChart } from 'react-native-svg-charts';
 
 import {
   Container,
@@ -27,57 +19,78 @@ import {
 } from './styles';
 
 export default function Statistics() {
+  const dataLine = [
+    50,
+    10,
+    40,
+    95,
+    -4,
+    -24,
+    85,
+    91,
+    35,
+    53,
+    -53,
+    24,
+    50,
+    -20,
+    -80,
+  ];
 
-  const chartConfig = {
-  backgroundGradientFrom: "#1E2923",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "#08130D",
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-  strokeWidth: 2, // optional, default 3
-  barPercentage: 0.5
-};
-  const lineData = {
-    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43],
-        strokeWidth: 2, // optional
+  const dataPie = [
+    50,
+    10,
+    40,
+    95,
+    -4,
+    -24,
+    85,
+    91,
+    35,
+    53,
+    -53,
+    24,
+    50,
+    -20,
+    -80,
+  ];
+
+  const randomColor = () =>
+    ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
+      0,
+      7
+    );
+
+  const pieData = dataPie
+    .filter(value => value > 0)
+    .map((value, index) => ({
+      value,
+      svg: {
+        fill: randomColor(),
+        onPress: () => console.log('press', index),
       },
-    ],
-  };
+      key: `pie-${index}`,
+    }));
 
-  const barData = {
-    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-    datasets: [
-      {
-        data: [23, 34, 15, 48, 44, 57],
-      },
-    ],
-  };
-
-  const pieData = [
-    {
-      name: 'Area 1',
-      population: 150,
-      color: 'rgba(131, 167, 234, 1)',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Area 2',
-      population: 175,
-      color: '#F00',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
-    {
-      name: 'Area 3',
-      population: 87,
-      color: 'red',
-      legendFontColor: '#7F7F7F',
-      legendFontSize: 15,
-    },
+  const fillBar = 'rgb(134, 65, 244)';
+  const dataBar = [
+    50,
+    10,
+    40,
+    95,
+    -4,
+    -24,
+    null,
+    85,
+    undefined,
+    0,
+    35,
+    53,
+    -53,
+    24,
+    50,
+    -20,
+    -80,
   ];
 
   return (
@@ -85,47 +98,30 @@ export default function Statistics() {
       <Container>
         <Title>Estatísticas</Title>
 
-        <ContainerGraph>
-          <Text>Faturado Por Mês</Text>
+        <Text>Faturado Por Mês</Text>
 
-          <LineChart
-            data={lineData}
-            width={Dimensions.get('window').width} // from react-native
-            height={220}
-            yAxisLabel={'$'}
-            chartConfig="{chartConfig}"
-            bezier
-            style={{
-              marginVertical: 8,
-              borderRadius: 16,
-            }}
-          />
-        </ContainerGraph>
+        <LineChart
+          style={{ height: 200 }}
+          data={dataLine}
+          svg={{ stroke: 'rgb(134, 65, 244)' }}
+          contentInset={{ top: 20, bottom: 20 }}
+        >
+          <Grid />
+        </LineChart>
 
-        <ContainerGraph>
-          <Text>Atendimentos Por Mês</Text>
-          <BarChart
-            // style={graphStyle}
-            data={barData}
-            width={Dimensions.get('window').width} // from react-native
-            height={220}
-            yAxisLabel={'$'}
-            chartConfig="{chartConfig}"
-          />
-        </ContainerGraph>
+        <Text>Atendimentos Por Mês</Text>
+        <BarChart
+          style={{ height: 200 }}
+          data={dataBar}
+          svg={{ fillBar }}
+          contentInset={{ top: 30, bottom: 30 }}
+        >
+          <Grid />
+        </BarChart>
 
-        <ContainerGraph>
-          <PieChart
-            data={pieData}
-            width={Dimensions.get('window').width} // from react-native
-            height={220}
-            chartConfig="{chartConfig}"
-            accessor="Areas"
-            backgroundColor="transparent"
-            paddingLeft="15"
-            absolute
-          />
-        </ContainerGraph>
+        <Text>Areas de Atuação</Text>
+
+        <PieChart style={{ height: 200 }} data={pieData} />
       </Container>
     </Background>
   );

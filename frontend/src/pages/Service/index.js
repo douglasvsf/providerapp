@@ -7,6 +7,7 @@ import {
   Button,
   Keyboard,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
 
 import { Autocomplete } from 'react-native-dropdown-autocomplete';
@@ -29,6 +30,9 @@ import {
   Separator,
   SubmitButton,
   Title,
+  TitleInto,
+  ContainerText,
+  ActuationArea,
 } from './styles';
 
 export default class Service extends Component {
@@ -43,16 +47,18 @@ export default class Service extends Component {
   };
 
   async componentDidMount() {
-    const cities = await AsyncStorage.getItem('cities');
-
-    if (cities) {
-      this.setState({ cities: JSON.parse(cities) });
-    }
-
     const actuations = await AsyncStorage.getItem('actuations');
 
     if (actuations) {
       this.setState({ actuations: JSON.parse(actuations) });
+    }
+
+    const cities = await AsyncStorage.getItem('cities');
+
+    if (cities) {
+      this.setState({
+        cities: JSON.parse(cities),
+      });
     }
 
     this.setState({
@@ -63,14 +69,12 @@ export default class Service extends Component {
   }
 
   renderValueChangeEstado = value => {
-    console.warn(value.sigla);
     this.setState({
       selectedValueEstado: value,
     });
   };
 
   renderValueChangeCidade = value => {
-    console.warn(value);
     this.setState({
       selectedValueCidade: value,
     });
@@ -82,6 +86,7 @@ export default class Service extends Component {
       selectedValueEstado,
     } = this.state;
 
+    console.warn(selectedValueCidade);
     //const response = await api.get(`/users/${newUser}`);
 
     const data = {
@@ -97,7 +102,7 @@ export default class Service extends Component {
     Keyboard.dismiss();
   };
 
-  componentDidUpdate(_, prevState) {
+  async componentDidUpdate(_, prevState) {
     const { cities, actuations } = this.state;
 
     if (prevState.cities !== cities) {
@@ -110,8 +115,6 @@ export default class Service extends Component {
   }
 
   handleSelectItem(item, index) {
-    const { onDropdownClose } = this.props;
-    onDropdownClose();
     const { actuations, newActuation } = this.state;
 
     //const response = await api.get(`/users/${newUser}`);
@@ -131,8 +134,15 @@ export default class Service extends Component {
   }
 
   render() {
-    const { selectedValueCidade, selectedValueEstado, uf,cities } = this.state;
+    const {
+      selectedValueCidade,
+      selectedValueEstado,
+      uf,
+      cities,
+      actuations,
+    } = this.state;
 
+    const newcities = [(city = ['Campo Mourão', 'Maringa', 'Peabiru'])];
     const data = [
       'Mototaxistas',
       'Frete Mudança',
@@ -146,41 +156,46 @@ export default class Service extends Component {
     return (
       <Background>
         <Container>
-          <Title> Ocupação </Title>
+          <Title> Area de Atuação </Title>
           <Form>
+            <TitleInto> Estado </TitleInto>
+
             <SelectEstados
               selectedValue={selectedValueEstado}
               data={uf}
               onValueChange={this.renderValueChangeEstado}
             />
+            <Separator />
 
+            <TitleInto> Cidade </TitleInto>
             <SelectCidades
               selectedValue={selectedValueCidade}
               data={selectedValueEstado}
               onValueChange={this.renderValueChangeCidade}
             />
-          </Form>
 
-          <List
-            data={cities}
-            keyExtractor={item => item.city}
-            renderItem={({ item }) => (
-              <City>
-                <Name>{item.city}</Name>
-              </City>
-            )}
-          />
-
-          <Separator />
-
-          <Form>
-            <Autocomplete
-              data={data}
-              valueExtractor={item => item}
-              handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
-              /*onDropdownClose={() => onDropdownClose()}
-            onDropdownShow={() => onDropdownShow()}*/
+            <List
+              data={newcities}
+              keyExtractor={item => item.city}
+              renderItem={({ item }) => (
+                <City>
+                  <Name>{item.city}</Name>
+                </City>
+              )}
             />
+            <Separator />
+            <TitleInto> Area de Atuação </TitleInto>
+
+            <ContainerText>
+              <Autocomplete
+                data={data}
+                valueExtractor={item => item}
+                inputContainerStyle={styles.inputContainer}
+                handleSelectItem={(item, id) => this.handleSelectItem(item, id)}
+              />
+            </ContainerText>
+
+            <SubmitButton>Atualizar Atuação</SubmitButton>
           </Form>
         </Container>
       </Background>
@@ -188,8 +203,42 @@ export default class Service extends Component {
   }
 }
 
+const styles = StyleSheet.create({
+  autocompletesContainer: {
+    paddingTop: 0,
+    zIndex: 1,
+    width: '100%',
+    paddingHorizontal: 8,
+  },
+  input: { maxHeight: 40 },
+  inputContainer: {
+    display: 'flex',
+    flexShrink: 0,
+    flexGrow: 0,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#c7c6c1',
+    paddingVertical: 13,
+    paddingLeft: 12,
+    paddingRight: '5%',
+    width: '100%',
+    justifyContent: 'flex-start',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  plus: {
+    position: 'absolute',
+    left: 15,
+    top: 10,
+  },
+});
+
 Service.navigationOptions = {
-  tabBarLabel: 'Ocupação',
+  tabBarLabel: 'Area de Atuação',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />
   ),

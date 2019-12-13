@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SvgXml } from 'react-native-svg';
 
-import meio from '~/assets/meio.svg';
-
 import Background from '~/components/Background';
 import BackgroundInitial from '~/components/BackgroundInitial';
 import { signInRequest } from '~/store/modules/auth/actions';
@@ -21,8 +19,6 @@ import {
   Meio,
   Separator,
 } from './styles';
-
-
 
 const xml = `
 <svg width="195" height="112" viewBox="0 0 195 112" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,8 +73,6 @@ const xmlCima = `
 </svg>
 
 `;
-
-
 
 export default function SignIn({ navigation }) {
   const dispatch = useDispatch();

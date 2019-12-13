@@ -15,22 +15,15 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 `;
 
 export const Cima = styled(SvgXml)`
-
-padding: 0px 0px 100px 0px;
-
+  padding: 0px 0px 100px 0px;
 `;
 export const Meio = styled(SvgXml)`
-padding: 0px;
-
-
+  padding: 0px;
 `;
-
-
 
 export const Form = styled.View`
   align-self: stretch;
-  margin-top: 200px;
-
+  margin-top: 100px;
 `;
 
 export const FormInput = styled(Input)`
