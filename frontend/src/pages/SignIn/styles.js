@@ -15,15 +15,16 @@ export const Container = styled.KeyboardAvoidingView.attrs({
 `;
 
 export const Cima = styled(SvgXml)`
-  justify-content: center;
-  align-items: center;
 
+padding: 0px 0px 100px 0px;
 
 `;
 export const Meio = styled(SvgXml)`
-margin: 0px;
+padding: 0px;
+
 
 `;
+
 
 
 export const Form = styled.View`
@@ -48,4 +49,10 @@ export const SignLinkText = styled.Text`
   color: #fff;
   font-weight: bold;
   font-size: 16px;
+`;
+
+export const Separator = styled.View`
+  height: 1px;
+  background: #fff;
+  margin: 20px 0 30px;
 `;

@@ -27,6 +27,16 @@ import {
 } from './styles';
 
 export default function Statistics() {
+
+  const chartConfig = {
+  backgroundGradientFrom: "#1E2923",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "#08130D",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  strokeWidth: 2, // optional, default 3
+  barPercentage: 0.5
+};
   const lineData = {
     labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
     datasets: [
@@ -77,21 +87,13 @@ export default function Statistics() {
 
         <ContainerGraph>
           <Text>Faturado Por Mês</Text>
+
           <LineChart
             data={lineData}
             width={Dimensions.get('window').width} // from react-native
             height={220}
             yAxisLabel={'$'}
-            chartConfig={{
-              backgroundColor: '#e26a00',
-              backgroundGradientFrom: '#fb8c00',
-              backgroundGradientTo: '#ffa726',
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
+            chartConfig="{chartConfig}"
             bezier
             style={{
               marginVertical: 8,
@@ -108,16 +110,7 @@ export default function Statistics() {
             width={Dimensions.get('window').width} // from react-native
             height={220}
             yAxisLabel={'$'}
-            chartConfig={{
-              backgroundColor: '#e26a00',
-              backgroundGradientFrom: '#fb8c00',
-              backgroundGradientTo: '#ffa726',
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
+            chartConfig="{chartConfig}"
           />
         </ContainerGraph>
 
@@ -126,16 +119,7 @@ export default function Statistics() {
             data={pieData}
             width={Dimensions.get('window').width} // from react-native
             height={220}
-            chartConfig={{
-              backgroundColor: '#e26a00',
-              backgroundGradientFrom: '#fb8c00',
-              backgroundGradientTo: '#ffa726',
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-              style: {
-                borderRadius: 16,
-              },
-            }}
+            chartConfig="{chartConfig}"
             accessor="Areas"
             backgroundColor="transparent"
             paddingLeft="15"

@@ -19,6 +19,7 @@ import {
   SignLinkText,
   Cima,
   Meio,
+  Separator,
 } from './styles';
 
 
@@ -96,6 +97,9 @@ export default function SignIn({ navigation }) {
     <BackgroundInitial>
       <Container>
         <Cima xml={xmlCima} />
+
+        <Separator />
+
         <Meio xml={xml} />
         <Form>
           <FormInput

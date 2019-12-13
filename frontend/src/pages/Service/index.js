@@ -131,7 +131,7 @@ export default class Service extends Component {
   }
 
   render() {
-    const { selectedValueCidade, selectedValueEstado, uf } = this.state;
+    const { selectedValueCidade, selectedValueEstado, uf,cities } = this.state;
 
     const data = [
       'Mototaxistas',
