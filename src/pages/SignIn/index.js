@@ -1,10 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { SvgXml } from 'react-native-svg';
-
-import Background from '~/components/Background';
 import BackgroundInitial from '~/components/BackgroundInitial';
 import { signInRequest } from '~/store/modules/auth/actions';
 

@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Picker,
-  View,
-  TextInput,
-  Text,
-  Button,
-  Keyboard,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
 
 import { Autocomplete } from 'react-native-dropdown-autocomplete';
 

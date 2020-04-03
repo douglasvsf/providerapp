@@ -5,7 +5,6 @@ import { withNavigationFocus } from 'react-navigation';
 import api from '~/services/api';
 
 import Background from '~/components/Background';
-import HeaderMenu from '~/components/HeaderMenu';
 import Appointment from '~/components/Appointment';
 
 import { Container, Title, List } from './styles';
@@ -32,9 +31,9 @@ function Dashboard({ isFocused }) {
       appointments.map(appointment =>
         appointment.id === id
           ? {
-            ...appointment,
-            canceled_at: response.data.canceled_at,
-          }
+              ...appointment,
+              canceled_at: response.data.canceled_at,
+            }
           : appointment
       )
     );
@@ -42,7 +41,6 @@ function Dashboard({ isFocused }) {
 
   return (
     <Background>
-
       <Container>
         <Title>Agendamentos</Title>
 

@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React from 'react';
 
-import { FormInput } from "./styles";
+import { FormInput } from './styles';
 
 const Details = ({ endereco }) => (
-
   <>
     <FormInput
       value={endereco.logradouro}
@@ -43,9 +42,7 @@ const Details = ({ endereco }) => (
       autoCorrect={false}
       placeholder="Estado"
     />
-
   </>
-
 );
 
 export default Details;

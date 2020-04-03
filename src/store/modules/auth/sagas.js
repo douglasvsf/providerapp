@@ -15,14 +15,14 @@ export function* signIn({ payload }) {
     });
 
     const { token, user } = response.data;
-    /*//parte para FORNEC
+    /* //parte para FORNEC
         if (user.provider) {
           Alert.alert(
             'Erro no login',
             'O usuário não pode ser prestador de serviços'
           );
           return;
-        }*/
+        } */
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 

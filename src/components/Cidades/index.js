@@ -1,25 +1,18 @@
 import React from 'react';
-import { View, Picker, StyleSheet } from 'react-native';
 
 import { Container, TInput } from './styles';
 
-export default props => (
+export default ({ data, selectedValue, onValueChange }) => (
   <Container>
-    {props.data ? (
-      <TInput
-        selectedValue={props.selectedValue}
-        onValueChange={props.onValueChange}
-      >
-        {props.data.cidades.map(cidade => (
+    {data ? (
+      <TInput selectedValue={selectedValue} onValueChange={onValueChange}>
+        {data.cidades.map(cidade => (
           <TInput.Item key={cidade} label={cidade} value={cidade} />
         ))}
       </TInput>
     ) : (
-      <TInput
-        selectedValue={props.selectedValue}
-        onValueChange={props.onValueChange}
-      >
-        <TInput.Item label={'Selecione'} />
+      <TInput selectedValue={selectedValue} onValueChange={onValueChange}>
+        <TInput.Item label="Selecione" />
       </TInput>
     )}
   </Container>

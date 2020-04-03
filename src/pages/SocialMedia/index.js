@@ -1,10 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useRef } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Background from '~/components/Background';
-import { signOut } from '~/store/modules/auth/actions';
-import { updateProfileRequest } from '~/store/modules/user/actions';
 
 import {
   Container,
@@ -50,7 +47,7 @@ export default function SocialMedia() {
         confirmPassword,
       })
     );
-  }*/
+  } */
 
   return (
     <Background>
@@ -65,8 +62,8 @@ export default function SocialMedia() {
             placeholder="www.facebook.com/"
             returnKeyType="next"
             onSubmitEditing={() => instaRef.current.focus()}
-          // value={name}
-          //onChangeText={setName}
+            // value={name}
+            // onChangeText={setName}
           />
 
           <FormInput
@@ -77,8 +74,8 @@ export default function SocialMedia() {
             ref={instaRef}
             returnKeyType="next"
             onSubmitEditing={() => linkedinRef.current.focus()}
-          // value={email}
-          //    onChangeText={setEmail}
+            // value={email}
+            //    onChangeText={setEmail}
           />
 
           <Separator />
@@ -90,8 +87,8 @@ export default function SocialMedia() {
             ref={linkedinRef}
             returnKeyType="next"
             onSubmitEditing={() => whatsRef.current.focus()}
-          //value={oldPassword}
-          //onChangeText={setOldPassword}
+            // value={oldPassword}
+            // onChangeText={setOldPassword}
           />
 
           <FormInput
@@ -101,12 +98,11 @@ export default function SocialMedia() {
             ref={whatsRef}
             returnKeyType="next"
 
-          //value={password}
-          //onChangeText={setPassword}
+            // value={password}
+            // onChangeText={setPassword}
           />
 
-
-          <SubmitButton //onPress={handleSubmit}
+          <SubmitButton // onPress={handleSubmit}
           >
             Atualizar Redes Sociais
           </SubmitButton>

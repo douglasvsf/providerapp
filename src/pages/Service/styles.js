@@ -1,11 +1,8 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { Autocomplete } from 'react-native-dropdown-autocomplete';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 import Estados from '~/components/Estados';
-
-import { Autocomplete } from 'react-native-dropdown-autocomplete';
 
 export const Container = styled.SafeAreaView`
   flex: 1;

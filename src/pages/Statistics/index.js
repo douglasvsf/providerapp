@@ -1,22 +1,12 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
+import { Text } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { LineChart, Grid, BarChart, PieChart } from 'react-native-svg-charts';
 import Background from '~/components/Background';
 
-import { LineChart, Grid, BarChart, PieChart } from 'react-native-svg-charts';
-
-import {
-  Container,
-  Title,
-  Separator,
-  Form,
-  FormInput,
-  SubmitButton,
-  LogoutButton,
-  ContainerGraph,
-} from './styles';
+import { Container, Title } from './styles';
 
 export default function Statistics() {
   const dataLine = [
@@ -56,10 +46,8 @@ export default function Statistics() {
   ];
 
   const randomColor = () =>
-    ('#' + ((Math.random() * 0xffffff) << 0).toString(16) + '000000').slice(
-      0,
-      7
-    );
+    // eslint-disable-next-line no-bitwise
+    `#${((Math.random() * 0xffffff) << 0).toString(16)}000000`.slice(0, 7);
 
   const pieData = dataPie
     .filter(value => value > 0)
@@ -67,6 +55,7 @@ export default function Statistics() {
       value,
       svg: {
         fill: randomColor(),
+        // eslint-disable-next-line no-console
         onPress: () => console.log('press', index),
       },
       key: `pie-${index}`,

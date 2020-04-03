@@ -1,9 +1,6 @@
 import styled from 'styled-components/native';
-import LinearGradient from 'react-native-linear-gradient';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
-
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -16,7 +13,6 @@ export const Title = styled.Text`
   align-self: center;
   margin-top: 30px;
 `;
-
 
 export const Form = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
@@ -38,8 +34,6 @@ export const Separator = styled.View`
 export const FormInput = styled(Input)`
   margin-bottom: 10px;
 `;
-
-
 
 export const Submit = styled(Button)`
   background: #6bd4c1;

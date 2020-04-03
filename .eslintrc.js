@@ -12,15 +12,17 @@ module.exports = {
   },
   parserOptions: {
     ecmaFeatures: {
+      experimentalObjectRestSpread: true,
       jsx: true
     },
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     sourceType: "module"
   },
   plugins: ["react", "jsx-a11y", "import", "react-hooks", "prettier"],
   rules: {
     "prettier/prettier": "error",
     "react/jsx-filename-extension": ["error", { extensions: [".js", ".jsx"] }],
+    "react/prop-types": "off",
     "import/prefer-default-export": "off",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/jsx-one-expression-per-line": "off",
@@ -31,7 +33,8 @@ module.exports = {
     camelcase: "off",
     "no-console": ["error", { allow: ["tron"] }],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "no-multiple-empty-lines": [2, {"max": 2}]
   },
   settings: {
     "import/resolver": {

@@ -5,9 +5,7 @@ import { View } from 'react-native';
 // import { Container } from './styles';
 
 export default function Qualification() {
-  return (
-    <View />
-  );
+  return <View />;
 }
 
 Qualification.navigationOptions = {
