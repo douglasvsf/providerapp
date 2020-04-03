@@ -1,4 +1,4 @@
-package com.modulo10;
+package com.providerapp;
 
 import android.app.Application;
 import android.util.Log;
@@ -7,7 +7,8 @@ import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-import com.horcrux.svg.SvgPackage;
+import com.horcrux.svg.SvgPackage;
+
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;

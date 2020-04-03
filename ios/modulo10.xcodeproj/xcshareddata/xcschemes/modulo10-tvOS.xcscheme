@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "modulo10-tvOS.app"
-               BlueprintName = "modulo10-tvOS"
-               ReferencedContainer = "container:modulo10.xcodeproj">
+               BuildableName = "providerapp-tvOS.app"
+               BlueprintName = "providerapp-tvOS"
+               ReferencedContainer = "container:providerapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "modulo10-tvOSTests.xctest"
-               BlueprintName = "modulo10-tvOSTests"
-               ReferencedContainer = "container:modulo10.xcodeproj">
+               BuildableName = "providerapp-tvOSTests.xctest"
+               BlueprintName = "providerapp-tvOSTests"
+               ReferencedContainer = "container:providerapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "modulo10-tvOSTests.xctest"
-               BlueprintName = "modulo10-tvOSTests"
-               ReferencedContainer = "container:modulo10.xcodeproj">
+               BuildableName = "providerapp-tvOSTests.xctest"
+               BlueprintName = "providerapp-tvOSTests"
+               ReferencedContainer = "container:providerapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "modulo10-tvOS.app"
-            BlueprintName = "modulo10-tvOS"
-            ReferencedContainer = "container:modulo10.xcodeproj">
+            BuildableName = "providerapp-tvOS.app"
+            BlueprintName = "providerapp-tvOS"
+            ReferencedContainer = "container:providerapp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "modulo10-tvOS.app"
-            BlueprintName = "modulo10-tvOS"
-            ReferencedContainer = "container:modulo10.xcodeproj">
+            BuildableName = "providerapp-tvOS.app"
+            BlueprintName = "providerapp-tvOS"
+            ReferencedContainer = "container:providerapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "modulo10-tvOS.app"
-            BlueprintName = "modulo10-tvOS"
-            ReferencedContainer = "container:modulo10.xcodeproj">
+            BuildableName = "providerapp-tvOS.app"
+            BlueprintName = "providerapp-tvOS"
+            ReferencedContainer = "container:providerapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

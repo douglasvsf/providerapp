@@ -1,8 +1,8 @@
 platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-target 'modulo10' do
-  # Pods for modulo10
+target 'providerapp' do
+  # Pods for providerapp
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -39,7 +39,7 @@ target 'modulo10' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
-  target 'modulo10Tests' do
+  target 'providerappTests' do
     inherit! :search_paths
     # Pods for testing
   end
@@ -47,10 +47,10 @@ target 'modulo10' do
   use_native_modules!
 end
 
-target 'modulo10-tvOS' do
-  # Pods for modulo10-tvOS
+target 'providerapp-tvOS' do
+  # Pods for providerapp-tvOS
 
-  target 'modulo10-tvOSTests' do
+  target 'providerapp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

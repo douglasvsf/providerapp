@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* modulo10Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* modulo10Tests.m */; };
+		00E356F31AD99517003FC87E /* providerappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* providerappTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -18,7 +18,7 @@
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		2DCD954D1E0B4F2C00145EB5 /* modulo10Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* modulo10Tests.m */; };
+		2DCD954D1E0B4F2C00145EB5 /* providerappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* providerappTests.m */; };
 		571628CA4AFD42B4AF065252 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F82A0E4E69E84E42B4797D5B /* FontAwesome5_Brands.ttf */; };
 		63205370C5CB49CEB4B2226D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA1D3C4CABA848559BF21B47 /* EvilIcons.ttf */; };
 		7158EE1C8FB8487B8C6D8B75 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E4796001A0A54CBF907AE69C /* Foundation.ttf */; };
@@ -29,12 +29,12 @@
 		9D8AF68034B649D6982C686E /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A8D9D6F18214CB887A2E42D /* SimpleLineIcons.ttf */; };
 		A21EFFE66B42493BAD32FA14 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4950954C1FE647CFBCDEC719 /* FontAwesome.ttf */; };
 		A862C02D860F41F388C6BAA5 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 188CB7DE17584258BE4A18BA /* Octicons.ttf */; };
-		B80C2D257EBD25DA1C5115B4 /* libPods-modulo10-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E3A427858AFB06522BE7FC /* libPods-modulo10-tvOS.a */; };
-		BEFEAB2E9BEEA26F12A2F183 /* libPods-modulo10-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D89B664F394A11772E0CDD /* libPods-modulo10-tvOSTests.a */; };
-		CCF12297BB9CF86BB26F9E09 /* libPods-modulo10Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B03CC68804939768B450D2 /* libPods-modulo10Tests.a */; };
+		B80C2D257EBD25DA1C5115B4 /* libPods-providerapp-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E3A427858AFB06522BE7FC /* libPods-providerapp-tvOS.a */; };
+		BEFEAB2E9BEEA26F12A2F183 /* libPods-providerapp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4D89B664F394A11772E0CDD /* libPods-providerapp-tvOSTests.a */; };
+		CCF12297BB9CF86BB26F9E09 /* libPods-providerappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B2B03CC68804939768B450D2 /* libPods-providerappTests.a */; };
 		D19C5B18B40C48A791BBDEB8 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B8BE027077944689737C6E3 /* Ionicons.ttf */; };
 		D6D0F1810744437981FD5F71 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BE0C34B300F43AB9D9174B2 /* Feather.ttf */; };
-		E68FDEBD43AB218ADBB8692D /* libPods-modulo10.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EA6F41AACFCBE77B5F7876 /* libPods-modulo10.a */; };
+		E68FDEBD43AB218ADBB8692D /* libPods-providerapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 20EA6F41AACFCBE77B5F7876 /* libPods-providerapp.a */; };
 		E739CB9EA70A46B68C516A37 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5B76D53821B4804AB9B1F57 /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
 
@@ -44,61 +44,61 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = modulo10;
+			remoteInfo = providerapp;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
-			remoteInfo = "modulo10-tvOS";
+			remoteInfo = "providerapp-tvOS";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* modulo10Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = modulo10Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* providerappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = providerappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* modulo10Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = modulo10Tests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* providerappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = providerappTests.m; sourceTree = "<group>"; };
 		0BE0C34B300F43AB9D9174B2 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* modulo10.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = modulo10.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = modulo10/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = modulo10/AppDelegate.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* providerapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = providerapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = providerapp/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = providerapp/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = modulo10/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = modulo10/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = modulo10/main.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = providerapp/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = providerapp/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = providerapp/main.m; sourceTree = "<group>"; };
 		141BF0C1D4B946568D054E7F /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		188CB7DE17584258BE4A18BA /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
-		20EA6F41AACFCBE77B5F7876 /* libPods-modulo10.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-modulo10.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2A039E7406E35D47A1290FC4 /* Pods-modulo10-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10-tvOS/Pods-modulo10-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		2A17E9553C74A1E39D024D59 /* Pods-modulo10.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10.release.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10/Pods-modulo10.release.xcconfig"; sourceTree = "<group>"; };
-		2A757BAAF7D3ECA7999C6D77 /* Pods-modulo10Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10Tests/Pods-modulo10Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* modulo10-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "modulo10-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* modulo10-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "modulo10-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		41E3A427858AFB06522BE7FC /* libPods-modulo10-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-modulo10-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		20EA6F41AACFCBE77B5F7876 /* libPods-providerapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-providerapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A039E7406E35D47A1290FC4 /* Pods-providerapp-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp-tvOS/Pods-providerapp-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		2A17E9553C74A1E39D024D59 /* Pods-providerapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp.release.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp/Pods-providerapp.release.xcconfig"; sourceTree = "<group>"; };
+		2A757BAAF7D3ECA7999C6D77 /* Pods-providerappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerappTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-providerappTests/Pods-providerappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2D02E47B1E0B4A5D006451C7 /* providerapp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "providerapp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D02E4901E0B4A5D006451C7 /* providerapp-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "providerapp-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41E3A427858AFB06522BE7FC /* libPods-providerapp-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-providerapp-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4950954C1FE647CFBCDEC719 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		4A8D9D6F18214CB887A2E42D /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		5C1DC2219709411D9DC6BEAF /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		6B9382D923024BEC97F69FD1 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
-		79F43313403FB3FC92C4E5C4 /* Pods-modulo10-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10-tvOSTests/Pods-modulo10-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		79F43313403FB3FC92C4E5C4 /* Pods-providerapp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp-tvOSTests/Pods-providerapp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7B8BE027077944689737C6E3 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		7DF19B782340422E8C4F7898 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		8A07C84B8606425884C0B62B /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		8F3A8DCD9B6C4F01BF579B05 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
-		A10863C518A9ECBBD9589875 /* Pods-modulo10-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10-tvOSTests/Pods-modulo10-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		A2E68DDD8A73BD0976D5D424 /* Pods-modulo10-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10-tvOS/Pods-modulo10-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		A4D89B664F394A11772E0CDD /* libPods-modulo10-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-modulo10-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B2B03CC68804939768B450D2 /* libPods-modulo10Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-modulo10Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10863C518A9ECBBD9589875 /* Pods-providerapp-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp-tvOSTests/Pods-providerapp-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		A2E68DDD8A73BD0976D5D424 /* Pods-providerapp-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp-tvOS/Pods-providerapp-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		A4D89B664F394A11772E0CDD /* libPods-providerapp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-providerapp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2B03CC68804939768B450D2 /* libPods-providerappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-providerappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5B76D53821B4804AB9B1F57 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		C393473E5101497C872A5097 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		D75D02E8332494B9E66F28B7 /* Pods-modulo10.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10.debug.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10/Pods-modulo10.debug.xcconfig"; sourceTree = "<group>"; };
+		D75D02E8332494B9E66F28B7 /* Pods-providerapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerapp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-providerapp/Pods-providerapp.debug.xcconfig"; sourceTree = "<group>"; };
 		E4796001A0A54CBF907AE69C /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		EA1D3C4CABA848559BF21B47 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F82A0E4E69E84E42B4797D5B /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
-		FA89B7E0BC8A33AEB90C148A /* Pods-modulo10Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-modulo10Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-modulo10Tests/Pods-modulo10Tests.release.xcconfig"; sourceTree = "<group>"; };
+		FA89B7E0BC8A33AEB90C148A /* Pods-providerappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-providerappTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-providerappTests/Pods-providerappTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCF12297BB9CF86BB26F9E09 /* libPods-modulo10Tests.a in Frameworks */,
+				CCF12297BB9CF86BB26F9E09 /* libPods-providerappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E68FDEBD43AB218ADBB8692D /* libPods-modulo10.a in Frameworks */,
+				E68FDEBD43AB218ADBB8692D /* libPods-providerapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B80C2D257EBD25DA1C5115B4 /* libPods-modulo10-tvOS.a in Frameworks */,
+				B80C2D257EBD25DA1C5115B4 /* libPods-providerapp-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,20 +130,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEFEAB2E9BEEA26F12A2F183 /* libPods-modulo10-tvOSTests.a in Frameworks */,
+				BEFEAB2E9BEEA26F12A2F183 /* libPods-providerapp-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* modulo10Tests */ = {
+		00E356EF1AD99517003FC87E /* providerappTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* modulo10Tests.m */,
+				00E356F21AD99517003FC87E /* providerappTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = modulo10Tests;
+			path = providerappTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -154,7 +154,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* modulo10 */ = {
+		13B07FAE1A68108700A75B9A /* providerapp */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -165,7 +165,7 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = modulo10;
+			name = providerapp;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -173,10 +173,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				20EA6F41AACFCBE77B5F7876 /* libPods-modulo10.a */,
-				41E3A427858AFB06522BE7FC /* libPods-modulo10-tvOS.a */,
-				A4D89B664F394A11772E0CDD /* libPods-modulo10-tvOSTests.a */,
-				B2B03CC68804939768B450D2 /* libPods-modulo10Tests.a */,
+				20EA6F41AACFCBE77B5F7876 /* libPods-providerapp.a */,
+				41E3A427858AFB06522BE7FC /* libPods-providerapp-tvOS.a */,
+				A4D89B664F394A11772E0CDD /* libPods-providerapp-tvOSTests.a */,
+				B2B03CC68804939768B450D2 /* libPods-providerappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -184,14 +184,14 @@
 		3F1711E2E7B9F021C0257564 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D75D02E8332494B9E66F28B7 /* Pods-modulo10.debug.xcconfig */,
-				2A17E9553C74A1E39D024D59 /* Pods-modulo10.release.xcconfig */,
-				2A039E7406E35D47A1290FC4 /* Pods-modulo10-tvOS.debug.xcconfig */,
-				A2E68DDD8A73BD0976D5D424 /* Pods-modulo10-tvOS.release.xcconfig */,
-				79F43313403FB3FC92C4E5C4 /* Pods-modulo10-tvOSTests.debug.xcconfig */,
-				A10863C518A9ECBBD9589875 /* Pods-modulo10-tvOSTests.release.xcconfig */,
-				2A757BAAF7D3ECA7999C6D77 /* Pods-modulo10Tests.debug.xcconfig */,
-				FA89B7E0BC8A33AEB90C148A /* Pods-modulo10Tests.release.xcconfig */,
+				D75D02E8332494B9E66F28B7 /* Pods-providerapp.debug.xcconfig */,
+				2A17E9553C74A1E39D024D59 /* Pods-providerapp.release.xcconfig */,
+				2A039E7406E35D47A1290FC4 /* Pods-providerapp-tvOS.debug.xcconfig */,
+				A2E68DDD8A73BD0976D5D424 /* Pods-providerapp-tvOS.release.xcconfig */,
+				79F43313403FB3FC92C4E5C4 /* Pods-providerapp-tvOSTests.debug.xcconfig */,
+				A10863C518A9ECBBD9589875 /* Pods-providerapp-tvOSTests.release.xcconfig */,
+				2A757BAAF7D3ECA7999C6D77 /* Pods-providerappTests.debug.xcconfig */,
+				FA89B7E0BC8A33AEB90C148A /* Pods-providerappTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -206,9 +206,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* modulo10 */,
+				13B07FAE1A68108700A75B9A /* providerapp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* modulo10Tests */,
+				00E356EF1AD99517003FC87E /* providerappTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				3F1711E2E7B9F021C0257564 /* Pods */,
@@ -222,10 +222,10 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* modulo10.app */,
-				00E356EE1AD99517003FC87E /* modulo10Tests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* modulo10-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* modulo10-tvOSTests.xctest */,
+				13B07F961A680F5B00A75B9A /* providerapp.app */,
+				00E356EE1AD99517003FC87E /* providerappTests.xctest */,
+				2D02E47B1E0B4A5D006451C7 /* providerapp-tvOS.app */,
+				2D02E4901E0B4A5D006451C7 /* providerapp-tvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -257,9 +257,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* modulo10Tests */ = {
+		00E356ED1AD99517003FC87E /* providerappTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "modulo10Tests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "providerappTests" */;
 			buildPhases = (
 				07B8968A76FCA0067520B4BE /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -271,14 +271,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = modulo10Tests;
-			productName = modulo10Tests;
-			productReference = 00E356EE1AD99517003FC87E /* modulo10Tests.xctest */;
+			name = providerappTests;
+			productName = providerappTests;
+			productReference = 00E356EE1AD99517003FC87E /* providerappTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* modulo10 */ = {
+		13B07F861A680F5B00A75B9A /* providerapp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "modulo10" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "providerapp" */;
 			buildPhases = (
 				AE5D99ED55220FA3D0BCB2CC /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -292,14 +292,14 @@
 			);
 			dependencies = (
 			);
-			name = modulo10;
-			productName = modulo10;
-			productReference = 13B07F961A680F5B00A75B9A /* modulo10.app */;
+			name = providerapp;
+			productName = providerapp;
+			productReference = 13B07F961A680F5B00A75B9A /* providerapp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E47A1E0B4A5D006451C7 /* modulo10-tvOS */ = {
+		2D02E47A1E0B4A5D006451C7 /* providerapp-tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "modulo10-tvOS" */;
+			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "providerapp-tvOS" */;
 			buildPhases = (
 				52CE52466F52D201F2ABDA2F /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
@@ -312,14 +312,14 @@
 			);
 			dependencies = (
 			);
-			name = "modulo10-tvOS";
-			productName = "modulo10-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* modulo10-tvOS.app */;
+			name = "providerapp-tvOS";
+			productName = "providerapp-tvOS";
+			productReference = 2D02E47B1E0B4A5D006451C7 /* providerapp-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2D02E48F1E0B4A5D006451C7 /* modulo10-tvOSTests */ = {
+		2D02E48F1E0B4A5D006451C7 /* providerapp-tvOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "modulo10-tvOSTests" */;
+			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "providerapp-tvOSTests" */;
 			buildPhases = (
 				8ED17EF0D2F973AA0499A11A /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
@@ -331,9 +331,9 @@
 			dependencies = (
 				2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */,
 			);
-			name = "modulo10-tvOSTests";
-			productName = "modulo10-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* modulo10-tvOSTests.xctest */;
+			name = "providerapp-tvOSTests";
+			productName = "providerapp-tvOSTests";
+			productReference = 2D02E4901E0B4A5D006451C7 /* providerapp-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -360,7 +360,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "modulo10" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "providerapp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -373,10 +373,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* modulo10 */,
-				00E356ED1AD99517003FC87E /* modulo10Tests */,
-				2D02E47A1E0B4A5D006451C7 /* modulo10-tvOS */,
-				2D02E48F1E0B4A5D006451C7 /* modulo10-tvOSTests */,
+				13B07F861A680F5B00A75B9A /* providerapp */,
+				00E356ED1AD99517003FC87E /* providerappTests */,
+				2D02E47A1E0B4A5D006451C7 /* providerapp-tvOS */,
+				2D02E48F1E0B4A5D006451C7 /* providerapp-tvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -461,7 +461,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-modulo10Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-providerappTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -497,7 +497,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-modulo10-tvOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-providerapp-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -519,7 +519,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-modulo10-tvOSTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-providerapp-tvOSTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -541,7 +541,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-modulo10-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-providerapp-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -594,7 +594,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-modulo10/Pods-modulo10-resources.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-providerapp/Pods-providerapp-resources.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
@@ -635,7 +635,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-modulo10/Pods-modulo10-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-providerapp/Pods-providerapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -645,7 +645,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* modulo10Tests.m in Sources */,
+				00E356F31AD99517003FC87E /* providerappTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,7 +671,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2DCD954D1E0B4F2C00145EB5 /* modulo10Tests.m in Sources */,
+				2DCD954D1E0B4F2C00145EB5 /* providerappTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,12 +680,12 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* modulo10 */;
+			target = 13B07F861A680F5B00A75B9A /* providerapp */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 		2D02E4921E0B4A5D006451C7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2D02E47A1E0B4A5D006451C7 /* modulo10-tvOS */;
+			target = 2D02E47A1E0B4A5D006451C7 /* providerapp-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -697,7 +697,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = modulo10;
+			path = providerapp;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -705,14 +705,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A757BAAF7D3ECA7999C6D77 /* Pods-modulo10Tests.debug.xcconfig */;
+			baseConfigurationReference = 2A757BAAF7D3ECA7999C6D77 /* Pods-providerappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = modulo10Tests/Info.plist;
+				INFOPLIST_FILE = providerappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -722,17 +722,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/modulo10.app/modulo10";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/providerapp.app/providerapp";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA89B7E0BC8A33AEB90C148A /* Pods-modulo10Tests.release.xcconfig */;
+			baseConfigurationReference = FA89B7E0BC8A33AEB90C148A /* Pods-providerappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = modulo10Tests/Info.plist;
+				INFOPLIST_FILE = providerappTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -742,18 +742,18 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/modulo10.app/modulo10";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/providerapp.app/providerapp";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D75D02E8332494B9E66F28B7 /* Pods-modulo10.debug.xcconfig */;
+			baseConfigurationReference = D75D02E8332494B9E66F28B7 /* Pods-providerapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				INFOPLIST_FILE = modulo10/Info.plist;
+				INFOPLIST_FILE = providerapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -761,18 +761,18 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = modulo10;
+				PRODUCT_NAME = providerapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A17E9553C74A1E39D024D59 /* Pods-modulo10.release.xcconfig */;
+			baseConfigurationReference = 2A17E9553C74A1E39D024D59 /* Pods-providerapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = modulo10/Info.plist;
+				INFOPLIST_FILE = providerapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -780,14 +780,14 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = modulo10;
+				PRODUCT_NAME = providerapp;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A039E7406E35D47A1290FC4 /* Pods-modulo10-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 2A039E7406E35D47A1290FC4 /* Pods-providerapp-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -798,14 +798,14 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "modulo10-tvOS/Info.plist";
+				INFOPLIST_FILE = "providerapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.modulo10-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.providerapp-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -815,7 +815,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2E68DDD8A73BD0976D5D424 /* Pods-modulo10-tvOS.release.xcconfig */;
+			baseConfigurationReference = A2E68DDD8A73BD0976D5D424 /* Pods-providerapp-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -826,14 +826,14 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "modulo10-tvOS/Info.plist";
+				INFOPLIST_FILE = "providerapp-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.modulo10-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.providerapp-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -843,7 +843,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 79F43313403FB3FC92C4E5C4 /* Pods-modulo10-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 79F43313403FB3FC92C4E5C4 /* Pods-providerapp-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -853,24 +853,24 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "modulo10-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "providerapp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.modulo10-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.providerapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/modulo10-tvOS.app/modulo10-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/providerapp-tvOS.app/providerapp-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Debug;
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A10863C518A9ECBBD9589875 /* Pods-modulo10-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = A10863C518A9ECBBD9589875 /* Pods-providerapp-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -880,17 +880,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "modulo10-tvOSTests/Info.plist";
+				INFOPLIST_FILE = "providerapp-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.modulo10-tvOSTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.providerapp-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/modulo10-tvOS.app/modulo10-tvOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/providerapp-tvOS.app/providerapp-tvOS";
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 			};
 			name = Release;
@@ -997,7 +997,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "modulo10Tests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "providerappTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -1006,7 +1006,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "modulo10" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "providerapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -1015,7 +1015,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "modulo10-tvOS" */ = {
+		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "providerapp-tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4971E0B4A5E006451C7 /* Debug */,
@@ -1024,7 +1024,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "modulo10-tvOSTests" */ = {
+		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "providerapp-tvOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D02E4991E0B4A5E006451C7 /* Debug */,
@@ -1033,7 +1033,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "modulo10" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "providerapp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
