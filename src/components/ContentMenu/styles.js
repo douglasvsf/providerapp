@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   margin-bottom: 15px;
-  padding: 20px;
   border-radius: 4px;
   background: #fff;
 
@@ -16,6 +15,7 @@ export const Container = styled.View`
 
 export const Left = styled.View`
   display: flex;
+  padding: 16px;
   flex-direction: row;
   align-items: center;
 `;

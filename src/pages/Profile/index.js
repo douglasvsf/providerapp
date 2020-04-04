@@ -15,6 +15,7 @@ import {
   SubmitButton,
   LogoutButton,
 } from './styles';
+import { colors } from '~/values/colors';
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -127,6 +128,9 @@ export default function Profile() {
 }
 
 Profile.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Meu perfil',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />

@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
+
 import {
   createAppContainer,
   createSwitchNavigator,
@@ -27,7 +28,8 @@ import Service from './pages/Service';
 import SocialMedia from './pages/SocialMedia';
 
 import ContentMenu from '~/components/ContentMenu';
-// import HeaderMenu from '~/components/HeaderMenu';
+import { Touchable } from './components/Touchable';
+import { colors } from './values/colors';
 
 export default (isSigned = false) =>
   createAppContainer(
@@ -89,18 +91,22 @@ export default (isSigned = false) =>
                 headerTitleStyle: {
                   width: '90%',
                   textAlign: 'center',
+                  color: colors.secondary,
                 },
                 headerLeft: (
-                  <Icon
-                    style={{ paddingLeft: 10, color: 'black' }}
+                  <Touchable
                     onPress={() => navigation.toggleDrawer()}
-                    name="bars"
-                    size={25}
-                  />
+                  >
+                    <Icon
+                      style={{ marginHorizontal: 10, marginVertical: 6, color: colors.secondary }}
+                      name="bars"
+                      size={28}
+                    />
+                  </Touchable>
                 ),
                 headerRight: (
                   <Icon
-                    style={{ paddingRight: 10, color: 'black' }}
+                    style={{ paddingRight: 10, color: colors.secondary }}
                     name="bell"
                     size={25}
                   />

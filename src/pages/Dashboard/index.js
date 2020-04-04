@@ -8,6 +8,7 @@ import Background from '~/components/Background';
 import Appointment from '~/components/Appointment';
 
 import { Container, Title, List } from './styles';
+import { colors } from '~/values/colors';
 
 function Dashboard({ isFocused }) {
   const [appointments, setAppointments] = useState([]);
@@ -57,6 +58,9 @@ function Dashboard({ isFocused }) {
 }
 
 Dashboard.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Agendamentos',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="event" size={20} color={tintColor} />
