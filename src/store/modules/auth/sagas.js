@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { NavigationActions } from 'react-navigation';
 
 import api from '~/services/api';
 
@@ -38,7 +39,7 @@ export function* signIn({ payload }) {
   }
 }
 
-export function* signUp({ payload }) {
+export function* signUp({ payload, navigation }) {
   try {
     const { name, email, password } = payload;
 
@@ -48,8 +49,10 @@ export function* signUp({ payload }) {
       password,
     });
 
-    // history.push('/');
+    Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');
+    NavigationActions.navigate('SignIn');
   } catch (err) {
+    console.log(err);
     Alert.alert(
       'Falha no cadastro',
       'Houve um erro no cadastro, verifique seus dados'
