@@ -7,6 +7,7 @@ import { LineChart, Grid, BarChart, PieChart } from 'react-native-svg-charts';
 import Background from '~/components/Background';
 
 import { Container, Title } from './styles';
+import { colors } from '~/values/colors';
 
 export default function Statistics() {
   const dataLine = [
@@ -117,6 +118,9 @@ export default function Statistics() {
 }
 
 Statistics.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Estatísticas',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="tachometer" size={20} color={tintColor} />

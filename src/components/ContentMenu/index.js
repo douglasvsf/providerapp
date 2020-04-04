@@ -5,6 +5,7 @@ import { AirbnbRating } from 'react-native-elements';
 import { DrawerItems } from 'react-navigation';
 
 import { Container, Left, Avatar, Info, Name } from './styles';
+import { colors } from '~/values/colors';
 
 export default function ContentMenu({ ...props }) {
   return (
@@ -28,7 +29,11 @@ export default function ContentMenu({ ...props }) {
         </Info>
       </Left>
 
-      <DrawerItems {...props} />
+      <DrawerItems
+        activeBackgroundColor="rgba(0,0,0,0.05)"
+        activeTintColor={colors.primary}
+        {...props}
+      />
     </Container>
   );
 }

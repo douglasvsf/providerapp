@@ -12,6 +12,7 @@ import {
   Title,
   Form,
 } from './styles';
+import { colors } from '~/values/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -83,6 +84,9 @@ export default function AdditionalInfo() {
 }
 
 AdditionalInfo.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Informações Adicionais',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="info" size={20} color={tintColor} />

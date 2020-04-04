@@ -11,6 +11,7 @@ import {
   FormInput,
   SubmitButton,
 } from './styles';
+import { colors } from '~/values/colors';
 
 export default function SocialMedia() {
   const instaRef = useRef();
@@ -113,6 +114,9 @@ export default function SocialMedia() {
 }
 
 SocialMedia.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Redes Sociais',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="share-alt" size={20} color={tintColor} />
