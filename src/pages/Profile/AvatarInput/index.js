@@ -1,74 +1,73 @@
-import React, { useState, useRef, useEffect } from 'react';
+/* eslint-disable no-alert */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-bitwise */
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
   PermissionsAndroid,
+  Platform,
 } from 'react-native';
-import { useSelector } from 'react-redux';
-import { useField } from '@rocketseat/unform';
+// import { useSelector } from 'react-redux';
+// import { useField } from '@rocketseat/unform';
 import { RNS3 } from 'react-native-aws3';
 import ImagePicker from 'react-native-image-picker';
-import awsConfig from './config/AwsConfig';
+// import awsConfig from './config/AwsConfig';
 import api from '~/services/api';
 
 export default function AvatarInput() {
+  const styles = StyleSheet.create({
+    profileContainer: {
+      alignItems: 'center',
+      marginTop: 3,
+      marginLeft: 6,
+      marginBottom: 0,
+    },
+    profileImage: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      marginLeft: 6,
+    },
+  });
+  // const user = useSelector(state => state.user.profile);
 
+  // const { defaultValue, registerField } = useField('avatar');
 
-  
-const styles = StyleSheet.create({
-
-  profileContainer: {
-    alignItems: 'center',
-    marginTop: 3,
-    marginLeft: 6,
-    marginBottom: 0,
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginLeft: 6,
-  },
-});
-  const user = useSelector(state => state.user.profile);
-
-  const { defaultValue, registerField } = useField('avatar');
-
-  const [file, setFile] = useState(defaultValue && defaultValue.id);
-  const [preview, setPreview] = useState(defaultValue && defaultValue.url);
-  const [nameAvatar, setNameAvatar] = useState('');
+  // const [file, setFile] = useState(defaultValue && defaultValue.id);
+  const [preview, setPreview] = useState('');
+  // const [nameAvatar, setNameAvatar] = useState('');
   const [urlAvatar, setUrlAvatar] = useState('');
 
-  const ref = useRef();
+  // const ref = useRef();
 
-  useEffect(() => {
-    if (ref.current) {
-      registerField({
-        name: 'avatar_id',
-        ref: ref.current,
-        path: 'dataset.file',
-      });
-    }
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     registerField({
+  //       name: 'avatar_id',
+  //       ref: ref.current,
+  //       path: 'dataset.file',
+  //     });
+  //   }
 
-    console.log(awsConfig, 'awsConfig');
-
-
-    
-  }, [ref, registerField]);
-
+  //   console.log(awsConfig, 'awsConfig');
+  // }, [ref]);
 
   function messageIdGenerator() {
     // generates uuid.
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      let r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      const r = (Math.random() * 16) | 0;
+      const v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
 
-  function  checkPermissionCamera() {
+  function checkPermissionCamera() {
     if (Platform.OS !== 'android') {
       return Promise.resolve(true);
     }
@@ -86,7 +85,6 @@ const styles = StyleSheet.create({
   }
 
   async function handleImage() {
-
     checkPermissionCamera();
     const options = {
       title: 'Selecione uma Foto de Perfil',
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
       noData: true,
     };
 
-     ImagePicker.showImagePicker(options, response => {
+    ImagePicker.showImagePicker(options, response => {
       console.log('Response = ', response);
       if (response.didCancel) {
         // do nothing
@@ -111,21 +109,20 @@ const styles = StyleSheet.create({
         const extension = uri.slice(extensionIndex + 1);
         const allowedExtensions = ['jpg', 'jpeg', 'png'];
         const correspondingMime = ['image/jpeg', 'image/jpeg', 'image/png'];
-        const nameAvatar =  `${messageIdGenerator()}.${extension}`;
-        setNameAvatar(nameAvatar);
+        const nameAvatar = `${messageIdGenerator()}.${extension}`;
+        //  setNameAvatar(nameAvatar);
         const options = {
+          //  keyPrefix: awsConfig.keyPrefixAvatar,
+          // bucket: awsConfig.bucket,
+          // region: awsConfig.region,
+          // accessKey: awsConfig.accessKey,
+          // secretKey: awsConfig.secretKey,
 
-        //  keyPrefix: awsConfig.keyPrefixAvatar,
-         // bucket: awsConfig.bucket,
-         // region: awsConfig.region,
-         // accessKey: awsConfig.accessKey,
-         // secretKey: awsConfig.secretKey,
-
-        keyPrefix: "avatars/",
-        bucket: "chattecne-app",
-        region: "sa-east-1",
-        accessKey: "AKIAIXKCGSVIFDLOF7AA",
-        secretKey: "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",
+          keyPrefix: 'avatars/',
+          bucket: 'chattecne-app',
+          region: 'sa-east-1',
+          accessKey: 'AKIAIXKCGSVIFDLOF7AA',
+          secretKey: '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',
         };
         const file = {
           uri,
@@ -150,22 +147,16 @@ const styles = StyleSheet.create({
 
             console.log(nameAvatar, 'nameAvatar');
             console.log(urlAvatar, 'urlAvatar');
-            handleChange(nameAvatar,urlImage);
-
+            handleChange(nameAvatar, urlImage);
           });
         if (!allowedExtensions.includes(extension)) {
           return alert('That file type is not allowed.');
         }
       }
     });
-
-
-
-  
- 
   }
 
-  async function handleChange(nameAvatar,urlAvatar) {
+  async function handleChange(nameAvatar, urlAvatar) {
     const response = await api.post('files', {
       nameAvatar,
       urlAvatar,
@@ -173,28 +164,24 @@ const styles = StyleSheet.create({
 
     console.log(response, 'RESPONSE CARAUI');
 
-    const { id, url } = response.data;
+    const { url } = response.data;
 
-    setFile(id);
+    // setFile(id);
     setPreview(url);
   }
 
   return (
-
-
-    <TouchableOpacity
-    onPress={handleImage}
-  >
-    <View style={styles.profileContainer}>
-      <Image
-        source={{
-          uri:  preview || 'https://api.adorable.io/avatars/120/abott@adorable.png'
-        }}
-        style={styles.profileImage}
-      />
-     
-    </View>
-  </TouchableOpacity>
-
+    <TouchableOpacity onPress={handleImage}>
+      <View style={styles.profileContainer}>
+        <Image
+          source={{
+            uri:
+              preview ||
+              'https://api.adorable.io/avatars/120/abott@adorable.png',
+          }}
+          style={styles.profileImage}
+        />
+      </View>
+    </TouchableOpacity>
   );
 }
