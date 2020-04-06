@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
 import { signOut } from '~/store/modules/auth/actions';
 import { updateProfileRequest } from '~/store/modules/user/actions';
+import AvatarInput from './AvatarInput';
 
 import {
   Container,
@@ -58,7 +59,11 @@ export default function Profile() {
       <Container>
         <Title>Meu perfil</Title>
 
+        <AvatarInput name="avatar_id" />
         <Form>
+
+       
+
           <FormInput
             icon="person-outline"
             autoCorrect={false}

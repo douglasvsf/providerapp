@@ -10,7 +10,7 @@ export const Container = styled.SafeAreaView`
 export const Separator = styled.View`
   height: 1px;
   background: rgba(0, 0, 0, 0.2);
-  margin: 20px 0 30px;
+  margin: 5px 0 30px;
 `;
 
 export const Title = styled.Text`

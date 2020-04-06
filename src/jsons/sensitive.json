@@ -1,0 +1,14 @@
+{
+  "BUCKET": "chattecne-app",
+  "ACCESS_KEY": "AKIAIXKCGSVIFDLOF7AA",
+  "SECRET_KEY": "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",
+  "APIKEY": "AIzaSyBDE7zx89IH2KlRxe6Qyet_7n6ZNEgbq8Y",
+  "keyPrefix": "audios/",
+  "keyPrefixAvatar": "avatars/",
+  "region": "sa-east-1",
+  "authDomain": "tecne-app.firebaseapp.com",
+  "databaseURL": "https://tecne-app.firebaseio.com",
+  "projectId": "tecne-app",
+  "storageBucket": "tecne-app.appspot.com",
+  "messagingSenderId": "188520847922"
+}
