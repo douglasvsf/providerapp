@@ -14,6 +14,7 @@ import {
   SubmitButton,
   Title,
 } from './styles';
+import { colors } from '~/values/colors';
 
 export default class AdditionalInfo extends PureComponent {
   constructor(props) {
@@ -79,6 +80,9 @@ export default class AdditionalInfo extends PureComponent {
 }
 
 AdditionalInfo.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Endereço',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="home" size={20} color={tintColor} />
