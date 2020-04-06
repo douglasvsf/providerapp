@@ -109,8 +109,7 @@ export default function AvatarInput() {
         const extension = uri.slice(extensionIndex + 1);
         const allowedExtensions = ['jpg', 'jpeg', 'png'];
         const correspondingMime = ['image/jpeg', 'image/jpeg', 'image/png'];
-        const nameAvatar = `${messageIdGenerator()}.${extension}`;
-        //  setNameAvatar(nameAvatar);
+      
         const options = {
           //  keyPrefix: awsConfig.keyPrefixAvatar,
           // bucket: awsConfig.bucket,
@@ -144,9 +143,11 @@ export default function AvatarInput() {
             }
             const urlImage = response.headers.Location;
             setUrlAvatar(urlImage);
-
+            const nameAvatar = `${messageIdGenerator()}.${extension}`;
+            //  setNameAvatar(nameAvatar);
             console.log(nameAvatar, 'nameAvatar');
             console.log(urlAvatar, 'urlAvatar');
+
             handleChange(nameAvatar, urlImage);
           });
         if (!allowedExtensions.includes(extension)) {
@@ -157,11 +158,15 @@ export default function AvatarInput() {
   }
 
   async function handleChange(nameAvatar, urlAvatar) {
+    
+    console.log(nameAvatar, 'handleChangenameAvatar');
+    console.log(urlAvatar, 'handleChangeurlAvatar');
     const response = await api.post('files', {
       nameAvatar,
       urlAvatar,
     });
 
+ 
     console.log(response, 'RESPONSE CARAUI');
 
     const { url } = response.data;
