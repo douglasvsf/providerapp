@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { View, StyleSheet, TextInput } from 'react-native';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { View, StyleSheet } from 'react-native';
-import Textarea from 'react-native-textarea';
 import Background from '../../components/Background';
 
 import {
@@ -17,25 +17,19 @@ import { colors } from '~/values/colors';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 332,
   },
   textareaContainer: {
-    height: 180,
-    padding: 5,
-    backgroundColor: '#111',
-    opacity: 0.1,
+    backgroundColor: 'rgba(17,17,17,0.1)',
     borderRadius: 5,
-    width: 332,
+    paddingHorizontal: 5,
+    width: '100%',
   },
   textarea: {
-    textAlignVertical: 'top', // hack android
-    height: 170,
-    fontSize: 14,
-    color: '#333',
-    width: 332,
+    width: '100%',
+    color: 'white',
+    textAlignVertical: 'top',
   },
 });
 
@@ -67,14 +61,13 @@ export default function AdditionalInfo() {
           </Container>
           <Separator />
 
-          <View style={styles.container}>
-            <Textarea
-              containerStyle={styles.textareaContainer}
-              style={styles.textarea}
+          <View style={styles.textareaContainer}>
+            <TextInput
+              multiline
               maxLength={120}
-              placeholder="Breve Descrição"
+              numberOfLines={6}
+              style={styles.textarea}
               placeholderTextColor="#c7c7c7"
-              underlineColorAndroid="transparent"
             />
           </View>
         </Form>
