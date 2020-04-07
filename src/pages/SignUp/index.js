@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,8 +25,7 @@ import {
   Separator,
 } from './styles';
 
-export default function SignUp({ navigation }) {
-  const xml = `
+const xml = `
 <svg width="195" height="112" viewBox="0 0 195 112" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M56.4 83.88H28.62V111.66H0.839996V83.88H28.62C28.62 83.88 28.74 44.93 28.74 43.55C28.7 22.08 39.46 -0.860005 76.23 0.119995L138.49 0.100006V27.87L76.23 27.89C62.61 27.89 56.54 31.89 56.54 44.44L56.4 83.88Z" fill="url(#paint0_linear)"/>
 <path d="M194.21 27.87H166.43L166.32 55.65C166.39 57.31 166.31 66.83 166.32 68.2C166.36 89.67 155.6 112.61 118.83 111.63L56.57 111.65V83.89L118.83 83.87C132.44 83.87 138.52 79.87 138.52 67.32C138.52 65.84 138.66 55.54 138.66 55.54V27.88H166.44V0.100006H194.22V27.87H194.21Z" fill="url(#paint1_linear)"/>
@@ -45,7 +45,7 @@ export default function SignUp({ navigation }) {
 
 `;
 
-  const xmlCima = `
+const xmlCima = `
 
 <svg width="117" height="67" viewBox="0 0 117 67" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M57.57 27.57C57.55 27.57 57.54 27.59 57.55 27.61C57.89 28.39 58.38 29.08 59.03 29.68C59.53 30.18 60.07 30.58 60.64 30.91V27.57H57.57Z" fill="white"/>
@@ -79,6 +79,63 @@ export default function SignUp({ navigation }) {
 
 `;
 
+const { height } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+  },
+  title: {
+    fontSize: 22,
+    alignSelf: 'center',
+  },
+  tcP: {
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 12,
+  },
+  tcL: {
+    marginLeft: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 12,
+  },
+  tcContainer: {
+    marginTop: 15,
+    marginBottom: 15,
+    height: height * 0.7,
+  },
+
+  button: {
+    backgroundColor: '#136AC7',
+    borderRadius: 5,
+    padding: 10,
+  },
+
+  buttonDisabled: {
+    backgroundColor: '#999',
+    borderRadius: 5,
+    padding: 10,
+  },
+
+  buttonC: {
+    backgroundColor: '#4EAD93',
+    borderRadius: 5,
+    padding: 10,
+  },
+
+  buttonLabel: {
+    fontSize: 14,
+    color: '#FFF',
+    alignSelf: 'center',
+  },
+});
+
+export default function SignUp({ navigation }) {
   const dispatch = useDispatch();
 
   const emailRef = useRef();
@@ -103,11 +160,9 @@ export default function SignUp({ navigation }) {
   }
 
   function handleConfirm() {
-    alert("Termos e Condições Aceitados");
+    alert('Termos e Condições Aceitados');
     setConfirmed(true);
   }
-
-  
 
   const isCloseToBottom = ({
     layoutMeasurement,
@@ -121,76 +176,18 @@ export default function SignUp({ navigation }) {
     );
   };
 
-  const { width, height } = Dimensions.get('window');
-
-  const styles = {
-    container: {
-      marginTop: 20,
-      marginLeft: 10,
-      marginRight: 10,
-      backgroundColor: '#FFF',
-      borderRadius: 15,
-    },
-    title: {
-      fontSize: 22,
-      alignSelf: 'center',
-    },
-    tcP: {
-      marginTop: 10,
-      marginBottom: 10,
-      fontSize: 12,
-    },
-    tcL: {
-      marginLeft: 10,
-      marginTop: 10,
-      marginBottom: 10,
-      fontSize: 12,
-    },
-    tcContainer: {
-      marginTop: 15,
-      marginBottom: 15,
-      height: height * 0.7,
-    },
-
-    button: {
-      backgroundColor: '#136AC7',
-      borderRadius: 5,
-      padding: 10,
-    },
-
-    buttonDisabled: {
-      backgroundColor: '#999',
-      borderRadius: 5,
-      padding: 10,
-    },
-
-    buttonC: {
-      backgroundColor: '#4EAD93',
-      borderRadius: 5,
-      padding: 10,
-    },
-
-    buttonLabel: {
-      fontSize: 14,
-      color: '#FFF',
-      alignSelf: 'center',
-    },
+  const onScroll = ({ nativeEvent }) => {
+    if (isCloseToBottom(nativeEvent)) {
+      setAccepted(true);
+    }
   };
-
   return (
     <BackgroundInitial>
       <Modal isVisible={isModalVisible}>
         <View style={{ flex: 1 }}>
           <View style={styles.container}>
             <Text style={styles.title}>Termos e Condições</Text>
-            <ScrollView
-              style={styles.tcContainer}
-              onScroll={({ nativeEvent }) => {
-                if (isCloseToBottom(nativeEvent)) {
-                  setAccepted(true);
-                }
-              }}
-            >
+            <ScrollView style={styles.tcContainer} onScroll={onScroll}>
               <Text style={styles.tcP}>
                 Welcome to our website. If you continue to browse and use this
                 website, you are agreeing to comply with and be bound by the
