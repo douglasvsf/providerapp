@@ -12,8 +12,6 @@ import Modal from 'react-native-modal';
 import BackgroundInitial from '~/components/BackgroundInitial';
 import { signUpRequest } from '~/store/modules/auth/actions';
 
-// import TermsAndConditions from '~/components/TermsandConditions';
-
 import {
   Container,
   Form,
@@ -96,14 +94,12 @@ export default function SignUp({ navigation }) {
   const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit() {
-    // dispatch(signUpRequest(name, email, password, navigation));
     setisModalVisible(!isModalVisible);
   }
 
   function handleLogin() {
     setisModalVisible(!isModalVisible);
     dispatch(signUpRequest(name, email, password, navigation));
-    // navigation.navigate('SignIn');
   }
 
   function handleConfirm() {
@@ -285,7 +281,6 @@ export default function SignUp({ navigation }) {
               <Text style={styles.buttonLabel}>Finalizar Cadastro</Text>
             </TouchableOpacity>
           </View>
-          {/* <Button title="Ir para Login" onPress={handleLogin} /> */}
         </View>
       </Modal>
 
