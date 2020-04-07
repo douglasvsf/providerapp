@@ -5,17 +5,16 @@ import Button from '~/components/Button';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
+  margin-vertical: 16px;
 `;
 
 export const ContainerGraph = styled.View`
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-horizontal: 16px;
   padding: 20px;
   border-radius: 4px;
   background: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+  text-align: center;
 `;
 
 export const Separator = styled.View`
@@ -29,7 +28,6 @@ export const Title = styled.Text`
   color: #fff;
   font-weight: bold;
   align-self: center;
-  margin-top: 30px;
 `;
 
 export const Form = styled.ScrollView.attrs({
