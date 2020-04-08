@@ -25,6 +25,7 @@ import {
   ContainerText,
   ActuationArea,
 } from './styles';
+import { colors } from '~/values/colors';
 
 export default class Service extends Component {
   state = {
@@ -228,7 +229,14 @@ const styles = StyleSheet.create({
   },
 });
 
+
+
+
+
 Service.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Area de Atuação',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />

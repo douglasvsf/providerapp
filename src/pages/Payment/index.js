@@ -4,6 +4,7 @@ import { CheckBox } from 'react-native-elements';
 import Background from '~/components/Background';
 
 import { Container, Title, Separator, Form, SubmitButton } from './styles';
+import { colors } from '~/values/colors';
 
 export default class Payment extends PureComponent {
   constructor(props) {
@@ -105,6 +106,9 @@ export default class Payment extends PureComponent {
 }
 
 Payment.navigationOptions = {
+  tabBarOptions: {
+    activeTintColor: colors.primary,
+  },
   tabBarLabel: 'Informações de Pagamento',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />
