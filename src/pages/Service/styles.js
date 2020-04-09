@@ -33,11 +33,9 @@ export const TitleInto = styled.Text`
 `;
 
 export const City = styled.View`
-  padding: 10px;
   border-radius: 4px;
   background: #fff;
   flex: 1;
-  margin-bottom: 10px;
 `;
 
 export const Name = styled.Text`
