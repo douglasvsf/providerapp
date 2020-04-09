@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import React, { useRef, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
 
 import {
@@ -10,6 +9,8 @@ import {
   Form,
   FormInput,
   SubmitButton,
+  TelephoneInput,
+  ContainerTelephone,
 } from './styles';
 import { colors } from '~/values/colors';
 
@@ -17,6 +18,8 @@ export default function SocialMedia() {
   const instaRef = useRef();
   const linkedinRef = useRef();
   const whatsRef = useRef();
+
+  const [phonenumber, setPhonenumber] = useState('');
 
   /* const dispatch = useDispatch();
   const profile = useSelector(state => state.user.profile);
@@ -56,12 +59,14 @@ export default function SocialMedia() {
         <Title>Redes Sociais</Title>
 
         <Form>
+          {/* <FixedPlaceholder>www.facebook.com/</FixedPlaceholder> */}
           <FormInput
+            fixedplaceholder="www.facebook.com/"
             icon="person-outline"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="www.facebook.com/"
             returnKeyType="next"
+            placeholder="Usuário Facebook"
             onSubmitEditing={() => instaRef.current.focus()}
             // value={name}
             // onChangeText={setName}
@@ -71,7 +76,8 @@ export default function SocialMedia() {
             icon="mail-outline"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="www.instagram.com/"
+            fixedplaceholder="@"
+            placeholder="instagram"
             ref={instaRef}
             returnKeyType="next"
             onSubmitEditing={() => linkedinRef.current.focus()}
@@ -81,27 +87,30 @@ export default function SocialMedia() {
 
           <Separator />
 
-          <FormInput
-            icon="lock-outline"
-            secureTextEntry
-            placeholder="www.linkedin.com/"
-            ref={linkedinRef}
-            returnKeyType="next"
-            onSubmitEditing={() => whatsRef.current.focus()}
-            // value={oldPassword}
-            // onChangeText={setOldPassword}
-          />
+          <ContainerTelephone>
+            <Icon
+              name="smartphone"
+              size={20}
+              color="rgba(255, 255, 255, 0.6)"
+            />
 
-          <FormInput
-            icon="lock-outline"
-            secureTextEntry
-            placeholder="() 9 9999-9999"
-            ref={whatsRef}
-            returnKeyType="next"
+            <TelephoneInput
+              type="cel-phone"
+              options={{
+                maskType: 'BRL',
+                withDDD: true,
+                dddMask: '(99) ',
+              }}
+              placeholder="() 9 9999-9999"
+              ref={whatsRef}
+              returnKeyType="next"
+              value={phonenumber}
+              onChangeText={setPhonenumber}
 
-            // value={password}
-            // onChangeText={setPassword}
-          />
+              // value={password}
+              // onChangeText={setPassword}
+            />
+          </ContainerTelephone>
 
           <SubmitButton // onPress={handleSubmit}
           >
@@ -119,6 +128,6 @@ SocialMedia.navigationOptions = {
   },
   tabBarLabel: 'Redes Sociais',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="share-alt" size={20} color={tintColor} />
+    <Icon name="share" size={20} color={tintColor} />
   ),
 };

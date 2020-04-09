@@ -9,7 +9,7 @@ export const DateButton = styled.TouchableOpacity`
   height: 46px;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  margin: 0 30px;
+  /* margin: 0 30px;*/
   flex-direction: row;
   align-items: center;
 `;

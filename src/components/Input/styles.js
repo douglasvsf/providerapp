@@ -5,7 +5,6 @@ export const Container = styled.View`
   height: 46px;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-
   flex-direction: row;
   align-items: center;
 `;
@@ -17,4 +16,25 @@ export const TInput = styled.TextInput.attrs({
   font-size: 15px;
   margin-left: 10px;
   color: #fff;
+`;
+
+export const FInput = styled.TextInput.attrs({
+  placeholderTextColor: 'rgba(255, 255, 255, 0.8)',
+})`
+  flex: 1;
+  font-size: 15px;
+  margin-left: 10px;
+  color: #000;
+  padding: 0 0 0 0;
+  margin: 0;
+`;
+
+
+export const FixedPlaceholder = styled.Text`
+  color: #fff;
+  align-self: center;
+  margin-left: 13px;
+  margin-right: 0px;
+  padding: 0 0 0 0;
+
 `;
