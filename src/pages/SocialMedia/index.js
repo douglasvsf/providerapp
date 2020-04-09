@@ -16,50 +16,17 @@ import { colors } from '~/values/colors';
 
 export default function SocialMedia() {
   const instaRef = useRef();
-  const linkedinRef = useRef();
   const whatsRef = useRef();
 
   const [phonenumber, setPhonenumber] = useState('');
-
-  /* const dispatch = useDispatch();
-  const profile = useSelector(state => state.user.profile);
-
-  const emailRef = useRef();
-  const oldPasswordRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-
-  const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
-  const [oldPassword, setOldPassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  useEffect(() => {
-    setOldPassword('');
-    setPassword('');
-    setConfirmPassword('');
-  }, [profile]);
-
-  function handleSubmit() {
-    dispatch(
-      updateProfileRequest({
-        name,
-        email,
-        oldPassword,
-        password,
-        confirmPassword,
-      })
-    );
-  } */
-
+  const [facebookurl, setFacebookurl] = useState('');
+  const [instaid, setInstaid] = useState('');
   return (
     <Background>
       <Container>
         <Title>Redes Sociais</Title>
 
         <Form>
-          {/* <FixedPlaceholder>www.facebook.com/</FixedPlaceholder> */}
           <FormInput
             fixedplaceholder="www.facebook.com/"
             icon="person-outline"
@@ -68,8 +35,8 @@ export default function SocialMedia() {
             returnKeyType="next"
             placeholder="Usuário Facebook"
             onSubmitEditing={() => instaRef.current.focus()}
-            // value={name}
-            // onChangeText={setName}
+            value={facebookurl}
+            onChangeText={setFacebookurl}
           />
 
           <FormInput
@@ -80,9 +47,10 @@ export default function SocialMedia() {
             placeholder="instagram"
             ref={instaRef}
             returnKeyType="next"
-            onSubmitEditing={() => linkedinRef.current.focus()}
-            // value={email}
-            //    onChangeText={setEmail}
+            onSubmitEditing={() => whatsRef.current.focus()}
+            value={instaid}
+            onChangeText={setInstaid}
+
           />
 
           <Separator />
@@ -106,9 +74,6 @@ export default function SocialMedia() {
               returnKeyType="next"
               value={phonenumber}
               onChangeText={setPhonenumber}
-
-              // value={password}
-              // onChangeText={setPassword}
             />
           </ContainerTelephone>
 

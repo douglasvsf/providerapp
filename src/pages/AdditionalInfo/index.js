@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   icon: {
-    // alignSelf: 'flex-start',
     paddingTop: 10,
     paddingLeft: 5,
     textAlignVertical: 'top',
@@ -163,17 +162,12 @@ export default function AdditionalInfo() {
                 placeholder="Nome Completo"
                 returnKeyType="next"
                 ref={fullnameref}
-                // onSubmitEditing={() => birthdayref.current.focus()}
                 value={fullname}
                 onChangeText={setFullname}
               />
 
               <TitleInto> Data de nascimento</TitleInto>
-              <DateInput
-                // ref={birthdayref}
-                date={birthday}
-                onChange={setBirthday}
-              />
+              <DateInput date={birthday} onChange={setBirthday} />
               <Separator />
 
               <Container>
