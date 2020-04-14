@@ -42,7 +42,7 @@ export default class AdditionalInfo extends PureComponent {
         this.setState({ endereco: data });
         Keyboard.dismiss();
       });
-  }
+  };
 
   render() {
     const { cep, endereco } = this.state;
