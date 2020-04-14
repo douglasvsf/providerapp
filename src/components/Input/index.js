@@ -4,17 +4,26 @@ import PropTypes from 'prop-types';
 
 import { Container, TInput, FInput, FixedPlaceholder } from './styles';
 
-function Input({ style, icon, fixedplaceholder, ...rest }, ref) {
+function Input(
+  { style, icon, fixedplaceholder, inputStyle, iconColor, ...rest },
+  ref
+) {
   return (
     <Container style={style}>
-      {icon && <Icon name={icon} size={20} color="rgba(255, 255, 255, 0.8)" />}
+      {icon && (
+        <Icon
+          name={icon}
+          size={20}
+          color={iconColor || 'rgba(255, 255, 255, 0.8)'}
+        />
+      )}
       {fixedplaceholder ? (
         <>
           <FixedPlaceholder>{fixedplaceholder}</FixedPlaceholder>
           <FInput {...rest} ref={ref} />
         </>
       ) : (
-        <TInput {...rest} ref={ref} />
+        <TInput style={inputStyle} {...rest} ref={ref} />
       )}
     </Container>
   );
