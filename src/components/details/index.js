@@ -28,6 +28,13 @@ const Details = ({ endereco }) => (
     />
 
     <FormInput
+      name="complemento"
+      autoCapitalize="none"
+      autoCorrect={false}
+      placeholder="Complemento"
+    />
+
+    <FormInput
       value={endereco.localidade}
       name="localidade"
       autoCapitalize="none"
