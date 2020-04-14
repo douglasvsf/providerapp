@@ -19,6 +19,12 @@ export const ContainerText = styled.View`
   border-width: 1px;
 `;
 
+export const TitleInto = styled.Text`
+  font-size: 15px;
+  color: #fff;
+  font-weight: bold;
+`;
+
 export const Form = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { padding: 30 },
@@ -31,6 +37,10 @@ export const TInput = styled(TextInputMask)`
   font-size: 15px;
   margin-left: 10px;
   color: #fff;
+`;
+
+export const FormInput = styled(Input)`
+  margin-bottom: 10px;
 `;
 
 export const ContainerFull = styled.SafeAreaView`
@@ -46,17 +56,22 @@ export const Title = styled.Text`
 `;
 
 export const SubmitButton = styled(Button)`
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 export const Separator = styled.View`
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
-  margin: 20px 0 30px;
+  margin: 7px 0 30px;
 `;
 
-export const FormInput = styled(Input)`
-  margin-bottom: 10px;
+export const NewPicker = styled.Picker.attrs({
+  placeholderTextColor: 'rgba(255, 255, 255, 0.8)',
+})`
+  flex: 1;
+  font-size: 15px;
+  margin-left: 1px;
+  color: #fff;
 `;
 
 export const Submit = styled(Button)`

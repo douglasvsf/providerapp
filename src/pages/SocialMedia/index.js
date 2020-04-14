@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import React, { useRef, useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
 
 import {
@@ -10,46 +9,18 @@ import {
   Form,
   FormInput,
   SubmitButton,
+  TelephoneInput,
+  ContainerTelephone,
 } from './styles';
 import { colors } from '~/values/colors';
 
 export default function SocialMedia() {
   const instaRef = useRef();
-  const linkedinRef = useRef();
   const whatsRef = useRef();
 
-  /* const dispatch = useDispatch();
-  const profile = useSelector(state => state.user.profile);
-
-  const emailRef = useRef();
-  const oldPasswordRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
-
-  const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
-  const [oldPassword, setOldPassword] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  useEffect(() => {
-    setOldPassword('');
-    setPassword('');
-    setConfirmPassword('');
-  }, [profile]);
-
-  function handleSubmit() {
-    dispatch(
-      updateProfileRequest({
-        name,
-        email,
-        oldPassword,
-        password,
-        confirmPassword,
-      })
-    );
-  } */
-
+  const [phonenumber, setPhonenumber] = useState('');
+  const [facebookurl, setFacebookurl] = useState('');
+  const [instaid, setInstaid] = useState('');
   return (
     <Background>
       <Container>
@@ -57,51 +28,54 @@ export default function SocialMedia() {
 
         <Form>
           <FormInput
+            fixedplaceholder="www.facebook.com/"
             icon="person-outline"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="www.facebook.com/"
             returnKeyType="next"
+            placeholder="Usuário Facebook"
             onSubmitEditing={() => instaRef.current.focus()}
-            // value={name}
-            // onChangeText={setName}
+            value={facebookurl}
+            onChangeText={setFacebookurl}
           />
 
           <FormInput
             icon="mail-outline"
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="www.instagram.com/"
+            fixedplaceholder="@"
+            placeholder="instagram"
             ref={instaRef}
             returnKeyType="next"
-            onSubmitEditing={() => linkedinRef.current.focus()}
-            // value={email}
-            //    onChangeText={setEmail}
+            onSubmitEditing={() => whatsRef.current.focus()}
+            value={instaid}
+            onChangeText={setInstaid}
+
           />
 
           <Separator />
 
-          <FormInput
-            icon="lock-outline"
-            secureTextEntry
-            placeholder="www.linkedin.com/"
-            ref={linkedinRef}
-            returnKeyType="next"
-            onSubmitEditing={() => whatsRef.current.focus()}
-            // value={oldPassword}
-            // onChangeText={setOldPassword}
-          />
+          <ContainerTelephone>
+            <Icon
+              name="smartphone"
+              size={20}
+              color="rgba(255, 255, 255, 0.6)"
+            />
 
-          <FormInput
-            icon="lock-outline"
-            secureTextEntry
-            placeholder="() 9 9999-9999"
-            ref={whatsRef}
-            returnKeyType="next"
-
-            // value={password}
-            // onChangeText={setPassword}
-          />
+            <TelephoneInput
+              type="cel-phone"
+              options={{
+                maskType: 'BRL',
+                withDDD: true,
+                dddMask: '(99) ',
+              }}
+              placeholder="() 9 9999-9999"
+              ref={whatsRef}
+              returnKeyType="next"
+              value={phonenumber}
+              onChangeText={setPhonenumber}
+            />
+          </ContainerTelephone>
 
           <SubmitButton // onPress={handleSubmit}
           >
@@ -119,6 +93,6 @@ SocialMedia.navigationOptions = {
   },
   tabBarLabel: 'Redes Sociais',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="share-alt" size={20} color={tintColor} />
+    <Icon name="share" size={20} color={tintColor} />
   ),
 };

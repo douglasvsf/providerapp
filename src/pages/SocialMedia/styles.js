@@ -1,10 +1,19 @@
 import styled from 'styled-components/native';
-
+import { TextInputMask } from 'react-native-masked-text';
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
+`;
+
+export const ContainerTelephone = styled.View`
+  padding: 0 15px;
+  height: 46px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const Separator = styled.View`
@@ -21,6 +30,11 @@ export const Title = styled.Text`
   margin-top: 30px;
 `;
 
+export const FixedPlaceholder = styled.Text`
+  color: #fff;
+  align-self: flex-start;
+`;
+
 export const Form = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { padding: 30 },
@@ -34,4 +48,11 @@ export const FormInput = styled(Input)`
 
 export const SubmitButton = styled(Button)`
   margin-top: 5px;
+`;
+
+export const TelephoneInput = styled(TextInputMask)`
+  flex: 1;
+  font-size: 15px;
+  margin-left: 10px;
+  color: #fff;
 `;
