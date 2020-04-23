@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CheckBox } from 'react-native-elements';
 import Background from '~/components/Background';
 
@@ -111,6 +111,6 @@ Payment.navigationOptions = {
   },
   tabBarLabel: 'Informações de Pagamento',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
+    <Icon name="cash-multiple" size={20} color={tintColor} />
   ),
 };
