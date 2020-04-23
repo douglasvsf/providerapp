@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-
 import {
   StyleSheet,
   View,
   Text,
+  Button,
   FlatList,
   TouchableOpacity,
   Keyboard,
@@ -11,7 +11,7 @@ import {
 import Modal from 'react-native-modal';
 
 import { FormInput } from './styles';
-import Button from '../Button';
+// import Button from '../Button';
 
 const styles = StyleSheet.create({
   input: {
@@ -135,7 +135,7 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   return (
     <View>
       {selectedAreaAtuacao.length < 3 ? (
-        <Button onPress={toggleModalVisible}>Selecionar atuação</Button>
+        <Button title="Selecionar atuação" onPress={toggleModalVisible} />
       ) : (
         <Text>Você só pode selecionar até 3 areas de atuação</Text>
       )}
@@ -169,9 +169,11 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
             keyExtractor={item => String(item.id)}
             keyboardShouldPersistTaps="handled"
           />
-          <Button style={styles.button} onPress={onDismiss}>
+
+          <Button style={styles.button} title="Fechar" onPress={onDismiss} />
+          {/* <Button style={styles.button} onPress={onDismiss}>
             Fechar
-          </Button>
+          </Button> */}
         </View>
       </Modal>
     </View>

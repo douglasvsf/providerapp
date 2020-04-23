@@ -109,7 +109,7 @@ export default function AvatarInput() {
         const extension = uri.slice(extensionIndex + 1);
         const allowedExtensions = ['jpg', 'jpeg', 'png'];
         const correspondingMime = ['image/jpeg', 'image/jpeg', 'image/png'];
-      
+
         const options = {
           //  keyPrefix: awsConfig.keyPrefixAvatar,
           // bucket: awsConfig.bucket,
@@ -158,7 +158,6 @@ export default function AvatarInput() {
   }
 
   async function handleChange(nameAvatar, urlAvatar) {
-    
     console.log(nameAvatar, 'handleChangenameAvatar');
     console.log(urlAvatar, 'handleChangeurlAvatar');
     const response = await api.post('files', {
@@ -166,7 +165,6 @@ export default function AvatarInput() {
       urlAvatar,
     });
 
- 
     console.log(response, 'RESPONSE CARAUI');
 
     const { url } = response.data;
