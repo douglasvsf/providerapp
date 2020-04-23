@@ -67,9 +67,14 @@ const styles = StyleSheet.create({
     marginTop: 8,
     opacity: 0.8,
   },
+  areaAtuacaoTitle: {
+    flex: 1,
+  },
   areaAtuacaoItem: {
     backgroundColor: '#fff',
+    flexDirection: 'row',
     borderRadius: 4,
+    alignItems: 'center',
     padding: 8,
     marginTop: 6,
   },
@@ -265,10 +270,36 @@ class Service extends PureComponent {
     );
   };
 
-  renderAreaAtuacao = areaAtuacao => {
+  removeAreaAtuacao = index => {
+    const { selectedAreaAtuacao } = this.state;
+    const newSelectedAreasAtuacao = [...selectedAreaAtuacao];
+    newSelectedAreasAtuacao.splice(index, 1);
+    this.setState({ selectedAreaAtuacao: newSelectedAreasAtuacao });
+  };
+
+  renderAreaAtuacao = (areaAtuacao, index) => {
     return (
       <View key={areaAtuacao.id} style={styles.areaAtuacaoItem}>
-        <Text>{areaAtuacao.label}</Text>
+        <Text style={styles.areaAtuacaoTitle}>{areaAtuacao.label}</Text>
+        <TouchableNativeFeedback
+          onPress={() =>
+            Alert.alert(
+              'Remover área de atuação',
+              'Você tem certeza que deseja remover esta área de atuação?',
+              [
+                {
+                  text: 'Não',
+                },
+                {
+                  text: 'Sim',
+                  onPress: () => this.removeAreaAtuacao(index),
+                },
+              ]
+            )
+          }
+        >
+          <Icon name="delete-outline" size={28} color="red" />
+        </TouchableNativeFeedback>
       </View>
     );
   };
@@ -285,7 +316,7 @@ class Service extends PureComponent {
     return (
       <Background>
         <Container>
-          <Title> Area de Atuação </Title>
+          <Title> Área de Atuação </Title>
           <Form keyboardShouldPersistTaps="handled">
             <TitleInto> Estado </TitleInto>
             <SelectEstados

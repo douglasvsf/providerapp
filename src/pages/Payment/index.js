@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import IconFont from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, View, Button } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { CheckBox } from 'react-native-elements';
 import Modal from 'react-native-modal';
 import Background from '~/components/Background';
@@ -222,11 +221,7 @@ export default class Payment extends PureComponent {
                           }
                         />
 
-                        <IconFont
-                          name="cc-visa"
-                          size={32}
-                          color="rgba(255, 255, 255, 0.8)"
-                        />
+
                       </ContainerCards>
 
                       <CheckBox
@@ -340,11 +335,6 @@ export default class Payment extends PureComponent {
                           }
                         />
 
-                        <IconFont
-                          name="cc-visa"
-                          size={32}
-                          color="rgba(255, 255, 255, 0.8)"
-                        />
                       </ContainerCards>
 
                       <CheckBox
@@ -399,6 +389,6 @@ Payment.navigationOptions = {
   },
   tabBarLabel: 'Informações de Pagamento',
   tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
+    <Icon name="cash-multiple" size={20} color={tintColor} />
   ),
 };
