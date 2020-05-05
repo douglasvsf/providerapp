@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
 
@@ -14,9 +14,13 @@ import {
 } from './styles';
 import { colors } from '~/values/colors';
 
-export default function SocialMedia() {
+export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
   const instaRef = useRef();
   const whatsRef = useRef();
+
+  const handleSubmitNewProvider = useCallback(() => {
+    onSubmitNewProvider({});
+  }, [onSubmitNewProvider]);
 
   const [phonenumber, setPhonenumber] = useState('');
   const [facebookurl, setFacebookurl] = useState('');
@@ -50,7 +54,6 @@ export default function SocialMedia() {
             onSubmitEditing={() => whatsRef.current.focus()}
             value={instaid}
             onChangeText={setInstaid}
-
           />
 
           <Separator />
@@ -77,10 +80,16 @@ export default function SocialMedia() {
             />
           </ContainerTelephone>
 
-          <SubmitButton // onPress={handleSubmit}
-          >
-            Atualizar Redes Sociais
-          </SubmitButton>
+          {isNewProvider ? (
+            <SubmitButton onPress={handleSubmitNewProvider}>
+              Próximo
+            </SubmitButton>
+          ) : (
+            <SubmitButton // onPress={handleSubmit}
+            >
+              Atualizar Redes Sociais
+            </SubmitButton>
+          )}
         </Form>
       </Container>
     </Background>

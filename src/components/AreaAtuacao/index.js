@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
   FlatList,
   TouchableOpacity,
   Keyboard,
@@ -11,7 +10,7 @@ import {
 import Modal from 'react-native-modal';
 
 import { FormInput } from './styles';
-// import Button from '../Button';
+import Button from '../Button';
 
 const styles = StyleSheet.create({
   input: {
@@ -74,6 +73,9 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
   },
+  areaAtuacaoButton: {
+    marginTop: 16,
+  },
 });
 
 const DATA = [
@@ -135,7 +137,9 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   return (
     <View>
       {selectedAreaAtuacao.length < 3 ? (
-        <Button title="Selecionar atuação" onPress={toggleModalVisible} />
+        <Button style={styles.areaAtuacaoButton} onPress={toggleModalVisible}>
+          Selecionar atuação
+        </Button>
       ) : (
         <Text>Você só pode selecionar até 3 areas de atuação</Text>
       )}

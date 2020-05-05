@@ -59,7 +59,72 @@ export default class Payment extends PureComponent {
     };
   }
 
+  _handleSubmitNewProvider = () => {
+    const { onSubmitNewProvider } = this.props;
+
+    onSubmitNewProvider({});
+  };
+
+  _handleCreditBanner = () => {
+    const { modalCreditVisible } = this.state;
+    this.setState({ modalCreditVisible: !modalCreditVisible });
+  };
+
+  _handleDebitBanner = () => {
+    const { modalDebitVisible } = this.state;
+    this.setState({ modalDebitVisible: !modalDebitVisible });
+  };
+
+  _toggleModalCreditVisible = () => {
+    const { checked4, modalCreditVisible } = this.state;
+    if (checked4 === false) {
+      this.setState({ checked4: true });
+    }
+    this.setState({ modalCreditVisible: !modalCreditVisible });
+  };
+
+  _toggleModalDebitVisible = () => {
+    const { checked3, modalDebitVisible } = this.state;
+    if (checked3 === false) {
+      this.setState({ checked3: true });
+    }
+    this.setState({ modalDebitVisible: !modalDebitVisible });
+  };
+
+  _onCheckCredit = () => {
+    const { checked4 } = this.state;
+    if (checked4 === true) {
+      this.setState({ modalCreditVisible: false });
+      this.setState({ visacredit: false });
+      this.setState({ mastercredit: false });
+      this.setState({ americancredit: false });
+      this.setState({ elocredit: false });
+      this.setState({ hipercredit: false });
+    } else {
+      this.setState({ modalCreditVisible: true });
+    }
+
+    this.setState({ checked4: !checked4 });
+  };
+
+  _onCheckDebit = () => {
+    const { checked3 } = this.state;
+    if (checked3 === true) {
+      this.setState({ modalDebitVisible: false });
+      this.setState({ modalCreditVisible: false });
+      this.setState({ visadebit: false });
+      this.setState({ masterdebit: false });
+      this.setState({ elodebit: false });
+    } else {
+      this.setState({ modalDebitVisible: true });
+    }
+
+    this.setState({ checked3: !checked3 });
+  };
+
   render() {
+    const { isNewProvider } = this.props;
+
     const {
       checked1,
       checked3,
@@ -76,56 +141,6 @@ export default class Payment extends PureComponent {
       modalCreditVisible,
       modalDebitVisible,
     } = this.state;
-
-    const handleCreditBanner = () => {
-      this.setState({ modalCreditVisible: !modalCreditVisible });
-    };
-
-    const handleDebitBanner = () => {
-      this.setState({ modalDebitVisible: !modalDebitVisible });
-    };
-    const toggleModalCreditVisible = () => {
-      if (checked4 === false) {
-        this.setState({ checked4: true });
-      }
-      this.setState({ modalCreditVisible: !modalCreditVisible });
-    };
-
-    const toggleModalDebitVisible = () => {
-      if (checked3 === false) {
-        this.setState({ checked3: true });
-      }
-      this.setState({ modalDebitVisible: !modalDebitVisible });
-    };
-
-    const OnCheckCredit = () => {
-      if (checked4 === true) {
-        this.setState({ modalCreditVisible: false });
-        this.setState({ visacredit: false });
-        this.setState({ mastercredit: false });
-        this.setState({ americancredit: false });
-        this.setState({ elocredit: false });
-        this.setState({ hipercredit: false });
-      } else {
-        this.setState({ modalCreditVisible: true });
-      }
-
-      this.setState({ checked4: !checked4 });
-    };
-
-    const OnCheckDebit = () => {
-      if (checked3 === true) {
-        this.setState({ modalDebitVisible: false });
-        this.setState({ modalCreditVisible: false });
-        this.setState({ visadebit: false });
-        this.setState({ masterdebit: false });
-        this.setState({ elodebit: false });
-      } else {
-        this.setState({ modalDebitVisible: true });
-      }
-
-      this.setState({ checked3: !checked3 });
-    };
 
     // const onDismiss = () => {
     //   Keyboard.dismiss();
@@ -161,15 +176,15 @@ export default class Payment extends PureComponent {
             <ContainerCards>
               <CheckBox
                 center="true"
-                title="Cartão de Crédito(máquina)"
+                title="Cartão de Crédito (máquina)"
                 checkedIcon="check-square"
                 uncheckedIcon="square"
                 checkedColor="green"
                 checked={checked4}
-                onPress={OnCheckCredit}
+                onPress={this._onCheckCredit}
               />
               <View>
-                <EditButton onPress={toggleModalCreditVisible}>
+                <EditButton onPress={this._toggleModalCreditVisible}>
                   <Icon
                     name="credit-card"
                     size={32}
@@ -183,7 +198,7 @@ export default class Payment extends PureComponent {
                     justifyContent: 'flex-end',
                     margin: 0,
                   }}
-                  onSwipeComplete={toggleModalCreditVisible}
+                  onSwipeComplete={this._toggleModalCreditVisible}
                   swipeDirection={['down']}
                 >
                   <View style={styles.content}>
@@ -220,8 +235,6 @@ export default class Payment extends PureComponent {
                             this.setState({ mastercredit: !mastercredit })
                           }
                         />
-
-
                       </ContainerCards>
 
                       <CheckBox
@@ -261,13 +274,16 @@ export default class Payment extends PureComponent {
                         }
                       />
                       <SeparatorModal />
-                      <Button title="Salvar" onPress={handleCreditBanner} />
+                      <Button
+                        title="Salvar"
+                        onPress={this._handleCreditBanner}
+                      />
 
                       <SeparatorModal />
 
                       <Button
                         title="Fechar"
-                        onPress={toggleModalCreditVisible}
+                        onPress={this._toggleModalCreditVisible}
                       />
                     </Form>
                   </View>
@@ -277,15 +293,15 @@ export default class Payment extends PureComponent {
 
             <ContainerCards>
               <CheckBox
-                title="Cartão de Débito(máquina)  "
+                title="Cartão de Débito (máquina)  "
                 checkedIcon="check-square"
                 uncheckedIcon="square"
                 checkedColor="green"
                 checked={checked3}
-                onPress={OnCheckDebit}
+                onPress={this._onCheckDebit}
               />
               <View>
-                <EditButton onPress={toggleModalDebitVisible}>
+                <EditButton onPress={this._toggleModalDebitVisible}>
                   <Icon
                     name="credit-card"
                     size={32}
@@ -299,7 +315,7 @@ export default class Payment extends PureComponent {
                     justifyContent: 'flex-end',
                     margin: 0,
                   }}
-                  onSwipeComplete={toggleModalDebitVisible}
+                  onSwipeComplete={this._toggleModalDebitVisible}
                   swipeDirection={['down']}
                 >
                   <View style={styles.content}>
@@ -334,7 +350,6 @@ export default class Payment extends PureComponent {
                             this.setState({ masterdebit: !masterdebit })
                           }
                         />
-
                       </ContainerCards>
 
                       <CheckBox
@@ -348,11 +363,14 @@ export default class Payment extends PureComponent {
                         onPress={() => this.setState({ elodebit: !elodebit })}
                       />
                       <SeparatorModal />
-                      <Button title="Salvar" onPress={handleDebitBanner} />
+                      <Button
+                        title="Salvar"
+                        onPress={this._handleDebitBanner}
+                      />
                       <SeparatorModal />
                       <Button
                         title="Fechar"
-                        onPress={toggleModalDebitVisible}
+                        onPress={this._toggleModalDebitVisible}
                       />
                     </Form>
                   </View>
@@ -375,7 +393,13 @@ export default class Payment extends PureComponent {
 
             <Separator />
 
-            <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+            {isNewProvider ? (
+              <SubmitButton onPress={this._handleSubmitNewProvider}>
+                Próximo
+              </SubmitButton>
+            ) : (
+              <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+            )}
           </Form>
         </Container>
       </Background>
