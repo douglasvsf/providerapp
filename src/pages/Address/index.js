@@ -44,8 +44,16 @@ export default class AdditionalInfo extends PureComponent {
       });
   };
 
+  handleSubmitNewProvider = () => {
+    const { endereco } = this.state;
+    const { onSubmitNewProvider } = this.props;
+    onSubmitNewProvider(endereco);
+  };
+
   render() {
     const { cep, endereco } = this.state;
+    const { isNewProvider } = this.props;
+
     return (
       <Background>
         <Container>
@@ -71,7 +79,13 @@ export default class AdditionalInfo extends PureComponent {
               <Details {...this.state} />
             )}
 
-            <SubmitButton>Atualizar Endereço</SubmitButton>
+            {isNewProvider ? (
+              <SubmitButton onPress={this.handleSubmitNewProvider}>
+                Próximo
+              </SubmitButton>
+            ) : (
+              <SubmitButton>Atualizar Endereço</SubmitButton>
+            )}
           </Form>
         </Container>
       </Background>

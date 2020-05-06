@@ -27,6 +27,13 @@ import Service from './pages/Service';
 
 import SocialMedia from './pages/SocialMedia';
 
+import ActuationAreaScreen from './pages/NewProvider/ActuationAreaScreen';
+import AddressScreen from './pages/NewProvider/AddressScreen';
+import AditionalInfoScreen from './pages/NewProvider/AditionalInfoScreen';
+import PaymentMethodsScreen from './pages/NewProvider/PaymentMethodsScreen';
+import QualificationScreen from './pages/NewProvider/QualificationScreen';
+import SocialMediaScreen from './pages/NewProvider/SocialMediaScreen';
+
 import ContentMenu from '~/components/ContentMenu';
 import { Touchable } from './components/Touchable';
 import { colors } from './values/colors';
@@ -39,6 +46,38 @@ export default (isSigned = false) =>
           SignIn,
           SignUp,
         }),
+        NewProvider: {
+          screen: createStackNavigator(
+            {
+              AddressScreen,
+              ActuationAreaScreen,
+              PaymentMethodsScreen,
+              AditionalInfoScreen,
+              SocialMediaScreen,
+              QualificationScreen,
+            },
+            {
+              defaultNavigationOptions: {
+                headerTransparent: true,
+                headerTintColor: '#FFF',
+                headerLeftContainerStyle: {
+                  marginLeft: 20,
+                },
+              },
+            }
+          ),
+          navigationOptions: {
+            tabBarVisible: false,
+            tabBarLabel: 'Agendar',
+            tabBarIcon: (
+              <Icon
+                name="add-circle-outline"
+                size={20}
+                color="rgba(255, 255, 255, 0.6)"
+              />
+            ),
+          },
+        },
         NewApp: createStackNavigator(
           {
             App: createDrawerNavigator(

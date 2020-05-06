@@ -211,9 +211,13 @@ const RemoveButton = ({ onRemove, index }) => {
   );
 };
 
-export default function Qualification() {
+export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [qualificacoes, setQualificacoes] = useState([]);
+
+  const handleSubmitNewProvider = useCallback(() => {
+    onSubmitNewProvider({});
+  }, [onSubmitNewProvider]);
 
   const showModal = () => {
     setModalVisible(true);
@@ -267,7 +271,11 @@ export default function Qualification() {
         ItemSeparatorComponent={ListDivider}
       />
       <View style={styles.saveButtonContainer}>
-        <Button title="Salvar" />
+        {isNewProvider ? (
+          <Button onPress={handleSubmitNewProvider} title="Finalizar" />
+        ) : (
+          <Button title="Salvar" />
+        )}
       </View>
       <QualificationModal
         visible={modalVisible}

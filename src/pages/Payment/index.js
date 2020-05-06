@@ -70,7 +70,15 @@ export default class Payment extends PureComponent {
     };
   }
 
+  _handleSubmitNewProvider = () => {
+    const { onSubmitNewProvider } = this.props;
+
+    onSubmitNewProvider({});
+  };
+
   render() {
+    const { isNewProvider } = this.props;
+
     const {
       onlinepayment,
       cashpayment,
@@ -441,7 +449,13 @@ export default class Payment extends PureComponent {
             </CategoriesList>
           </View>
 
-          <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+          {isNewProvider ? (
+            <SubmitButton onPress={this._handleSubmitNewProvider}>
+              Próximo
+            </SubmitButton>
+          ) : (
+            <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+          )}
         </Container>
       </Background>
     );

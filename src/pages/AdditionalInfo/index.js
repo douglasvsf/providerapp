@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { View, StyleSheet, TextInput, Switch } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AdditionalInfo() {
+export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
   const fantasyRef = useRef();
   const briefref = useRef();
   const generalref = useRef();
@@ -75,6 +75,10 @@ export default function AdditionalInfo() {
       setPlaceholder('CPF');
     }
   };
+
+  const handleSubmitNewProvider = useCallback(() => {
+    onSubmitNewProvider({});
+  }, [onSubmitNewProvider]);
 
   return (
     <Background>
@@ -179,7 +183,7 @@ export default function AdditionalInfo() {
                     height: 50,
                     width: 100,
                   }}
-                  onValueChange={(itemValue, itemIndex) => {
+                  onValueChange={itemValue => {
                     setGenre(itemValue);
                     briefref.current.focus();
                   }}
@@ -215,7 +219,13 @@ export default function AdditionalInfo() {
             />
           </View>
 
-          <SubmitButton>Atualizar Informações Adicionais</SubmitButton>
+          {isNewProvider ? (
+            <SubmitButton onPress={handleSubmitNewProvider}>
+              Próximo
+            </SubmitButton>
+          ) : (
+            <SubmitButton>Atualizar Informações Adicionais</SubmitButton>
+          )}
         </Form>
       </ContainerFull>
     </Background>

@@ -78,6 +78,9 @@ const styles = StyleSheet.create({
     padding: 8,
     marginTop: 6,
   },
+  submitNewProviderButton: {
+    marginTop: 20,
+  },
 });
 
 const WORK_CITY_LIMIT = 3;
@@ -141,6 +144,13 @@ class Service extends PureComponent {
     this.setState({
       selectedValueCidade: value,
     });
+  };
+
+  handleSubmitNewProvider = () => {
+    const { onSubmitNewProvider } = this.props;
+    const { selectedCities, selectedAreaAtuacao } = this.state;
+
+    onSubmitNewProvider({ selectedCities, selectedAreaAtuacao });
   };
 
   onAddCity = () => {
@@ -313,6 +323,8 @@ class Service extends PureComponent {
       selectedAreaAtuacao,
     } = this.state;
 
+    const { isNewProvider } = this.props;
+
     return (
       <Background>
         <Container>
@@ -356,6 +368,18 @@ class Service extends PureComponent {
             />
 
             {selectedAreaAtuacao.map(this.renderAreaAtuacao)}
+
+            {isNewProvider ? (
+              <>
+                <Separator />
+                <Button
+                  style={styles.submitNewProviderButton}
+                  onPress={this.handleSubmitNewProvider}
+                >
+                  Próximo
+                </Button>
+              </>
+            ) : null}
           </Form>
         </Container>
       </Background>
