@@ -127,10 +127,13 @@ export default (isSigned = false) =>
 
               return {
                 headerTitle: FinalRoute,
+                headerStyle: {
+                  backgroundColor: '#4ead93', // don't want to hardcode a value
+                },
                 headerTitleStyle: {
                   width: '90%',
                   textAlign: 'center',
-                  color: colors.secondary,
+                  color: 'colors.secondary',
                 },
                 headerLeft: (
                   <Touchable

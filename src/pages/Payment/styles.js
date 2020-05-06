@@ -1,9 +1,14 @@
 import styled from 'styled-components/native';
+import { SvgUri } from 'react-native-svg';
 
 import Input from '~/components/Input';
 import Button from '~/components/Button';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: { padding: 10 },
+})`
+  align-self: stretch;
   flex: 1;
   width: 100%;
 `;
@@ -12,6 +17,13 @@ export const Separator = styled.View`
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
   margin: 20px 0 30px;
+`;
+
+export const VerticalSeparator = styled.View`
+  height: 120px;
+  borderRightWidth: 3;
+  borderRightColor: rgba(255, 255, 255, 0.2);
+  borderRadius: 4;
 `;
 
 export const SeparatorModal = styled.View`
@@ -69,4 +81,54 @@ export const EditButton = styled(Button)`
 export const LogoutButton = styled(Button)`
   margin-top: 10px;
   background: #f64c75;
+`;
+
+export const Header = styled.View`
+  margin-left: 20px;
+  margin-top: 15px;
+`;
+
+export const TitleMethods = styled.Text`
+  font-size: 23px;
+  font-weight: bold;
+  
+`;
+
+export const CategoriesList = styled.ScrollView.attrs({
+  showsHorizontalScrollIndicator: false,
+})`
+  margin-top: 10px;
+  padding-left: 20px;
+  height: 20px;
+
+
+`;
+
+export const Item = styled.TouchableOpacity`
+  margin-right: 15px;
+  align-items: center;
+  height: 100px;
+  border-radius: 4px;
+
+
+`;
+
+// export const ItemImage = styled.Image`
+//   width: 200px;
+//   height: 120px;
+//   border-radius: 10px;
+// `;
+export const ItemImage = styled(SvgUri)`
+  width: 130px;
+  height: 60px;
+  border-radius: 10px;
+`;
+
+export const ItemTitle = styled.Text`
+  font-size: 16px;
+  margin-top: 10px;
+  color: #111;
+  font-weight: bold;
+  margin-left: 2.5px;
+  margin-right: 10px;
 `;

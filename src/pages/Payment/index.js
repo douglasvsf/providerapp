@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { CheckBox } from 'react-native-elements';
-import Modal from 'react-native-modal';
 import Background from '~/components/Background';
+import CardBrands from '~/components/CardBrands';
 
 import {
   Container,
@@ -15,6 +14,13 @@ import {
   ContainerNormal,
   EditButton,
   SeparatorModal,
+  Header,
+  TitleMethods,
+  CategoriesList,
+  Item,
+  ItemImage,
+  VerticalSeparator,
+  ItemTitle,
 } from './styles';
 import { colors } from '~/values/colors';
 
@@ -29,6 +35,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     borderColor: 'rgba(0, 0, 0, 0.1)',
   },
+
+  buttonPress: {
+    borderColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  buttonUnPress: {
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  },
   contentTitle: {
     fontSize: 20,
     marginBottom: 12,
@@ -42,10 +57,8 @@ export default class Payment extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      checked1: false,
-      checked3: false,
-      checked4: false,
-      checked6: false,
+      onlinepayment: false,
+      cashpayment: false,
       visacredit: false,
       visadebit: false,
       mastercredit: false,
@@ -54,8 +67,6 @@ export default class Payment extends PureComponent {
       elocredit: false,
       elodebit: false,
       hipercredit: false,
-      modalCreditVisible: false,
-      modalDebitVisible: false,
     };
   }
 
@@ -65,71 +76,12 @@ export default class Payment extends PureComponent {
     onSubmitNewProvider({});
   };
 
-  _handleCreditBanner = () => {
-    const { modalCreditVisible } = this.state;
-    this.setState({ modalCreditVisible: !modalCreditVisible });
-  };
-
-  _handleDebitBanner = () => {
-    const { modalDebitVisible } = this.state;
-    this.setState({ modalDebitVisible: !modalDebitVisible });
-  };
-
-  _toggleModalCreditVisible = () => {
-    const { checked4, modalCreditVisible } = this.state;
-    if (checked4 === false) {
-      this.setState({ checked4: true });
-    }
-    this.setState({ modalCreditVisible: !modalCreditVisible });
-  };
-
-  _toggleModalDebitVisible = () => {
-    const { checked3, modalDebitVisible } = this.state;
-    if (checked3 === false) {
-      this.setState({ checked3: true });
-    }
-    this.setState({ modalDebitVisible: !modalDebitVisible });
-  };
-
-  _onCheckCredit = () => {
-    const { checked4 } = this.state;
-    if (checked4 === true) {
-      this.setState({ modalCreditVisible: false });
-      this.setState({ visacredit: false });
-      this.setState({ mastercredit: false });
-      this.setState({ americancredit: false });
-      this.setState({ elocredit: false });
-      this.setState({ hipercredit: false });
-    } else {
-      this.setState({ modalCreditVisible: true });
-    }
-
-    this.setState({ checked4: !checked4 });
-  };
-
-  _onCheckDebit = () => {
-    const { checked3 } = this.state;
-    if (checked3 === true) {
-      this.setState({ modalDebitVisible: false });
-      this.setState({ modalCreditVisible: false });
-      this.setState({ visadebit: false });
-      this.setState({ masterdebit: false });
-      this.setState({ elodebit: false });
-    } else {
-      this.setState({ modalDebitVisible: true });
-    }
-
-    this.setState({ checked3: !checked3 });
-  };
-
   render() {
     const { isNewProvider } = this.props;
 
     const {
-      checked1,
-      checked3,
-      checked4,
-      checked6,
+      onlinepayment,
+      cashpayment,
       visacredit,
       visadebit,
       mastercredit,
@@ -138,269 +90,372 @@ export default class Payment extends PureComponent {
       elocredit,
       elodebit,
       hipercredit,
-      modalCreditVisible,
-      modalDebitVisible,
     } = this.state;
 
-    // const onDismiss = () => {
-    //   Keyboard.dismiss();
-    //   // setFilteredAreaAtuacao([]);
-    //   this.setState({ modalVisible: false });
-    // };
+    const AMERICAN_EXPRESS = 'AMERICAN_EXPRESS';
+    const ELO = 'ELO';
+    const HIPERCARD = 'HIPERCARD';
+    const MASTERCARD = 'MASTERCARD';
+    const VISA = 'VISA';
+    const ONLINE_PAYMENT = 'ONLINE_PAYMENT';
+    const CASH_PAYMENT = 'CASH_PAYMENT';
 
-    // onDismissCredit = () => {
-    //   this.setState({ modalVisible: !this.state.modalVisible });
-    // };
-    // onDismissDebit = () => {
-    //   this.setState({ modalVisible: !this.state.modalVisible });
-    // };
     return (
       <Background>
         <Container>
-          <Title>Formas De Pagamento</Title>
+          <Title>Formas De Pagamento Aceitas</Title>
 
-          <Form>
-            <ContainerNormal>
-              <CheckBox
-                center="true"
-                containerStyle={{ width: '95%' }}
-                title="Pagamento Pelo Tecne"
-                checkedIcon="check-square"
-                uncheckedIcon="square"
-                checkedColor="green"
-                checked={checked6}
-                onPress={() => this.setState({ checked6: !checked6 })}
-              />
-            </ContainerNormal>
+          <Header>
+            <TitleMethods>Padrões</TitleMethods>
+          </Header>
 
-            <ContainerCards>
-              <CheckBox
-                center="true"
-                title="Cartão de Crédito (máquina)"
-                checkedIcon="check-square"
-                uncheckedIcon="square"
-                checkedColor="green"
-                checked={checked4}
-                onPress={this._onCheckCredit}
-              />
-              <View>
-                <EditButton onPress={this._toggleModalCreditVisible}>
-                  <Icon
-                    name="credit-card"
-                    size={32}
-                    color="rgba(255, 255, 255, 0.8)"
+          <View
+            style={{
+              height: 110,
+              marginLeft: 20,
+              marginRight: 20,
+              marginTop: 12,
+              marginBottom: 15,
+            }}
+          >
+            <CategoriesList horizontal>
+              <Item
+                key="1"
+                onPress={() => this.setState({ onlinepayment: !onlinepayment })}
+                style={
+                  this.state.onlinepayment
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`ONLINE_PAYMENT_${onlinepayment}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={onlinepayment}
+                    onValueChange={() =>
+                      this.setState({ onlinepayment: !onlinepayment })
+                    }
                   />
-                </EditButton>
+                  <ItemTitle>Tecne App</ItemTitle>
+                </View>
+              </Item>
+              <Item
+                key="2"
+                onPress={() => this.setState({ cashpayment: !cashpayment })}
+                style={
+                  this.state.cashpayment
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`CASH_PAYMENT_${cashpayment}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
 
-                <Modal
-                  isVisible={modalCreditVisible}
-                  style={{
-                    justifyContent: 'flex-end',
-                    margin: 0,
-                  }}
-                  onSwipeComplete={this._toggleModalCreditVisible}
-                  swipeDirection={['down']}
-                >
-                  <View style={styles.content}>
-                    <Title
-                      style={{
-                        color: 'black',
-                      }}
-                    >
-                      Selecione as bandeiras(crédito)
-                    </Title>
-                    <Form>
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="Visa"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={visacredit}
-                        onPress={() =>
-                          this.setState({ visacredit: !visacredit })
-                        }
-                      />
-                      <ContainerCards>
-                        <CheckBox
-                          center="true"
-                          containerStyle={{ width: '95%' }}
-                          title="Mastercard"
-                          checkedIcon="check-square"
-                          uncheckedIcon="square"
-                          checkedColor="green"
-                          checked={mastercredit}
-                          onPress={() =>
-                            this.setState({ mastercredit: !mastercredit })
-                          }
-                        />
-                      </ContainerCards>
-
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="American Express"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={americancredit}
-                        onPress={() =>
-                          this.setState({ americancredit: !americancredit })
-                        }
-                      />
-
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="Elo"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={elocredit}
-                        onPress={() => this.setState({ elocredit: !elocredit })}
-                      />
-
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="Hipercard"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={hipercredit}
-                        onPress={() =>
-                          this.setState({ hipercredit: !hipercredit })
-                        }
-                      />
-                      <SeparatorModal />
-                      <Button
-                        title="Salvar"
-                        onPress={this._handleCreditBanner}
-                      />
-
-                      <SeparatorModal />
-
-                      <Button
-                        title="Fechar"
-                        onPress={this._toggleModalCreditVisible}
-                      />
-                    </Form>
-                  </View>
-                </Modal>
-              </View>
-            </ContainerCards>
-
-            <ContainerCards>
-              <CheckBox
-                title="Cartão de Débito (máquina)  "
-                checkedIcon="check-square"
-                uncheckedIcon="square"
-                checkedColor="green"
-                checked={checked3}
-                onPress={this._onCheckDebit}
-              />
-              <View>
-                <EditButton onPress={this._toggleModalDebitVisible}>
-                  <Icon
-                    name="credit-card"
-                    size={32}
-                    color="rgba(255, 255, 255, 0.8)"
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={cashpayment}
+                    onValueChange={() =>
+                      this.setState({ cashpayment: !cashpayment })
+                    }
                   />
-                </EditButton>
+                  <ItemTitle>Dinheiro</ItemTitle>
+                </View>
+              </Item>
+            </CategoriesList>
+          </View>
+          <Header>
+            <TitleMethods>Máquina Cartão de Crédito</TitleMethods>
+          </Header>
+          <View
+            style={{
+              height: 110,
+              marginLeft: 20,
+              marginRight: 20,
+              marginTop: 12,
+              marginBottom: 15,
+            }}
+          >
+            <CategoriesList horizontal>
+              <Item
+                key="3"
+                onPress={() =>
+                  this.setState({ americancredit: !americancredit })
+                }
+                style={
+                  this.state.americancredit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`AMERICAN_EXPRESS_${americancredit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
 
-                <Modal
-                  isVisible={modalDebitVisible}
-                  style={{
-                    justifyContent: 'flex-end',
-                    margin: 0,
-                  }}
-                  onSwipeComplete={this._toggleModalDebitVisible}
-                  swipeDirection={['down']}
-                >
-                  <View style={styles.content}>
-                    <Title
-                      style={{
-                        color: 'black',
-                      }}
-                    >
-                      Selecione as bandeiras(débito)
-                    </Title>
-                    <Form>
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="Visa"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={visadebit}
-                        onPress={() => this.setState({ visadebit: !visadebit })}
-                      />
-                      <ContainerCards>
-                        <CheckBox
-                          center="true"
-                          containerStyle={{ width: '95%' }}
-                          title="Mastercard"
-                          checkedIcon="check-square"
-                          uncheckedIcon="square"
-                          checkedColor="green"
-                          checked={masterdebit}
-                          onPress={() =>
-                            this.setState({ masterdebit: !masterdebit })
-                          }
-                        />
-                      </ContainerCards>
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={americancredit}
+                    onValueChange={() =>
+                      this.setState({ americancredit: !americancredit })
+                    }
+                  />
+                  <ItemTitle>American Express</ItemTitle>
+                </View>
+              </Item>
 
-                      <CheckBox
-                        center="true"
-                        containerStyle={{ width: '95%' }}
-                        title="Elo"
-                        checkedIcon="check-square"
-                        uncheckedIcon="square"
-                        checkedColor="green"
-                        checked={elodebit}
-                        onPress={() => this.setState({ elodebit: !elodebit })}
-                      />
-                      <SeparatorModal />
-                      <Button
-                        title="Salvar"
-                        onPress={this._handleDebitBanner}
-                      />
-                      <SeparatorModal />
-                      <Button
-                        title="Fechar"
-                        onPress={this._toggleModalDebitVisible}
-                      />
-                    </Form>
-                  </View>
-                </Modal>
-              </View>
-            </ContainerCards>
+              <Item
+                key="4"
+                onPress={() => this.setState({ elocredit: !elocredit })}
+                style={
+                  this.state.elocredit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`ELO_${elocredit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
 
-            <ContainerNormal>
-              <CheckBox
-                center="true"
-                containerStyle={{ width: '95%' }}
-                title="Dinheiro"
-                checkedIcon="check-square"
-                uncheckedIcon="square"
-                checkedColor="green"
-                checked={checked1}
-                onPress={() => this.setState({ checked1: !checked1 })}
-              />
-            </ContainerNormal>
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={elocredit}
+                    onValueChange={() =>
+                      this.setState({ elocredit: !elocredit })
+                    }
+                  />
+                  <ItemTitle>Elo</ItemTitle>
+                </View>
+              </Item>
 
-            <Separator />
+              <Item
+                key="5"
+                onPress={() => this.setState({ hipercredit: !hipercredit })}
+                style={
+                  this.state.hipercredit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`HIPERCARD_${hipercredit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
 
-            {isNewProvider ? (
-              <SubmitButton onPress={this._handleSubmitNewProvider}>
-                Próximo
-              </SubmitButton>
-            ) : (
-              <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
-            )}
-          </Form>
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={hipercredit}
+                    onValueChange={() =>
+                      this.setState({ hipercredit: !hipercredit })
+                    }
+                  />
+                  <ItemTitle>HiperCard</ItemTitle>
+                </View>
+              </Item>
+
+              <Item
+                key="6"
+                onPress={() => this.setState({ mastercredit: !mastercredit })}
+                style={
+                  this.state.mastercredit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`MASTERCARD_${mastercredit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={mastercredit}
+                    onValueChange={() =>
+                      this.setState({ mastercredit: !mastercredit })
+                    }
+                  />
+                  <ItemTitle>Mastercard</ItemTitle>
+                </View>
+              </Item>
+
+              <Item
+                key="7"
+                onPress={() => this.setState({ visacredit: !visacredit })}
+                style={
+                  this.state.visacredit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`VISA_${visacredit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={visacredit}
+                    onValueChange={() =>
+                      this.setState({ visacredit: !visacredit })
+                    }
+                  />
+                  <ItemTitle>Visa</ItemTitle>
+                </View>
+              </Item>
+            </CategoriesList>
+          </View>
+
+          <Header>
+            <TitleMethods>Máquina Cartão de Débito</TitleMethods>
+          </Header>
+          <View
+            style={{
+              height: 110,
+              marginRight: 20,
+              marginLeft: 20,
+              marginTop: 12,
+              marginBottom: 15,
+            }}
+          >
+            <CategoriesList horizontal>
+              <Item
+                key="8"
+                onPress={() => this.setState({ visadebit: !visadebit })}
+                style={
+                  this.state.visadebit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`VISA_${visadebit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={visadebit}
+                    onValueChange={() =>
+                      this.setState({ visadebit: !visadebit })
+                    }
+                  />
+                  <ItemTitle>Visa</ItemTitle>
+                </View>
+              </Item>
+
+              <Item
+                key="9"
+                onPress={() => this.setState({ masterdebit: !masterdebit })}
+                style={
+                  this.state.masterdebit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`MASTERCARD_${masterdebit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={masterdebit}
+                    onValueChange={() =>
+                      this.setState({ masterdebit: !masterdebit })
+                    }
+                  />
+                  <ItemTitle>Mastercard</ItemTitle>
+                </View>
+              </Item>
+
+              <Item
+                key="10"
+                onPress={() => this.setState({ elodebit: !elodebit })}
+                style={
+                  this.state.elodebit
+                    ? styles.buttonUnPress
+                    : styles.buttonPress
+                }
+              >
+                <CardBrands
+                  brand={`ELO_${elodebit}`}
+                  width={100}
+                  height={50}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={elodebit}
+                    onValueChange={() => this.setState({ elodebit: !elodebit })}
+                  />
+                  <ItemTitle>Elo</ItemTitle>
+                </View>
+              </Item>
+            </CategoriesList>
+          </View>
+
+          {isNewProvider ? (
+            <SubmitButton onPress={this._handleSubmitNewProvider}>
+              Próximo
+            </SubmitButton>
+          ) : (
+            <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+          )}
         </Container>
       </Background>
     );
