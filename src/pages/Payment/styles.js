@@ -91,7 +91,6 @@ export const Header = styled.View`
 export const TitleMethods = styled.Text`
   font-size: 23px;
   font-weight: bold;
-  
 `;
 
 export const CategoriesList = styled.ScrollView.attrs({
@@ -100,8 +99,6 @@ export const CategoriesList = styled.ScrollView.attrs({
   margin-top: 10px;
   padding-left: 20px;
   height: 20px;
-
-
 `;
 
 export const Item = styled.TouchableOpacity`
@@ -109,8 +106,6 @@ export const Item = styled.TouchableOpacity`
   align-items: center;
   height: 100px;
   border-radius: 4px;
-
-
 `;
 
 // export const ItemImage = styled.Image`
