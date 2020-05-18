@@ -16,6 +16,15 @@ export const Panel = styled.View`
   margin: 40px 0;
 `;
 
+
+export const Title = styled.Text`
+  font-size: 20px;
+  color: #000;
+  font-weight: bold;
+  align-self: center;
+  margin-top: 30px;
+`;
+
 export const Balance = styled.View``;
 
 export const Money = styled.View`
@@ -24,10 +33,16 @@ export const Money = styled.View`
   align-items: baseline;
 `;
 
-export const Title = styled.Text`
-  font-size: 18px;
-  color: #999999;
+export const Separator = styled.View`
+  height: 1px;
+  background: rgba(0, 0, 0, 0.2);
+  margin: 20px 0 30px;
 `;
+
+// export const Title = styled.Text`
+//   font-size: 18px;
+//   color: #999999;
+// `;
 
 export const Value = styled.Text`
   margin-top: 10px;

@@ -1,7 +1,16 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {
+  TabView,
+  SceneMap,
+  TabBar,
+  SceneRendererProps,
+} from 'react-native-tab-view';
+import BankAccount from '~/pages/BankAccount';
+import Background from '~/components/Background';
+
 import {
   Container,
   BackButton,
@@ -15,12 +24,21 @@ import {
   Panel,
   Info,
   Money,
+  Separator,
 } from './styles';
 
 import { colors } from '~/utils/colors';
 
+const initialLayout = { width: Dimensions.get('window').width };
+
 export default function Wallet() {
-  return (
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'Carteira' },
+    { key: 'second', title: 'Conta Bancaria' },
+  ]);
+
+  const FirstRoute = (props: SceneRendererProps) => (
     <Container>
       <Panel>
         <Balance>
@@ -45,7 +63,7 @@ export default function Wallet() {
           <Icon name="help" size={35} color="#999" />
           <Message>Como Sacar</Message>
         </Option>
-        <Option onPress={() => {}}>
+        <Option onPress={() => props.jumpTo('second')}>
           <Icon name="account-balance" size={35} color="#999" />
           <Message>Conta Bancaria</Message>
         </Option>
@@ -74,6 +92,32 @@ export default function Wallet() {
         </Balance>
       </Panel>
     </Container>
+  );
+
+  const SecondRoute = () => <BankAccount />;
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: 'white' }}
+      style={{ backgroundColor: '#4ead93' }}
+    />
+  );
+
+  return (
+    <Background>
+      <TabView
+        renderTabBar={renderTabBar}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        initialLayout={initialLayout}
+      />
+    </Background>
   );
 }
 

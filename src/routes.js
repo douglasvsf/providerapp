@@ -33,6 +33,7 @@ import Qualification from './pages/Qualification';
 import Service from './pages/Service';
 import Wallet from './pages/Wallet';
 
+
 import SocialMedia from './pages/SocialMedia';
 
 import ActuationAreaScreen from './pages/NewProvider/ActuationAreaScreen';
@@ -134,7 +135,6 @@ export default (isSigned = false) =>
                     screen: SocialMedia,
                   },
                   Address,
-
                   AdditionalInfo,
                 }),
                 Serviços: createBottomTabNavigator({
@@ -147,7 +147,8 @@ export default (isSigned = false) =>
                   },
                   Wallet: {
                     screen: Wallet,
-                  },
+                  }
+
                 }),
               },
               {

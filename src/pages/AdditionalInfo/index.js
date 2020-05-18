@@ -1,9 +1,13 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Switch } from 'react-native';
+
+import { useSelector } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '../../components/Background';
 import DateInput from '~/components/DateInput';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -65,6 +69,9 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
 
   const [placeholder, setPlaceholder] = useState('CPF');
   const [birthday, setBirthday] = useState(new Date());
+
+  const [AdditionalInfos, setAdditionalInfos] = useState([]);
+
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
     if (!isEnabled === true) {
@@ -75,6 +82,17 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
       setPlaceholder('CPF');
     }
   };
+  const token = useSelector(state => state.auth.token);
+  console.log(token);
+  useEffect(() => {
+    async function loadAdditionalInfo() {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      const response = await api.get('users/2/additional_info');
+      console.log(response);
+      setAdditionalInfos(response.data);
+    }
+    loadAdditionalInfo();
+  }, []);
 
   const handleSubmitNewProvider = useCallback(() => {
     onSubmitNewProvider({});
