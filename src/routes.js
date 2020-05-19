@@ -10,20 +10,13 @@ import {
   createDrawerNavigator,
 } from 'react-navigation';
 
-import { Image } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 
 import Dashboard from './pages/Dashboard';
-import enterRoom from './pages/Chat';
-import Chat from './pages/Chat/chat';
 import Profile from './pages/Profile';
-
-import solicitationIcon from '~/assets/solicitation.png';
-import solicitationIconFocused from '~/assets/solicitation.png';
 
 import Address from './pages/Address';
 import AdditionalInfo from './pages/AdditionalInfo';
@@ -31,7 +24,6 @@ import Statistics from './pages/Statistics';
 import Payment from './pages/Payment';
 import Qualification from './pages/Qualification';
 import Service from './pages/Service';
-import Wallet from './pages/Wallet';
 
 import SocialMedia from './pages/SocialMedia';
 
@@ -94,44 +86,6 @@ export default (isSigned = false) =>
                   Agendamentos: {
                     screen: Dashboard,
                   },
-                  Solicitations: {
-                    screen: createSwitchNavigator({
-                      enterRoom,
-                      Chat,
-                    }),
-                    navigationOptions: {
-                      tabBarLabel: 'Solicitações',
-                      tabBarOptions: {
-                        activeTintColor: '#4BB196',
-                      },
-
-                      tabBarIcon: ({ focused }) => {
-                        if (focused) {
-                          return (
-                            <Image
-                              source={solicitationIcon}
-                              style={{
-                                width: 24,
-                                height: 24,
-                                tintColor: '#4BB196',
-                              }}
-                            />
-                          );
-                        } else {
-                          return (
-                            <Image
-                              source={solicitationIcon}
-                              style={{
-                                width: 24,
-                                height: 24,
-                                tintColor: '#808080',
-                              }}
-                            />
-                          );
-                        }
-                      },
-                    },
-                  },
                   Estatisticas: {
                     screen: Statistics,
                   },
@@ -144,6 +98,7 @@ export default (isSigned = false) =>
                     screen: SocialMedia,
                   },
                   Address,
+
                   AdditionalInfo,
                 }),
                 Serviços: createBottomTabNavigator({
@@ -153,9 +108,6 @@ export default (isSigned = false) =>
                   },
                   Qualification: {
                     screen: Qualification,
-                  },
-                  Wallet: {
-                    screen: Wallet,
                   },
                 }),
               },
