@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
-import { Keyboard, Alert } from 'react-native';
+import React, { PureComponent, createRef } from 'react';
+import { Keyboard, Alert, ScrollView } from 'react-native';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Form } from '@unform/mobile';
 
 import cepApi from '../../services/cep';
-import Details from '../../components/details';
 import Background from '../../components/Background';
 import {
   Container,
-  Form,
   FormInput,
   Submit,
   Separator,
@@ -15,6 +15,7 @@ import {
   Title,
 } from './styles';
 import { colors } from '~/values/colors';
+import UnformInput from '~/components/UnformField';
 
 export default class AdditionalInfo extends PureComponent {
   constructor(props) {
@@ -31,6 +32,8 @@ export default class AdditionalInfo extends PureComponent {
       },
       cep: '',
     };
+
+    this.formRef = createRef();
   }
 
   handleSubmit = () => {
@@ -50,15 +53,22 @@ export default class AdditionalInfo extends PureComponent {
     onSubmitNewProvider(endereco);
   };
 
+  handleFormSubmit = values => {
+    console.warn(this.formRef.current);
+  };
+
   render() {
     const { cep, endereco } = this.state;
-    const { isNewProvider } = this.props;
+    const { isNewProvider, submitting } = this.props;
 
     return (
       <Background>
         <Container>
           <Title>Endereço</Title>
-          <Form>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ padding: 30 }}
+          >
             <FormInput
               onChangeText={text => this.setState({ cep: text })}
               value={cep}
@@ -69,24 +79,78 @@ export default class AdditionalInfo extends PureComponent {
               keyboardType="numeric"
               maxLength={8}
             />
+
             <Submit onPress={this.handleSubmit}>
               <Icon name="search" size={22} color="#FFF" />
             </Submit>
-            <Separator />
-            {endereco.cep === '' ? (
-              <Details {...this.state} />
-            ) : (
-              <Details {...this.state} />
-            )}
 
-            {isNewProvider ? (
-              <SubmitButton onPress={this.handleSubmitNewProvider}>
-                Próximo
-              </SubmitButton>
-            ) : (
-              <SubmitButton>Atualizar Endereço</SubmitButton>
-            )}
-          </Form>
+            <Separator />
+
+            <Form ref={this.formRef} onSubmit={this.handleFormSubmit}>
+              <UnformInput
+                inputComponent={FormInput}
+                // value={endereco.logradouro}
+                name="logradouro"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Logradouro"
+              />
+
+              <UnformInput
+                inputComponent={FormInput}
+                name="numero"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Numero"
+              />
+
+              <UnformInput
+                inputComponent={FormInput}
+                // value={endereco.bairro}
+                name="bairro"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Bairro"
+              />
+
+              <UnformInput
+                inputComponent={FormInput}
+                name="complemento"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Complemento"
+              />
+
+              <UnformInput
+                inputComponent={FormInput}
+                // value={endereco.localidade}
+                name="cidade"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Cidade"
+              />
+
+              <UnformInput
+                inputComponent={FormInput}
+                // value={endereco.uf}
+                name="uf"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Estado"
+              />
+
+              {isNewProvider ? (
+                <SubmitButton
+                  loading={submitting}
+                  onPress={() => this.formRef.current.submitForm()}
+                >
+                  Próximo
+                </SubmitButton>
+              ) : (
+                <SubmitButton>Atualizar Endereço</SubmitButton>
+              )}
+            </Form>
+          </ScrollView>
         </Container>
       </Background>
     );

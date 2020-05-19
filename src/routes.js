@@ -33,7 +33,6 @@ import Qualification from './pages/Qualification';
 import Service from './pages/Service';
 import Wallet from './pages/Wallet';
 
-
 import SocialMedia from './pages/SocialMedia';
 
 import ActuationAreaScreen from './pages/NewProvider/ActuationAreaScreen';
@@ -107,6 +106,31 @@ export default (isSigned = false) =>
                       },
 
                       tabBarIcon: ({ focused }) => {
+
+                        if (focused) {
+                          return (
+                            <Image
+                              source={solicitationIcon}
+                              style={{
+                                width: 24,
+                                height: 24,
+                                tintColor: '#4BB196',
+                              }}
+                            />
+                          );
+                        } else {
+                          return (
+                            <Image
+                              source={solicitationIcon}
+                              style={{
+                                width: 24,
+                                height: 24,
+                                tintColor: '#808080',
+                              }}
+                            />
+                          );
+                        }
+                      },
      
                         if (focused) {
                             return                         <Image
@@ -121,6 +145,7 @@ export default (isSigned = false) =>
                           />
                         }
                     },
+
                     },
                   },
                   Estatisticas: {
@@ -147,7 +172,11 @@ export default (isSigned = false) =>
                   },
                   Wallet: {
                     screen: Wallet,
+
+                  },
+
                   }
+
 
                 }),
               },
@@ -176,11 +205,13 @@ export default (isSigned = false) =>
                   color: 'colors.secondary',
                 },
                 headerLeft: (
-                  <Touchable
-                    onPress={() => navigation.toggleDrawer()}
-                  >
+                  <Touchable onPress={() => navigation.toggleDrawer()}>
                     <Icon
-                      style={{ marginHorizontal: 10, marginVertical: 6, color: colors.secondary }}
+                      style={{
+                        marginHorizontal: 10,
+                        marginVertical: 6,
+                        color: colors.secondary,
+                      }}
                       name="bars"
                       size={28}
                     />
