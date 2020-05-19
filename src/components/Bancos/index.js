@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { Bancos } from '../../jsons/banco_codigo.json';
+
 import { FormInput } from './styles';
 
 const styles = StyleSheet.create({
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginVertical: 8,
   },
-  areaAtuacaoItem: {
+  bancoItem: {
     flex: 1,
     paddingVertical: 8,
   },
@@ -73,25 +75,20 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
   },
-  areaAtuacaoButton: {
+  bancoButton: {
     marginTop: 16,
   },
 });
 
-const DATA = [
-  { id: 1, label: 'Mototaxistas' },
-  { id: 2, label: 'Frete Mudança' },
-  { id: 3, label: 'Diaristas' },
-  { id: 4, label: 'Babá' },
-  { id: 5, label: 'Pedreiro' },
-  { id: 6, label: 'Pintor' },
-  { id: 7, label: 'Azulejista' },
-];
+const DATA = Object.keys(Bancos).map(key => ({
+  key,
+  ...Bancos[key],
+}));
 
-const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
+const Banco = ({ onSelect, selectedBanco }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [areaAtuacaoQuery, setAreaAtuacaoQuery] = useState('');
-  const [filteredAreaAtuacao, setFilteredAreaAtuacao] = useState([]);
+  const [bancoQuery, setBancoQuery] = useState('');
+  const [filteredBanco, setFilteredBanco] = useState([]);
 
   const inputRef = useRef(null);
 
@@ -101,20 +98,22 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
 
   const onDismiss = () => {
     Keyboard.dismiss();
-    setFilteredAreaAtuacao(DATA);
+    setFilteredBanco(DATA);
     setModalVisible(false);
   };
 
-  const renderAreaAtuacao = ({ item }) => {
+  const renderBanco = ({ item }) => {
     return (
       <TouchableOpacity
-        style={styles.areaAtuacaoItem}
+        style={styles.bancoItem}
         onPress={() => {
           if (onSelect) onSelect(item);
           onDismiss();
         }}
       >
-        <Text>{item.label}</Text>
+        <Text>
+          {item.value} - {item.label}
+        </Text>
       </TouchableOpacity>
     );
   };
@@ -124,27 +123,26 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   };
 
   useEffect(() => {
-    if (areaAtuacaoQuery.length >= 2) {
-      const dataFiltered = DATA.filter(area =>
-        area.label.toUpperCase().includes(areaAtuacaoQuery.toUpperCase())
+    if (bancoQuery.length >= 2) {
+      const dataFiltered = DATA.filter(
+        banco =>
+          banco.label.toUpperCase().includes(bancoQuery.toUpperCase()) ||
+          banco.value.toUpperCase().includes(bancoQuery.toUpperCase())
       );
-      setFilteredAreaAtuacao(dataFiltered);
+      setFilteredBanco(dataFiltered);
     } else {
-      setFilteredAreaAtuacao(DATA);
+      setFilteredBanco(DATA);
     }
-  }, [areaAtuacaoQuery]);
+  }, [bancoQuery]);
 
   return (
     <View>
-      {selectedAreaAtuacao.length < 3 ? (
-        <Button
-          style={styles.areaAtuacaoButton}
-          title="Selecionar atuação"
-          onPress={toggleModalVisible}
-        />
-      ) : (
-        <Text>Você só pode selecionar até 3 areas de atuação</Text>
-      )}
+      <Button
+        style={styles.bancoButton}
+        title="Selecionar Banco"
+        onPress={toggleModalVisible}
+      />
+
       <Modal
         isVisible={modalVisible}
         style={{
@@ -156,12 +154,12 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
       >
         <View style={styles.content}>
           <View style={styles.modalTick} />
-          <Text style={styles.contentTitle}>Buscar área de atuação</Text>
+          <Text style={styles.contentTitle}>Buscar banco(código/nome)</Text>
           <FormInput
             inputStyle={{ color: '#000' }}
             iconColor="#000"
             icon="search"
-            onChangeText={setAreaAtuacaoQuery}
+            onChangeText={setBancoQuery}
             placeholder="Comece a digitar para buscar..."
             ref={inputRef}
             placeholderTextColor="rgba(0, 0, 0, 0.6)"
@@ -169,10 +167,10 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
           />
           <FlatList
             style={styles.flatlist}
-            data={filteredAreaAtuacao}
-            renderItem={renderAreaAtuacao}
+            data={filteredBanco}
+            renderItem={renderBanco}
             ItemSeparatorComponent={renderDivider}
-            keyExtractor={item => String(item.id)}
+            keyExtractor={item => String(item.value)}
             keyboardShouldPersistTaps="handled"
           />
 
@@ -183,4 +181,4 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   );
 };
 
-export default AreaAtuacao;
+export default Banco;

@@ -7,6 +7,7 @@ import {
   View,
   TouchableNativeFeedback,
   Alert,
+  Button,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,7 +20,6 @@ import Background from '../../components/Background';
 
 import { Container, Form, Separator, Title, TitleInto } from './styles';
 import { colors } from '~/values/colors';
-import Button from '~/components/Button';
 import AreaAtuacao from '~/components/AreaAtuacao';
 
 const KEY_EXTRACTOR = item => item.city;
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   addCityButton: {
-    marginTop: 8,
+    marginTop: 18,
   },
   emptyText: {
     textAlign: 'center',
@@ -344,10 +344,12 @@ class Service extends PureComponent {
               data={selectedValueEstado}
               onValueChange={this.onChangeCity}
             />
-
-            <Button style={styles.addCityButton} onPress={this.onAddCity}>
-              Adicionar
-            </Button>
+            <Separator />
+            <Button
+              style={styles.addCityButton}
+              title="Adicionar"
+              onPress={this.onAddCity}
+            />
 
             <FlatList
               style={styles.flatList}
@@ -362,6 +364,8 @@ class Service extends PureComponent {
 
             <TitleInto> Area de Atuação </TitleInto>
 
+            <Separator />
+
             <AreaAtuacao
               selectedAreaAtuacao={selectedAreaAtuacao}
               onSelect={this.onSelectAreaAtuacao}
@@ -372,12 +376,12 @@ class Service extends PureComponent {
             {isNewProvider ? (
               <>
                 <Separator />
+
                 <Button
                   style={styles.submitNewProviderButton}
+                  title="Próximo"
                   onPress={this.handleSubmitNewProvider}
-                >
-                  Próximo
-                </Button>
+                />
               </>
             ) : null}
           </Form>

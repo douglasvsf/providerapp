@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-unused-vars */
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Button, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

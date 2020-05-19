@@ -106,6 +106,7 @@ export default (isSigned = false) =>
                       },
 
                       tabBarIcon: ({ focused }) => {
+
                         if (focused) {
                           return (
                             <Image
@@ -130,6 +131,21 @@ export default (isSigned = false) =>
                           );
                         }
                       },
+     
+                        if (focused) {
+                            return                         <Image
+                            source={solicitationIcon}
+                            style={{ width: 24, height: 24, tintColor:'#4BB196' }}
+                          />
+
+                        } else {
+                            return                         <Image
+                            source={solicitationIcon}
+                            style={{ width: 24, height: 24 ,tintColor:'#808080'}}
+                          />
+                        }
+                    },
+
                     },
                   },
                   Estatisticas: {
@@ -156,7 +172,12 @@ export default (isSigned = false) =>
                   },
                   Wallet: {
                     screen: Wallet,
+
                   },
+
+                  }
+
+
                 }),
               },
               {
