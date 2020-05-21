@@ -83,7 +83,6 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
     }
   };
   const token = useSelector(state => state.auth.token);
-  console.log(token);
   useEffect(() => {
     async function loadAdditionalInfo() {
       api.defaults.headers.Authorization = `Bearer ${token}`;

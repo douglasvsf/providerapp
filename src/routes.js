@@ -57,8 +57,8 @@ export default (isSigned = false) =>
         NewProvider: {
           screen: createStackNavigator(
             {
-              AddressScreen,
               ActuationAreaScreen,
+              AddressScreen,
               PaymentMethodsScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
@@ -132,22 +132,10 @@ export default (isSigned = false) =>
                         }
                       },
      
-                        if (focused) {
-                            return                         <Image
-                            source={solicitationIcon}
-                            style={{ width: 24, height: 24, tintColor:'#4BB196' }}
-                          />
-
-                        } else {
-                            return                         <Image
-                            source={solicitationIcon}
-                            style={{ width: 24, height: 24 ,tintColor:'#808080'}}
-                          />
-                        }
                     },
 
                     },
-                  },
+                
                   Estatisticas: {
                     screen: Statistics,
                   },
@@ -175,10 +163,7 @@ export default (isSigned = false) =>
 
                   },
 
-                  }
-
-
-                }),
+                  }),
               },
               {
                 contentComponent: ContentMenu,
@@ -230,7 +215,8 @@ export default (isSigned = false) =>
         ),
       },
       {
-        initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        //initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        initialRouteName: 'NewProvider',
       }
     )
   );

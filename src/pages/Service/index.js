@@ -18,7 +18,14 @@ import SelectEstados from '../../components/Estados';
 import SelectCidades from '../../components/Cidades';
 import Background from '../../components/Background';
 
-import { Container, Form, Separator, Title, TitleInto } from './styles';
+import {
+  Container,
+  Form,
+  Separator,
+  Title,
+  TitleInto,
+  SubmitButton,
+} from './styles';
 import { colors } from '~/values/colors';
 import AreaAtuacao from '~/components/AreaAtuacao';
 
@@ -377,11 +384,15 @@ class Service extends PureComponent {
               <>
                 <Separator />
 
-                <Button
+                <SubmitButton onPress={() => this.handleSubmitNewProvider()}>
+                  Próximo
+                </SubmitButton>
+
+                {/* <Button
                   style={styles.submitNewProviderButton}
                   title="Próximo"
-                  onPress={this.handleSubmitNewProvider}
-                />
+                  onPress={this.handleSubmitNewProvider()}
+                /> */}
               </>
             ) : null}
           </Form>
