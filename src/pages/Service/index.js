@@ -9,7 +9,6 @@ import {
   Alert,
   Button,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -17,7 +16,7 @@ import { estados } from '../../jsons/estados-cidades.json';
 import SelectEstados from '../../components/Estados';
 import SelectCidades from '../../components/Cidades';
 import Background from '../../components/Background';
-
+import api from '../../services/api';
 import {
   Container,
   Form,
@@ -103,7 +102,10 @@ class Service extends PureComponent {
       cities: [],
       actuations: [],
       selectedCities: [],
+      selectedCitiesGet: [],
       selectedAreaAtuacao: [],
+      occupationCities: [],
+      occupationAreas: [],
     };
   }
 
@@ -127,6 +129,25 @@ class Service extends PureComponent {
       selectedValueEstado: '',
       selectedValueCidade: '',
     });
+
+    const { token, profileid } = this.props;
+    const { isNewProvider } = this.props;
+
+    if (!isNewProvider) {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      await api
+        .get(`providers/${profileid}/occupation_areas`)
+        .then(response => {
+          console.log('aa', response);
+          this.setState({
+            selectedAreaAtuacao: response.data.userOccupationArea,
+            selectedCitiesGet: response.data.userOccupationCity,
+          });
+        })
+        .catch(err => {
+          console.log('erro', err);
+        });
+    }
   }
 
   async componentDidUpdate(_, prevState) {
@@ -235,12 +256,23 @@ class Service extends PureComponent {
     this.setState({ selectedCities: newSelectedCities });
   };
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item, isNewProvider }) => {
     return (
       <View style={styles.cityItem}>
-        <Text>
-          {item.city} - {item.uf.sigla}
-        </Text>
+        {isNewProvider ? (
+          <>
+            <Text>
+              {item.city} - {item.uf.sigla}
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text>
+              {item.city} - {item.state}
+            </Text>
+          </>
+        )}
+
         <TouchableNativeFeedback
           onPress={() =>
             Alert.alert(
@@ -294,6 +326,41 @@ class Service extends PureComponent {
     this.setState({ selectedAreaAtuacao: newSelectedAreasAtuacao });
   };
 
+  // async updateActuation() {
+
+  //   const { token, profileid } = this.props;
+
+  //   const occupationCitiesArray = Array.from(this.state.occupationCities);
+  //   const occupationAreasArray = Array.from(this.state.occupationAreas);
+
+  //   this.state.selectedCities.map(function(selectedCities) {
+  //     occupationCitiesArray.push({
+  //       city: selectedCities.city,
+  //       state: selectedCities.uf.nome,
+  //     });
+  //   });
+  //   // console.log('aaa', occupationCities);
+  //   this.state.selectedAreaAtuacao.map(function(selectedAreaAtuacao) {
+  //     // console.log(selectedCities.city);
+  //     // console.log(selectedCities.uf.nome);
+
+  //     occupationAreasArray.push({
+  //       occupation_area_id: selectedAreaAtuacao.id,
+  //     });
+  //   });
+
+  //   try {
+  //     api.defaults.headers.Authorization = `Bearer ${token}`;
+  //     const response = await api.post(`users/${profileId}/occupation_area`, {
+  //       occupationAreas: occupationAreasArray,
+  //       occupationCities: occupationCitiesArray,
+  //     });
+  //     console.log(response);
+  //   } catch (ex) {
+  //     console.warn(ex);
+  //   }
+  // }
+
   renderAreaAtuacao = (areaAtuacao, index) => {
     return (
       <View key={areaAtuacao.id} style={styles.areaAtuacaoItem}>
@@ -328,6 +395,7 @@ class Service extends PureComponent {
       uf,
       selectedCities,
       selectedAreaAtuacao,
+      selectedCitiesGet,
     } = this.state;
 
     const { isNewProvider } = this.props;
@@ -358,14 +426,25 @@ class Service extends PureComponent {
               onPress={this.onAddCity}
             />
 
-            <FlatList
-              style={styles.flatList}
-              data={selectedCities}
-              renderItem={this.renderItem}
-              keyExtractor={KEY_EXTRACTOR}
-              ItemSeparatorComponent={this.renderSeparator}
-              ListEmptyComponent={this.emptyContainer}
-            />
+            {isNewProvider ? (
+              <FlatList
+                style={styles.flatList}
+                data={selectedCities}
+                renderItem={this.renderItem}
+                keyExtractor={KEY_EXTRACTOR}
+                ItemSeparatorComponent={this.renderSeparator}
+                ListEmptyComponent={this.emptyContainer}
+              />
+            ) : (
+              <FlatList
+                style={styles.flatList}
+                data={selectedCitiesGet}
+                renderItem={this.renderItem}
+                keyExtractor={KEY_EXTRACTOR}
+                ItemSeparatorComponent={this.renderSeparator}
+                ListEmptyComponent={this.emptyContainer}
+              />
+            )}
 
             <Separator />
 

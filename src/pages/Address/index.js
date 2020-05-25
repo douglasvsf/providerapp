@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import cepApi from '../../services/cep';
 import Background from '../../components/Background';
+import api from '../../services/api';
 import {
   Container,
   FormInput,
@@ -30,6 +31,30 @@ export default class AdditionalInfo extends PureComponent {
     };
   }
 
+  async componentDidMount() {
+    const { token, profileid } = this.props;
+
+    console.log(profileid);
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .get(`users/10/address`)
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          cep: response.data.zip_code,
+          logradouro: response.data.public_place,
+          complemento: response.data.complement,
+          bairro: response.data.neighborhood,
+          localidade: response.data.city,
+          uf: response.data.state,
+          number: response.data.number,
+        });
+      })
+      .catch(err => {
+        console.log('erromeudeus', err);
+      });
+  }
+
   handleSubmit = () => {
     const { cep } = this.state;
     if (cep.length < 8) {
@@ -48,14 +73,48 @@ export default class AdditionalInfo extends PureComponent {
   };
 
   handleSubmitNewProvider = () => {
-   
     const { onSubmitNewProvider } = this.props;
     onSubmitNewProvider(this.state);
   };
 
-  handleFormSubmit = values => {
-    console.warn(this.formRef.current);
-  };
+  async updateAddress() {
+    const { token, profileid } = this.props;
+    const {
+      cep,
+      logradouro,
+      number,
+      bairro,
+      localidade,
+      uf,
+      complemento,
+    } = this.state;
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .put(`users/${profileid}/address`, {
+        zipCode: cep,
+        publicPlace: logradouro,
+        number,
+        neighborhood: bairro,
+        city: localidade,
+        state: uf,
+        complement: complemento,
+      })
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          cep: response.data.zip_code,
+          logradouro: response.data.public_place,
+          complemento: response.data.complement,
+          bairro: response.data.neighborhood,
+          localidade: response.data.city,
+          uf: response.data.state,
+          number: response.data.number,
+        });
+      })
+      .catch(err => {
+        console.log('erro', err);
+      });
+  }
 
   render() {
     const { cep } = this.state;
@@ -77,7 +136,7 @@ export default class AdditionalInfo extends PureComponent {
               autoCorrect={false}
               placeholder="Digite seu CEP"
               keyboardType="numeric"
-              maxLength={8}
+              maxLength={9}
             />
 
             <Submit onPress={this.handleSubmit}>
@@ -117,6 +176,7 @@ export default class AdditionalInfo extends PureComponent {
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Complemento"
+              onChangeText={complemento => this.setState({ complemento })}
             />
 
             <FormInput
@@ -143,7 +203,9 @@ export default class AdditionalInfo extends PureComponent {
                 Próximo
               </SubmitButton>
             ) : (
-              <SubmitButton>Atualizar Endereço</SubmitButton>
+              <SubmitButton onPress={() => this.updateAddress()}>
+                Atualizar Endereço
+              </SubmitButton>
             )}
           </ScrollView>
         </Container>

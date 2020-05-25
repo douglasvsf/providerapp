@@ -214,6 +214,13 @@ const RemoveButton = ({ onRemove, index }) => {
 export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [qualificacoes, setQualificacoes] = useState([]);
+  const [qualifications, setQualifications] = useState([]);
+  const qualificationsArray = Array.from(qualifications);
+
+  qualificationsArray.push({
+    title: qualificacoes.title,
+    description: qualificacoes.description,
+  });
 
   const handleSubmitNewProvider = useCallback(() => {
     onSubmitNewProvider({});

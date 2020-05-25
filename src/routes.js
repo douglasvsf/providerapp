@@ -46,7 +46,7 @@ import ContentMenu from '~/components/ContentMenu';
 import { Touchable } from './components/Touchable';
 import { colors } from './values/colors';
 
-export default (isSigned = false) =>
+export default (isSigned = false,token,profileid) =>
   createAppContainer(
     createSwitchNavigator(
       {
@@ -57,12 +57,12 @@ export default (isSigned = false) =>
         NewProvider: {
           screen: createStackNavigator(
             {
-              ActuationAreaScreen,
               AddressScreen,
+              ActuationAreaScreen,
               PaymentMethodsScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
-              QualificationScreen,
+              //QualificationScreen,
             },
             {
               defaultNavigationOptions: {
@@ -147,13 +147,44 @@ export default (isSigned = false) =>
                   SocialMedia: {
                     screen: SocialMedia,
                   },
-                  Address,
+                  Address: {
+                    screen:  props => <Address {...props} token={token} profileid={profileid} />, 
+                    navigationOptions : {
+                      tabBarOptions: {
+                        activeTintColor: colors.primary,
+                      },
+                      tabBarLabel: 'Endereço',
+                      tabBarIcon: ({ tintColor }) => (
+                        <Icon name="home" size={20} color={tintColor} />
+                      ),
+                    }
+                  },
                   AdditionalInfo,
                 }),
                 Serviços: createBottomTabNavigator({
-                  Service,
+                  Service :  {
+                    screen:  props => <Service {...props} token={token} profileid={profileid} />, 
+                    navigationOptions : {
+                      tabBarOptions: {
+                        activeTintColor: colors.primary,
+                      },
+                      tabBarLabel: 'Area de Atuação',
+                      tabBarIcon: ({ tintColor }) => (
+                        <Icon name="briefcase" size={20} color={tintColor} />
+                      ),
+                    }
+                  },
                   Payment: {
-                    screen: Payment,
+                    screen:  props => <Payment {...props} token={token} profileid={profileid} />, 
+                    navigationOptions : {
+                      tabBarOptions: {
+                        activeTintColor: colors.primary,
+                      },
+                      tabBarLabel: 'Informações de Pagamento',
+                      tabBarIcon: ({ tintColor }) => (
+                        <Icon name="credit-card" size={20} color={tintColor} />
+                      ),
+                    }
                   },
                   Qualification: {
                     screen: Qualification,
@@ -215,8 +246,8 @@ export default (isSigned = false) =>
         ),
       },
       {
-        //initialRouteName: isSigned ? 'NewApp' : 'Sign',
-        initialRouteName: 'NewProvider',
+        initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        //initialRouteName: 'NewProvider',
       }
     )
   );

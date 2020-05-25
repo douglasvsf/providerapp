@@ -37,6 +37,7 @@ function AddressScreen({ navigation }) {
           neighborhood: address.bairro,
           city: address.localidade,
           state: address.uf,
+          complement: address.complemento,
         });
 
         navigation.navigate('ActuationAreaScreen');

@@ -66,12 +66,34 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
   const [fantasyname, setFantasyname] = useState('');
   const [fullname, setFullname] = useState('');
   const [briefdesc, setBriefdesc] = useState('');
-
   const [placeholder, setPlaceholder] = useState('CPF');
   const [birthday, setBirthday] = useState(new Date());
 
+  const [additionalCpf, setAdditionalCpf] = useState([]);
+  const [additionalCnpj, setAdditionalCnpj] = useState([]);
   const [AdditionalInfos, setAdditionalInfos] = useState([]);
+  const additionalCpfArray = Array.from(additionalCpf);
+  const additionalCnpjArray = Array.from(additionalCnpj);
+  let newcpf = cpf.replace('.', '');
+  newcpf = newcpf.replace('-', '');
+  newcpf = newcpf.replace('/', '');
+  newcpf = newcpf.replace('.', '');
 
+  additionalCpfArray.push({
+    cpf: newcpf,
+    rg,
+    fullName: fullname,
+    genre,
+    birthday,
+    briefDescription: briefdesc,
+  });
+
+  additionalCnpjArray.push({
+    cnpj: newcpf,
+    companyName: companyname,
+    fantasyName: fantasyname,
+    briefDescription: briefdesc,
+  });
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState);
     if (!isEnabled === true) {
@@ -83,19 +105,100 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
     }
   };
   const token = useSelector(state => state.auth.token);
+  const profileId = useSelector(state => state.user.profile.id);
+
   useEffect(() => {
     async function loadAdditionalInfo() {
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      const response = await api.get('users/2/additional_info');
-      console.log(response);
-      setAdditionalInfos(response.data);
+      await api
+        .get(`users/${profileId}/additional_info`)
+        .then(response => {
+          console.log('aa', response);
+          // const newData =
+          //   response.data.additionalInfoCpf == null
+          //     ? response.data.additionalInfoCnpj
+          //     : response.data.additionalInfoCpf;
+          // setAdditionalInfos(newData);
+
+          if (response.data.cpf != undefined) {
+            // se for cpf
+            setIsEnabled(false);
+            setType('cpf');
+            setCpf(response.data.cpf);
+            setGenre(response.data.genre);
+            setRg(response.data.rg);
+            setFullname(response.data.full_name);
+            setBriefdesc(response.data.brief_description);
+            setPlaceholder('CPF');
+            // console.log(new Date(newData.birthday));
+            setBirthday(new Date(response.data.birthday));
+          } else {
+            setIsEnabled(true);
+            setType('cnpj');
+            setCpf(response.data.cnpj);
+            setCompanyname(response.data.company_name);
+            setFantasyname(response.data.fantasy_name);
+            setBriefdesc(response.data.brief_description);
+            setPlaceholder('CNPJ');
+          }
+        })
+        .catch(err => {
+          console.log('erro', err);
+        });
     }
     loadAdditionalInfo();
-  }, []);
+  }, [profileId, token]);
+
+  async function UpdateAdditionalInfo() {
+    const newAdditionalInfo =
+      type == 'cpf' ? additionalCpfArray : additionalCnpjArray;
+
+    const resultNewAdditionalInfo = newAdditionalInfo.find(obj => {
+      return obj;
+    });
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .put(`users/${profileId}/additional_info`, resultNewAdditionalInfo)
+      .then(response => {
+        console.log('bb', response);
+        const newData =
+          response.data.additionalInfoCpf == null
+            ? response.data.additionalInfoCnpj
+            : response.data.additionalInfoCpf;
+        setAdditionalInfos(newData);
+
+        if (newData.cpf != undefined) {
+          // se for cpf
+          setIsEnabled(false);
+          setType('cpf');
+          setCpf(newData.cpf);
+          setGenre(newData.genre);
+          setRg(newData.rg);
+          setFullname(newData.full_name);
+          setBriefdesc(newData.brief_description);
+          setPlaceholder('CPF');
+          // console.log(new Date(newData.birthday));
+          setBirthday(new Date(newData.birthday));
+        } else {
+          setIsEnabled(true);
+          setType('cnpj');
+          setCpf(newData.cnpj);
+          setCompanyname(newData.company_name);
+          setFantasyname(newData.fantasy_name);
+          setBriefdesc(newData.brief_description);
+          setPlaceholder('CNPJ');
+        }
+      })
+      .catch(err => {
+        console.warn('errowtf', err);
+      });
+  }
 
   const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider({});
-  }, [onSubmitNewProvider]);
+    const arrayGeneral =
+      type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
+    onSubmitNewProvider(arrayGeneral);
+  }, [additionalCnpjArray, additionalCpfArray, onSubmitNewProvider, type]);
 
   return (
     <Background>
@@ -241,7 +344,9 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
               Próximo
             </SubmitButton>
           ) : (
-            <SubmitButton>Atualizar Informações Adicionais</SubmitButton>
+            <SubmitButton onPress={UpdateAdditionalInfo}>
+              Atualizar Informações Adicionais
+            </SubmitButton>
           )}
         </Form>
       </ContainerFull>

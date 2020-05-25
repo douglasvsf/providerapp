@@ -46,6 +46,7 @@ export function* signUp({ payload, navigation }) {
       name,
       email,
       password,
+      provider: true,
     });
 
     Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');

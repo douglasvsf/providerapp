@@ -1,6 +1,9 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
 import Background from '~/components/Background';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -18,13 +21,62 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
   const instaRef = useRef();
   const whatsRef = useRef();
 
-  const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider({});
-  }, [onSubmitNewProvider]);
-
   const [phonenumber, setPhonenumber] = useState('');
   const [facebookurl, setFacebookurl] = useState('');
   const [instaid, setInstaid] = useState('');
+  const [socialMedia, setSocialMedia] = useState([]);
+  const socialMediasArray = Array.from(socialMedia);
+
+  socialMediasArray.push({
+    facebookUrl: facebookurl,
+    instagramId: instaid,
+    telephoneNumber: phonenumber,
+  });
+
+  const profileId = useSelector(state => state.user.profile.id);
+  const token = useSelector(state => state.auth.token);
+  useEffect(() => {
+    async function loadAdditionalInfo() {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      await api
+        .get(`users/${profileId}/social_media`)
+        .then(response => {
+          console.log('aa', response);
+          // se for cpf
+          setPhonenumber(response.data.telephone_number);
+          setFacebookurl(response.data.facebook_url);
+          setInstaid(response.data.instagram_id);
+        })
+        .catch(err => {
+          console.log('erro', err);
+        });
+    }
+    loadAdditionalInfo();
+  }, [profileId, token]);
+
+  async function UpdateSocialMedia() {
+    const result = socialMediasArray.find(obj => {
+      return obj;
+    });
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .put(`users/${profileId}/social_media`, result)
+      .then(response => {
+        console.log('aa', response);
+        // se for cpf
+        setPhonenumber(response.data.telephone_number);
+        setFacebookurl(response.data.facebook_url);
+        setInstaid(response.data.instagram_id);
+      })
+      .catch(err => {
+        console.log('erro', err);
+      });
+  }
+
+  const handleSubmitNewProvider = useCallback(() => {
+    onSubmitNewProvider(socialMediasArray);
+  }, [onSubmitNewProvider, socialMediasArray]);
   return (
     <Background>
       <Container>
@@ -85,8 +137,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
               Próximo
             </SubmitButton>
           ) : (
-            <SubmitButton // onPress={handleSubmit}
-            >
+            <SubmitButton onPress={UpdateSocialMedia}>
               Atualizar Redes Sociais
             </SubmitButton>
           )}

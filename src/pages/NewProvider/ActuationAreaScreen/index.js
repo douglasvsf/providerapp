@@ -9,7 +9,6 @@ function ActuationAreaScreen({ navigation }) {
   const profileId = useSelector(state => state.user.profile.id);
   const [occupationCities, setOccupationCities] = useState([]);
   const [occupationAreas, setOccupationAreas] = useState([]);
-  const [general, setGeneral] = useState([]);
   // {
   //   "occupationAreas": [
   //     {
@@ -60,7 +59,7 @@ function ActuationAreaScreen({ navigation }) {
         // console.log(selectedCities.uf.nome);
 
         occupationAreasArray.push({
-          occupation_area_id: selectedAreaAtuacao.id,
+          occupationAreaId: selectedAreaAtuacao.id,
         });
         setOccupationAreas(occupationAreasArray);
 
@@ -75,10 +74,13 @@ function ActuationAreaScreen({ navigation }) {
       );
       try {
         api.defaults.headers.Authorization = `Bearer ${token}`;
-        const response = await api.post(`users/${profileId}/occupation_area`, {
-          occupationAreas: occupationAreasArray,
-          occupationCities: occupationCitiesArray,
-        });
+        const response = await api.post(
+          `providers/${profileId}/occupation_areas`,
+          {
+            occupationAreas: occupationAreasArray,
+            occupationCities: occupationCitiesArray,
+          }
+        );
         console.log(response);
         navigation.navigate('PaymentMethodsScreen');
       } catch (ex) {

@@ -5,7 +5,7 @@ import { StyleSheet, View, Button, CheckBox } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Background from '~/components/Background';
 import CardBrands from '~/components/CardBrands';
-
+import api from '../../services/api';
 import {
   Container,
   Title,
@@ -72,11 +72,31 @@ export default class Payment extends PureComponent {
     };
   }
 
-  _handleSubmitNewProvider = () => {
+  handleSubmitNewProvider = () => {
     const { onSubmitNewProvider } = this.props;
 
-    onSubmitNewProvider({});
+    onSubmitNewProvider(this.state);
   };
+
+  async componentDidMount() {
+    const { token, profileid } = this.props;
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .get(`providers/${profileid}/payment_methods`)
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          onlinepayment: response.data.online_payment,
+          cashpayment: response.data.cash,
+          americancredit: response.data.machine_credit,
+          masterdebit: response.data.machine_debit,
+        });
+      })
+      .catch(err => {
+        console.log('erro', err);
+      });
+  }
 
   render() {
     const { isNewProvider } = this.props;
@@ -93,6 +113,7 @@ export default class Payment extends PureComponent {
       elodebit,
       hipercredit,
     } = this.state;
+    console.log('PQP', americancredit);
 
     const AMERICAN_EXPRESS = 'AMERICAN_EXPRESS';
     const ELO = 'ELO';
@@ -452,7 +473,7 @@ export default class Payment extends PureComponent {
           </View>
 
           {isNewProvider ? (
-            <SubmitButton onPress={this._handleSubmitNewProvider}>
+            <SubmitButton onPress={() => this.handleSubmitNewProvider()}>
               Próximo
             </SubmitButton>
           ) : (

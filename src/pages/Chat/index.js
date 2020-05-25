@@ -1,23 +1,24 @@
 /* eslint-disable eqeqeq */
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useSelector } from 'react-redux';
 import { formatRelative, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { firebaseDB } from './config/FirebaseConfig';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 import Background from '~/components/Background';
-import { Title, Separator, NewNegotiation } from './styles';
-import { colors } from '~/values/colors';
+import api from '../../services/tempApi';
+import { firebaseDB } from './config/FirebaseConfig';
+import { Separator, Title } from './styles';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +26,6 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     marginRight: 10,
     marginLeft: 10,
-    borderRadius: 5,
   },
   rightButton: {
     marginTop: 10,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 8,
-    marginLeft: 6,
+    marginLeft: 4,
     marginBottom: 8,
   },
   profileImage: {
@@ -84,15 +84,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderRadius: 5,
   },
   groupName: {
     fontWeight: 'bold',
-    flex: 0.7,
   },
   groupTextContainer: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'center',
     paddingLeft: 6,
   },
   groupText: {
@@ -105,9 +104,15 @@ const styles = StyleSheet.create({
   },
   groupTitleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
+    textAlignVertical: 'center',
+  },
+  lastMessageContainer: {
+    flexDirection: 'row',
+    paddingTop: 4,
   },
   groupUsername: {
-    paddingVertical: 4,
+    paddingRight: 4,
   },
 });
 
@@ -120,225 +125,74 @@ export default function enterRoom({ navigation }) {
     { key: 'second', title: 'Finalizadas' },
   ]);
 
-  // this.state = {
-  //   firstName: '',
-  //   lastName: '',
-  //   roomName: '',
-  //   enterRoom: false,
-  //   dataSource: [],
-  // };
-
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [roomName, setrRoomName] = useState('');
-  // const [enterRoom, setEnterRoom] = useState(false);
   const profile = useSelector(state => state.user.profile);
   const [Availableroom, setAvailableRooms] = useState([]);
   const [Finishedroom, setFinishedRooms] = useState([]);
 
   useEffect(() => {
-    // Create reference
-    const ref = firebaseDB.ref().child('chat');
-    // ref.once('value', onSnapshot);
+    async function requestChatDetailsFromFirebase(availableRoom) {
+      return new Promise((resolve, reject) => {
+        try {
+          const firebaseChatRef = firebaseDB.ref(
+            `/chat/${availableRoom.chat_id}`
+          );
 
-    const listener = ref.on('value', snapshot => {
-      const listFinished = [];
-      const listAvailable = [];
-      // Create our own array of games in order
-      snapshot.forEach(child => {
-        const detailsFromChat = firebaseDB.ref(`/chat/${child.key}`);
-
-        detailsFromChat.on('value', newsnapshot => {
-          const lastmessage = newsnapshot.val().messages[0].text;
-          const VerifyFinished = newsnapshot.val().isFinished;
-          const idUserLastmessage = newsnapshot.val().messages[0].user._id;
-          const NameUserLastmessage = newsnapshot.val().messages[0].user.name;
-
-          // console.log(newsnapshot.val().messages[0], 'detalchat');
-          // console.log(
-          //   parseISO(newsnapshot.val().messages[0].createdAt),
-          //   'timevalue'
-          // );
-
-          if (newsnapshot.val().messages[0].createdAt) {
-            const scheduleFormated = formatRelative(
-              parseISO(newsnapshot.val().messages[0].createdAt),
-              new Date(),
-              {
-                locale: pt,
-                addSuffix: true,
-              }
-            );
-
-            // console.log(scheduleFormated, 'detailchat');
-            if (VerifyFinished == true) {
-              listFinished.push({
-                key: child.key,
-                lastMessage: lastmessage,
-                hourLastMessage: scheduleFormated,
-                idUserLastmessage,
-                NameUserLastmessage,
-              });
+          firebaseChatRef.on('value', snapshot => {
+            if (!snapshot.val().messages || !snapshot.val().messages.length) {
+              resolve({ ...availableRoom });
             } else {
-              listAvailable.push({
-                key: child.key,
-                lastMessage: lastmessage,
-                hourLastMessage: scheduleFormated,
-                idUserLastmessage,
-                NameUserLastmessage,
-              });
+              const lastMessageText = snapshot.val().messages[0].text;
+              const lastMessageFrom = snapshot.val().messages[0].from;
+              const { isFinished } = snapshot.val();
+
+              const hasCreatedAtAttribute =
+                snapshot.val().messages[0].createdAt !== undefined;
+
+              if (hasCreatedAtAttribute) {
+                const lastMessageHour = formatRelative(
+                  parseISO(snapshot.val().messages[0].createdAt),
+                  new Date(),
+                  {
+                    locale: pt,
+                    addSuffix: true,
+                  }
+                );
+
+                if (!isFinished) {
+                  resolve({
+                    ...availableRoom,
+                    lastMessageText,
+                    lastMessageHour,
+                    lastMessageFrom,
+                  });
+                }
+              }
             }
-
-            // alert(child.key);
-            // alert(lastmessage);
-            // alert(scheduleFormated);
-            // alert(idUserLastmessage);
-            // alert(NameUserLastmessage);
-          }
-        });
+          });
+        } catch (error) {
+          reject(error);
+        }
       });
+    }
 
-      // this.setState({
-      //   room: list,
-      // });
+    async function requestAvailableRooms() {
+      try {
+        const { data: availableRooms } = await api.get('/available_rooms');
 
-      setFinishedRooms(listFinished);
+        Promise.all(
+          availableRooms.map(availableRoom =>
+            requestChatDetailsFromFirebase(availableRoom)
+          )
+        ).then(availableRoomsWithFirebaseData => {
+          setAvailableRooms(availableRoomsWithFirebaseData);
+        });
+      } catch (error) {
+        Alert.alert('Erro ao carregar mensagens');
+      }
+    }
 
-      setAvailableRooms(listAvailable);
-    });
-    return () => ref.off('value', listener);
-
-    // function onSnapshot(snapshot) {
-    //   const list = [];
-
-    //   // Create our own array of games in order
-    //   snapshot.forEach(child => {
-    //     const detailsFromChat = firebaseDB.ref(`/chat/${child.key}`);
-
-    //     detailsFromChat.on('value', newsnapshot => {
-    //       const lastmessage = newsnapshot.val().messages[0].text;
-    //       const idUserLastmessage = newsnapshot.val().messages[0].user._id;
-    //       const NameUserLastmessage = newsnapshot.val().messages[0].user.name;
-
-    //       // console.log(newsnapshot.val().messages[0], 'detalchat');
-    //       // console.log(
-    //       //   parseISO(newsnapshot.val().messages[0].createdAt),
-    //       //   'timevalue'
-    //       // );
-
-    //       if (newsnapshot.val().messages[0].createdAt) {
-    //         const scheduleFormated = formatRelative(
-    //           parseISO(newsnapshot.val().messages[0].createdAt),
-    //           new Date(),
-    //           {
-    //             locale: pt,
-    //             addSuffix: true,
-    //           }
-    //         );
-
-    //         // console.log(scheduleFormated, 'detailchat');
-
-    //         list.push({
-    //           key: child.key,
-    //           lastMessage: lastmessage,
-    //           hourLastMessage: scheduleFormated,
-    //           idUserLastmessage,
-    //           NameUserLastmessage,
-    //         });
-
-    //         // alert(child.key);
-    //         // alert(lastmessage);
-    //         // alert(scheduleFormated);
-    //         // alert(idUserLastmessage);
-    //         // alert(NameUserLastmessage);
-    //       }
-    //     });
-    //   });
-
-    //   // this.setState({
-    //   //   room: list,
-    //   // });
-    //   setRooms(list);
-    //   // alert(room[0].key)
-    //   // console.log(list[0], 'roomwtf');
-    // }
+    requestAvailableRooms();
   }, []);
-  // const [dataSource, setDataSource] = useState([]);
-
-  // Handle snapshot response
-
-  // function listenForItems(roomRef) {
-  //   firebaseDB
-  //     .ref()
-  //     .child('chat')
-  //     .on('value', snap => {
-  //       // get children as an array
-  //       const items = [];
-  //       snap.forEach(child => {
-  //         items.push({
-  //           name: child.key,
-  //         });
-  //       });
-
-  //       this.setState({
-  //         dataSource: items,
-  //       });
-  //     });
-  // }
-
-  // function onSubmitEdit() {
-  //   const { firstName, lastName } = this.state;
-  //   if (firstName && lastName) {
-  //     this.setState({ enterRoom });
-  //   } else {
-  //     alert('please enter your name');
-  //   }
-  // }
-
-  // function enterRoom() {
-  //   // console.log(this.state, 'state');
-  //  // const { firstName, lastName, roomName } = this.state;
-  //   const user = {
-  //     _id: `${firstName}${lastName}`,
-  //     name: `${firstName}${lastName}`,
-  //     firstName,
-  //     lastName,
-  //     roomName,
-  //     avatar: `https://api.adorable.io/avatar/50/teste.png`,
-  //   };
-
-  //   navigation.navigate('Chat', { user });
-  // }
-  // renderRow = rowData => {
-  //   const user = {
-  //     _id: `${profile.id}${profile.id}`,
-  //     name: `${profile.name}${profile.name}`,
-  //     firstName: profile.name,
-  //     lastName: profile.name,
-  //     roomName: 'teste',
-  //     avatar: `https://api.adorable.io/avatar/50/teste.png`,
-  //   };
-
-  //   return (
-  //     <TouchableOpacity
-  //       onPress={() => {
-  //         navigation.navigate('Chat', {
-  //           user,
-  //         });
-  //       }}
-  //     >
-  //       <View style={styles.profileContainer}>
-  //         <Image
-  //           source={{
-  //             uri: 'https://api.adorable.io/avatar/50/teste.png',
-  //           }}
-  //           style={styles.profileImage}
-  //         />
-  //         <Text style={styles.profileName}>{rowData.name}</Text>
-  //       </View>
-  //     </TouchableOpacity>
-  //   );
-  // };
 
   const FirstRoute = () => (
     <View style={styles.container}>
@@ -353,41 +207,46 @@ export default function enterRoom({ navigation }) {
                 name: `${profile.name}`,
                 firstName: profile.name,
                 lastName: profile.name,
-                roomName: item.key,
-                avatar: `https://api.adorable.io/avatar/50/${item.key}.png`,
+                roomName: item.chat_id,
+                avatar: item.customer_avatar,
+              };
+
+              const provider = {
+                name: item.provider_name,
+                avatar: item.provider_avatar,
               };
 
               navigation.navigate('Chat', {
                 user,
+                provider,
               });
             }}
           >
             {/* {alert('aaaaaa')} */}
+
             <View style={styles.groupContainer}>
               <Image
                 style={styles.groupImage}
                 source={{
-                  uri: `https://api.adorable.io/avatar/50/${item.key}.png`,
+                  uri: `https://api.adorable.io/avatar/50/${item.chat_id}.png`,
                 }}
               />
               <View style={styles.groupTextContainer}>
                 <View style={styles.groupTitleContainer}>
-                  <Text style={styles.groupName}> {item.key}</Text>
+                  <Text style={styles.groupName}>{item.provider_name}</Text>
                   <Text style={styles.groupLastUpdated}>
-                    {item.hourLastMessage}
-                    {/* {alert(item.hourLastMessage)} */}
+                    {item.lastMessageHour}
                   </Text>
                 </View>
-                <Text style={styles.groupUsername}>
-                  {profile.id == item.idUserLastmessage
-                    ? 'Você:'
-                    : `${item.NameUserLastmessage}:`}
-                </Text>
-                <Text style={styles.groupText} numberOfLines={1}>
-                  {item.lastMessage}
-                </Text>
+                <View style={styles.lastMessageContainer}>
+                  <Text style={styles.groupText} numberOfLines={1}>
+                    {profile.id == item.lastMessageFrom
+                      ? 'Você: '
+                      : `${item.provider_name}: `}
+                    {item.lastMessageText}
+                  </Text>
+                </View>
               </View>
-              <Icon name="angle-right" size={24} color="#8c8c8c" />
             </View>
           </TouchableOpacity>
         )}
@@ -483,4 +342,3 @@ export default function enterRoom({ navigation }) {
     </Background>
   );
 }
-

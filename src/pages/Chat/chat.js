@@ -1,40 +1,18 @@
-/* eslint-disable react/sort-comp */
-/* eslint-disable consistent-return */
-/* eslint-disable no-alert */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable eqeqeq */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
-import React, { Component } from 'react';
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
-
-import {
-  View,
-  Text,
-  Platform,
-  PermissionsAndroid,
-  Dimensions,
-  ActivityIndicator,
-  Alert,
-  KeyboardAvoidingView,
-} from 'react-native';
-import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import propTypes from 'prop-types';
+import React, { Component } from 'react';
+import { ActivityIndicator, Alert, Dimensions, KeyboardAvoidingView, PermissionsAndroid, Platform, Text, View } from 'react-native';
+import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { RNS3 } from 'react-native-aws3';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Sound from 'react-native-sound';
-import NavigationBar from 'react-native-navbar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
+//const ImagePicker = require('react-native-image-picker');
 import ImagePicker from 'react-native-image-picker';
-import { firebaseDB } from './config/FirebaseConfig';
-import awsConfig from './config/AwsConfig';
-
-import { Submit, SubmitButton } from './styles';
+import NavigationBar from 'react-native-navbar';
+import Sound from 'react-native-sound';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '~/utils/colors';
+import { awsConfig } from './config/AwsConfig';
+import { firebaseDB } from './config/FirebaseConfig';
+import { Submit, SubmitButton } from './styles';
 
 export default class Chat extends Component {
   static propTypes = {
@@ -47,7 +25,7 @@ export default class Chat extends Component {
     hasPermission: false,
     audioPath: `${
       AudioUtils.DocumentDirectoryPath
-    }/${this.messageIdGenerator()}test.aac`,
+      }/${this.messageIdGenerator()}test.aac`,
     playAudio: false,
     fetchChats: false,
     audioSettings: {
@@ -64,11 +42,12 @@ export default class Chat extends Component {
   componentWillMount() {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
+    const provider = navigation.getParam('provider')
 
-    // console.log(awsConfig, 'awsConfig');
-    // console.log(this.props, 'chat props');
+    //console.log(awsConfig, 'awsConfig');
+    //console.log(this.props, 'chat props');
     this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}`);
-    // console.log(this.chatsFromFB, 'chats from fb');
+    //console.log(this.chatsFromFB, 'chats from fb');
 
     this.checkPermissionCamera();
 
@@ -82,27 +61,28 @@ export default class Chat extends Component {
       }
       let { messages } = snapshot.val();
       messages = messages.map(node => {
-        // console.log(node, 'node');
+        //console.log(node, 'node');
         const message = {};
         message._id = node._id;
         message.text = node.messageType === 'message' ? node.text : '';
         message.createdAt = node.createdAt;
         message.user = {
-          _id: node.user._id,
-          name: node.user.name,
-          avatar: node.user.avatar,
+          _id: node.from,
+          name: node.from === user._id ? user.name : provider.name,
+          avatar: node.from === user._id ? user.avatar : provider.avatar,
         };
-        message.image = node.messageType === 'image' ? node.image : '';
+        message.from = node.from,
+          message.image = node.messageType === 'image' ? node.image : '';
         message.audio = node.messageType === 'audio' ? node.audio : '';
         message.messageType = node.messageType;
         return message;
       });
+
       this.setState({
         messages: [...messages],
       });
     });
   }
-
   componentDidMount() {
     this.checkPermission().then(async hasPermission => {
       this.setState({ hasPermission });
@@ -112,14 +92,13 @@ export default class Chat extends Component {
         this.state.audioSettings
       );
       AudioRecorder.onProgress = data => {
-        // console.log(data, 'onProgress data');
+        //console.log(data, 'onProgress data');
       };
       AudioRecorder.onFinished = data => {
-        // console.log(data, 'on finish');
+        //console.log(data, 'on finish');
       };
     });
   }
-
   componentWillUnmount() {
     this.setState({
       messages: [],
@@ -138,7 +117,7 @@ export default class Chat extends Component {
       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
       rationale
     ).then(result => {
-      // console.log('Permission result:', result);
+      //console.log('Permission result:', result);
       return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
     });
   }
@@ -155,78 +134,81 @@ export default class Chat extends Component {
       PermissionsAndroid.PERMISSIONS.CAMERA,
       rationale
     ).then(result => {
-      // console.log('Permission result:', result);
+      //console.log('Permission result:', result);
       return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
     });
   }
 
   onSend(messages = []) {
+    const { navigation } = this.props
+    const user = navigation.getParam('user')
+
     messages[0].messageType = 'message';
+    messages[0].from = user._id;
+
+    const updatedMessages = [messages[0], ...this.state.messages]
+      .map(({ user, ...message }) => message)
+
     this.chatsFromFB.update({
-      messages: [messages[0], ...this.state.messages],
+      messages: updatedMessages,
     });
   }
-
   renderName = props => {
-    const { navigation } = this.props;
-    // const user = navigation.getParam('user');
 
-    const { user: self } = navigation.getParam('user'); // where your user data is stored;
-    const { user = {} } = props.currentMessage;
-    const { user: pUser = {} } = props.previousMessage;
-    const isSameUser = pUser._id === user._id;
-    // const isSelf = user._id === self._Id;
-    const shouldNotRenderName = isSameUser;
-    const firstName = user.name.split(' ')[0];
-    // let lastName = user.name.split(' ')[1][0];
-    return shouldNotRenderName ? (
-      <View />
-    ) : (
+    const { user: currentMessageUser } = props.currentMessage
+    const { user: previousMessageUser } = props.previousMessage
+
+    const shouldRenderName = !previousMessageUser || currentMessageUser._id !== previousMessageUser._id
+
+    const { name } = currentMessageUser
+    const firstName = name.split(' ')[0]
+
+    return shouldRenderName ? (
       <View>
         <Text style={{ color: 'grey', padding: 2, alignSelf: 'center' }}>
           {`${firstName}.`}
         </Text>
       </View>
-    );
+    ) : (
+        <View />
+      );
   };
-
   renderAudio = props => {
     return !props.currentMessage.audio ? (
       <View />
     ) : (
-      <Ionicons
-        name="ios-play"
-        size={35}
-        color={this.state.playAudio ? 'red' : 'blue'}
-        style={{
-          left: 90,
-          position: 'relative',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.5,
-          backgroundColor: 'transparent',
-        }}
-        onPress={() => {
-          this.setState({
-            playAudio: true,
-          });
-          const sound = new Sound(props.currentMessage.audio, '', error => {
-            if (error) {
-              // console.log('failed to load the sound', error);
-            }
-            this.setState({ playAudio: false });
-            sound.play(success => {
-              // console.log(success, 'success play');
-              if (!success) {
-                Alert.alert('Erro ao Reproduzir Audio');
-              }
+        <Ionicons
+          name="ios-play"
+          size={35}
+          color={this.state.playAudio ? 'red' : 'blue'}
+          style={{
+            left: 90,
+            position: 'relative',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.5,
+            backgroundColor: 'transparent',
+          }}
+          onPress={() => {
+            this.setState({
+              playAudio: true,
             });
-          });
-        }}
-      />
-    );
+            const sound = new Sound(props.currentMessage.audio, '', error => {
+              if (error) {
+                //console.log('failed to load the sound', error);
+              }
+              this.setState({ playAudio: false });
+              sound.play(success => {
+                //console.log(success, 'success play');
+                if (!success) {
+                  Alert.alert('Erro ao Reproduzir Audio');
+                }
+              });
+            });
+          }}
+        />
+      );
   };
-
   renderBubble = props => {
     return (
       <View>
@@ -246,21 +228,15 @@ export default class Chat extends Component {
 
   renderSend = ({ onSend, ...props }) => {
     return (
-      <Send
-        {...props}
-        onSend={onSend}
-        label="Enviar"
-        textStyle={{ color: colors.primary }}
-      />
+      <Send {...props} onSend={onSend} label="Enviar" textStyle={{ color: colors.primary }} />
     );
   };
 
   handleAvatarPress = props => {
     // add navigation to user's profile
   };
-
   handleAudio = async () => {
-    // console.log(this.state.startAudio, 'stado do audio');
+    //console.log(this.state.startAudio, 'stado do audio');
 
     // const { user } = this.props;
     const { navigation } = this.props;
@@ -277,7 +253,7 @@ export default class Chat extends Component {
       );
       await AudioRecorder.startRecording();
     } else {
-      // se clica e start audio for true ja seta false e para
+      //se clica e start audio for true ja seta false e para
 
       this.setState({ startAudio: false });
       await AudioRecorder.stopRecording();
@@ -303,44 +279,38 @@ export default class Chat extends Component {
           // console.log(response, 'response from rns3 audio');
           if (response.status !== 201) {
             alert('Something went wrong, and the audio was not uploaded.');
-            // console.error(response.body);
+            //console.error(response.body);
             return;
           }
           const message = {};
           message._id = this.messageIdGenerator();
-          message.createdAt = Date.now();
-          message.user = {
-            _id: user._id,
-            name: `${user.firstName}`,
-            avatar: user.avatar,
-          };
+          message.createdAt = new Date().toISOString();
+          message.from = user._id;
           message.text = '';
           message.audio = response.headers.Location;
           message.messageType = 'audio';
 
           this.chatsFromFB.update({
-            messages: [message, ...this.state.messages],
+            messages: [message, ...this.state.messages]
+              .map(({ user, ...message }) => message),
           });
         })
         .catch(err => {
-          // console.log(err, 'err from audio upload');
+          //console.log(err, 'err from audio upload');
         });
     }
   };
-
   messageIdGenerator() {
     // generates uuid.
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = (Math.random() * 16) | 0;
-      const v = c == 'x' ? r : (r & 0x3) | 0x8;
+      let r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
-
   sendChatToDB(data) {
     // send your chat to your db
   }
-
   handleAddPicture = () => {
     //  const { user } = this.props; // wherever you user data is stored;
     const { navigation } = this.props;
@@ -388,22 +358,19 @@ export default class Chat extends Component {
               alert(
                 'Something went wrong, and the profile pic was not uploaded.'
               );
-              // console.error(response.body);
+              //console.error(response.body);
               return;
             }
             const message = {};
             message._id = this.messageIdGenerator();
-            message.createdAt = Date.now();
-            message.user = {
-              _id: user._id,
-              name: `${user.firstName}`,
-              avatar: user.avatar,
-            };
+            message.createdAt = new Date().toISOString();
+            message.from = user._id;
             message.image = response.headers.Location;
             message.messageType = 'image';
 
             this.chatsFromFB.update({
-              messages: [message, ...this.state.messages],
+              messages: [message, ...this.state.messages]
+                .map(({ user, ...message }) => message),
             });
           });
         if (!allowedExtensions.includes(extension)) {
@@ -412,7 +379,6 @@ export default class Chat extends Component {
       }
     });
   };
-
   renderAndroidMicrophone() {
     if (Platform.OS === 'android') {
       return (
@@ -436,7 +402,6 @@ export default class Chat extends Component {
       );
     }
   }
-
   renderLoading() {
     if (!this.state.messages.length && !this.state.fetchChats) {
       return (
