@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-
+import { useSelector } from 'react-redux';
 import {
   createAppContainer,
   createSwitchNavigator,
@@ -46,7 +46,10 @@ import ContentMenu from '~/components/ContentMenu';
 import { Touchable } from './components/Touchable';
 import { colors } from './values/colors';
 
+
+
 export default (isSigned = false,token,profileid) =>
+
   createAppContainer(
     createSwitchNavigator(
       {
@@ -57,12 +60,12 @@ export default (isSigned = false,token,profileid) =>
         NewProvider: {
           screen: createStackNavigator(
             {
-              AddressScreen,
               ActuationAreaScreen,
               PaymentMethodsScreen,
+              QualificationScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
-              //QualificationScreen,
+              //AddressScreen,
             },
             {
               defaultNavigationOptions: {
@@ -148,7 +151,7 @@ export default (isSigned = false,token,profileid) =>
                     screen: SocialMedia,
                   },
                   Address: {
-                    screen:  props => <Address {...props} token={token} profileid={profileid} />, 
+                    screen:  props => <Address {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
@@ -163,7 +166,7 @@ export default (isSigned = false,token,profileid) =>
                 }),
                 Serviços: createBottomTabNavigator({
                   Service :  {
-                    screen:  props => <Service {...props} token={token} profileid={profileid} />, 
+                    screen:  props => <Service {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
@@ -175,7 +178,7 @@ export default (isSigned = false,token,profileid) =>
                     }
                   },
                   Payment: {
-                    screen:  props => <Payment {...props} token={token} profileid={profileid} />, 
+                    screen:  props => <Payment {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
@@ -246,8 +249,8 @@ export default (isSigned = false,token,profileid) =>
         ),
       },
       {
-        initialRouteName: isSigned ? 'NewApp' : 'Sign',
-        //initialRouteName: 'NewProvider',
+        //initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        initialRouteName: 'NewProvider',
       }
     )
   );

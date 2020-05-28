@@ -139,8 +139,17 @@ class Service extends PureComponent {
         .get(`providers/${profileid}/occupation_areas`)
         .then(response => {
           console.log('aa', response);
+          const occupationAreasArray = Array.from(this.state.occupationAreas);
+
+          const list = response.data.userOccupationArea.map((details, i) => {
+            occupationAreasArray.push({
+              id: details.occupation_area_id,
+              label: details.occupation_area.title,
+            });
+          });
+
           this.setState({
-            selectedAreaAtuacao: response.data.userOccupationArea,
+            selectedAreaAtuacao: occupationAreasArray,
             selectedCitiesGet: response.data.userOccupationCity,
           });
         })
@@ -256,7 +265,9 @@ class Service extends PureComponent {
     this.setState({ selectedCities: newSelectedCities });
   };
 
-  renderItem = ({ item, isNewProvider }) => {
+  renderItem = ({ item }) => {
+    const { isNewProvider } = this.props;
+
     return (
       <View style={styles.cityItem}>
         {isNewProvider ? (

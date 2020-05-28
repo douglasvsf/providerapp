@@ -72,11 +72,7 @@ export default class Payment extends PureComponent {
     };
   }
 
-  handleSubmitNewProvider = () => {
-    const { onSubmitNewProvider } = this.props;
 
-    onSubmitNewProvider(this.state);
-  };
 
   async componentDidMount() {
     const { token, profileid } = this.props;
@@ -96,7 +92,30 @@ export default class Payment extends PureComponent {
       .catch(err => {
         console.log('erro', err);
       });
+
+
+      // to do : Preencher valores vindos do get para as bandeiras;
+      // await api
+      // .get(`providers/${profileid}/allowed_card_banners`)
+      // .then(response => {
+      //   console.log('aa', response);
+      //   this.setState({
+      //     onlinepayment: response.data.online_payment,
+      //     cashpayment: response.data.cash,
+      //     americancredit: response.data.machine_credit,
+      //     masterdebit: response.data.machine_debit,
+      //   });
+      // })
+      // .catch(err => {
+      //   console.log('erro', err);
+      // });
   }
+
+  handleSubmitNewProvider = () => {
+    const { onSubmitNewProvider } = this.props;
+
+    onSubmitNewProvider(this.state);
+  };
 
   render() {
     const { isNewProvider } = this.props;

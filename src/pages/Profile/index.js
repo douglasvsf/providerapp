@@ -32,7 +32,7 @@ export default function Profile() {
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const profileid = profile.id;
   useEffect(() => {
     setOldPassword('');
     setPassword('');
@@ -47,6 +47,7 @@ export default function Profile() {
         oldPassword,
         password,
         confirmPassword,
+        profileid,
       })
     );
   }

@@ -9,29 +9,6 @@ function ActuationAreaScreen({ navigation }) {
   const profileId = useSelector(state => state.user.profile.id);
   const [occupationCities, setOccupationCities] = useState([]);
   const [occupationAreas, setOccupationAreas] = useState([]);
-  // {
-  //   "occupationAreas": [
-  //     {
-  //       "occupation_area_id": 2
-
-  //     },
-  //         {
-  //       "occupation_area_id": 3
-
-  //     }
-
-  //   ],
-  //   "occupationCities": [
-  //     {
-  //       "city": "Campo Mourao",
-  //       "state": "Parana"
-  //     },
-  //     {
-  //       "city": "Araruna",
-  //       "state": "Parana"
-  //     }
-  //   ]
-  // }
   const occupationCitiesArray = Array.from(occupationCities);
   const occupationAreasArray = Array.from(occupationAreas);
   const onSubmit = useCallback(
@@ -65,13 +42,13 @@ function ActuationAreaScreen({ navigation }) {
 
         //  console.log('bbb', occupationAreasArray);
       });
-      console.log(
-        'oq envio',
-        JSON.stringify({
-          occupationAreas: occupationAreasArray,
-          occupationCities: occupationCitiesArray,
-        })
-      );
+      // console.log(
+      //   'oq envio',
+      //   JSON.stringify({
+      //     occupationAreas: occupationAreasArray,
+      //     occupationCities: occupationCitiesArray,
+      //   })
+      // );
       try {
         api.defaults.headers.Authorization = `Bearer ${token}`;
         const response = await api.post(
