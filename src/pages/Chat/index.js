@@ -208,17 +208,17 @@ export default function enterRoom({ navigation }) {
                 firstName: profile.name,
                 lastName: profile.name,
                 roomName: item.chat_id,
-                avatar: item.customer_avatar,
+                avatar: item.provider_avatar,
               };
 
-              const provider = {
-                name: item.provider_name,
-                avatar: item.provider_avatar,
+              const customer = {
+                name: item.customer_name,
+                avatar: item.customer_avatar,
               };
 
               navigation.navigate('Chat', {
                 user,
-                provider,
+                customer,
               });
             }}
           >
@@ -233,7 +233,7 @@ export default function enterRoom({ navigation }) {
               />
               <View style={styles.groupTextContainer}>
                 <View style={styles.groupTitleContainer}>
-                  <Text style={styles.groupName}>{item.provider_name}</Text>
+                  <Text style={styles.groupName}>{item.customer_name}</Text>
                   <Text style={styles.groupLastUpdated}>
                     {item.lastMessageHour}
                   </Text>
@@ -242,7 +242,7 @@ export default function enterRoom({ navigation }) {
                   <Text style={styles.groupText} numberOfLines={1}>
                     {profile.id == item.lastMessageFrom
                       ? 'Você: '
-                      : `${item.provider_name}: `}
+                      : `${item.customer_name}: `}
                     {item.lastMessageText}
                   </Text>
                 </View>

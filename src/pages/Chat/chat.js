@@ -1,10 +1,18 @@
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { ActivityIndicator, Alert, Dimensions, KeyboardAvoidingView, PermissionsAndroid, Platform, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  KeyboardAvoidingView,
+  PermissionsAndroid,
+  Platform,
+  Text,
+  View,
+} from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
 import { RNS3 } from 'react-native-aws3';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
-//const ImagePicker = require('react-native-image-picker');
 import ImagePicker from 'react-native-image-picker';
 import NavigationBar from 'react-native-navbar';
 import Sound from 'react-native-sound';
@@ -12,11 +20,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '~/utils/colors';
 import { awsConfig } from './config/AwsConfig';
 import { firebaseDB } from './config/FirebaseConfig';
-import { Submit, SubmitButton } from './styles';
+import { Submit } from './styles';
 
 export default class Chat extends Component {
   static propTypes = {
     user: propTypes.object,
+  };
+
+  static defaultProps = {
+    user: null,
   };
 
   state = {
@@ -25,7 +37,7 @@ export default class Chat extends Component {
     hasPermission: false,
     audioPath: `${
       AudioUtils.DocumentDirectoryPath
-      }/${this.messageIdGenerator()}test.aac`,
+    }/${this.messageIdGenerator()}test.aac`,
     playAudio: false,
     fetchChats: false,
     audioSettings: {
@@ -42,12 +54,12 @@ export default class Chat extends Component {
   componentWillMount() {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
-    const provider = navigation.getParam('provider')
+    const customer = navigation.getParam('customer');
 
-    //console.log(awsConfig, 'awsConfig');
-    //console.log(this.props, 'chat props');
+    // console.log(awsConfig, 'awsConfig');
+    // console.log(this.props, 'chat props');
     this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}`);
-    //console.log(this.chatsFromFB, 'chats from fb');
+    // console.log(this.chatsFromFB, 'chats from fb');
 
     this.checkPermissionCamera();
 
@@ -61,18 +73,18 @@ export default class Chat extends Component {
       }
       let { messages } = snapshot.val();
       messages = messages.map(node => {
-        //console.log(node, 'node');
+        // console.log(node, 'node');
         const message = {};
         message._id = node._id;
         message.text = node.messageType === 'message' ? node.text : '';
         message.createdAt = node.createdAt;
         message.user = {
           _id: node.from,
-          name: node.from === user._id ? user.name : provider.name,
-          avatar: node.from === user._id ? user.avatar : provider.avatar,
+          name: node.from === user._id ? user.name : customer.name,
+          avatar: node.from === user._id ? user.avatar : customer.avatar,
         };
-        message.from = node.from,
-          message.image = node.messageType === 'image' ? node.image : '';
+        (message.from = node.from),
+          (message.image = node.messageType === 'image' ? node.image : '');
         message.audio = node.messageType === 'audio' ? node.audio : '';
         message.messageType = node.messageType;
         return message;
@@ -83,6 +95,7 @@ export default class Chat extends Component {
       });
     });
   }
+
   componentDidMount() {
     this.checkPermission().then(async hasPermission => {
       this.setState({ hasPermission });
@@ -92,13 +105,14 @@ export default class Chat extends Component {
         this.state.audioSettings
       );
       AudioRecorder.onProgress = data => {
-        //console.log(data, 'onProgress data');
+        // console.log(data, 'onProgress data');
       };
       AudioRecorder.onFinished = data => {
-        //console.log(data, 'on finish');
+        // console.log(data, 'on finish');
       };
     });
   }
+
   componentWillUnmount() {
     this.setState({
       messages: [],
@@ -117,7 +131,7 @@ export default class Chat extends Component {
       PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
       rationale
     ).then(result => {
-      //console.log('Permission result:', result);
+      // console.log('Permission result:', result);
       return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
     });
   }
@@ -134,34 +148,37 @@ export default class Chat extends Component {
       PermissionsAndroid.PERMISSIONS.CAMERA,
       rationale
     ).then(result => {
-      //console.log('Permission result:', result);
+      // console.log('Permission result:', result);
       return result === true || result === PermissionsAndroid.RESULTS.GRANTED;
     });
   }
 
   onSend(messages = []) {
-    const { navigation } = this.props
-    const user = navigation.getParam('user')
+    const { navigation } = this.props;
+    const user = navigation.getParam('user');
 
     messages[0].messageType = 'message';
     messages[0].from = user._id;
 
-    const updatedMessages = [messages[0], ...this.state.messages]
-      .map(({ user, ...message }) => message)
+    const updatedMessages = [messages[0], ...this.state.messages].map(
+      ({ user, ...message }) => message
+    );
 
     this.chatsFromFB.update({
       messages: updatedMessages,
     });
   }
+
   renderName = props => {
+    const { user: currentMessageUser } = props.currentMessage;
+    const { user: previousMessageUser } = props.previousMessage;
 
-    const { user: currentMessageUser } = props.currentMessage
-    const { user: previousMessageUser } = props.previousMessage
+    const shouldRenderName =
+      !previousMessageUser ||
+      currentMessageUser._id !== previousMessageUser._id;
 
-    const shouldRenderName = !previousMessageUser || currentMessageUser._id !== previousMessageUser._id
-
-    const { name } = currentMessageUser
-    const firstName = name.split(' ')[0]
+    const { name } = currentMessageUser;
+    const firstName = name.split(' ')[0];
 
     return shouldRenderName ? (
       <View>
@@ -170,45 +187,47 @@ export default class Chat extends Component {
         </Text>
       </View>
     ) : (
-        <View />
-      );
+      <View />
+    );
   };
+
   renderAudio = props => {
     return !props.currentMessage.audio ? (
       <View />
     ) : (
-        <Ionicons
-          name="ios-play"
-          size={35}
-          color={this.state.playAudio ? 'red' : 'blue'}
-          style={{
-            left: 90,
-            position: 'relative',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.5,
-            backgroundColor: 'transparent',
-          }}
-          onPress={() => {
-            this.setState({
-              playAudio: true,
-            });
-            const sound = new Sound(props.currentMessage.audio, '', error => {
-              if (error) {
-                //console.log('failed to load the sound', error);
+      <Ionicons
+        name="ios-play"
+        size={35}
+        color={this.state.playAudio ? 'red' : 'blue'}
+        style={{
+          left: 90,
+          position: 'relative',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.5,
+          backgroundColor: 'transparent',
+        }}
+        onPress={() => {
+          this.setState({
+            playAudio: true,
+          });
+          const sound = new Sound(props.currentMessage.audio, '', error => {
+            if (error) {
+              // console.log('failed to load the sound', error);
+            }
+            this.setState({ playAudio: false });
+            sound.play(success => {
+              // console.log(success, 'success play');
+              if (!success) {
+                Alert.alert('Erro ao Reproduzir Audio');
               }
-              this.setState({ playAudio: false });
-              sound.play(success => {
-                //console.log(success, 'success play');
-                if (!success) {
-                  Alert.alert('Erro ao Reproduzir Audio');
-                }
-              });
             });
-          }}
-        />
-      );
+          });
+        }}
+      />
+    );
   };
+
   renderBubble = props => {
     return (
       <View>
@@ -228,15 +247,21 @@ export default class Chat extends Component {
 
   renderSend = ({ onSend, ...props }) => {
     return (
-      <Send {...props} onSend={onSend} label="Enviar" textStyle={{ color: colors.primary }} />
+      <Send
+        {...props}
+        onSend={onSend}
+        label="Enviar"
+        textStyle={{ color: colors.primary }}
+      />
     );
   };
 
   handleAvatarPress = props => {
     // add navigation to user's profile
   };
+
   handleAudio = async () => {
-    //console.log(this.state.startAudio, 'stado do audio');
+    // console.log(this.state.startAudio, 'stado do audio');
 
     // const { user } = this.props;
     const { navigation } = this.props;
@@ -253,7 +278,7 @@ export default class Chat extends Component {
       );
       await AudioRecorder.startRecording();
     } else {
-      //se clica e start audio for true ja seta false e para
+      // se clica e start audio for true ja seta false e para
 
       this.setState({ startAudio: false });
       await AudioRecorder.stopRecording();
@@ -279,7 +304,7 @@ export default class Chat extends Component {
           // console.log(response, 'response from rns3 audio');
           if (response.status !== 201) {
             alert('Something went wrong, and the audio was not uploaded.');
-            //console.error(response.body);
+            // console.error(response.body);
             return;
           }
           const message = {};
@@ -291,26 +316,30 @@ export default class Chat extends Component {
           message.messageType = 'audio';
 
           this.chatsFromFB.update({
-            messages: [message, ...this.state.messages]
-              .map(({ user, ...message }) => message),
+            messages: [message, ...this.state.messages].map(
+              ({ user, ...message }) => message
+            ),
           });
         })
         .catch(err => {
-          //console.log(err, 'err from audio upload');
+          // console.log(err, 'err from audio upload');
         });
     }
   };
+
   messageIdGenerator() {
     // generates uuid.
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      let r = (Math.random() * 16) | 0,
-        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      const r = (Math.random() * 16) | 0;
+      const v = c == 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);
     });
   }
+
   sendChatToDB(data) {
     // send your chat to your db
   }
+
   handleAddPicture = () => {
     //  const { user } = this.props; // wherever you user data is stored;
     const { navigation } = this.props;
@@ -358,7 +387,7 @@ export default class Chat extends Component {
               alert(
                 'Something went wrong, and the profile pic was not uploaded.'
               );
-              //console.error(response.body);
+              // console.error(response.body);
               return;
             }
             const message = {};
@@ -369,8 +398,9 @@ export default class Chat extends Component {
             message.messageType = 'image';
 
             this.chatsFromFB.update({
-              messages: [message, ...this.state.messages]
-                .map(({ user, ...message }) => message),
+              messages: [message, ...this.state.messages].map(
+                ({ user, ...message }) => message
+              ),
             });
           });
         if (!allowedExtensions.includes(extension)) {
@@ -379,6 +409,7 @@ export default class Chat extends Component {
       }
     });
   };
+
   renderAndroidMicrophone() {
     if (Platform.OS === 'android') {
       return (
@@ -402,6 +433,7 @@ export default class Chat extends Component {
       );
     }
   }
+
   renderLoading() {
     if (!this.state.messages.length && !this.state.fetchChats) {
       return (
@@ -410,6 +442,11 @@ export default class Chat extends Component {
         </View>
       );
     }
+  }
+
+  openNewSolicitationModal() {
+    const { navigation } = this.props;
+    navigation.navigate('NewSolicitation');
   }
 
   render() {
@@ -435,8 +472,6 @@ export default class Chat extends Component {
           leftButton={leftButtonConfig}
         />
         {this.renderLoading()}
-
-        <SubmitButton>Contratar Serviço</SubmitButton>
 
         <GiftedChat
           messages={this.state.messages}
