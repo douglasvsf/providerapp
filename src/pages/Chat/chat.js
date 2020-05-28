@@ -1,44 +1,34 @@
-/* eslint-disable react/sort-comp */
-/* eslint-disable consistent-return */
-/* eslint-disable no-alert */
-/* eslint-disable class-methods-use-this */
-/* eslint-disable eqeqeq */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unused-state */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
+import propTypes from 'prop-types';
 import React, { Component } from 'react';
-import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
-
 import {
-  View,
-  Text,
-  Platform,
-  PermissionsAndroid,
-  Dimensions,
   ActivityIndicator,
   Alert,
+  Dimensions,
   KeyboardAvoidingView,
+  PermissionsAndroid,
+  Platform,
+  Text,
+  View,
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
-import propTypes from 'prop-types';
 import { RNS3 } from 'react-native-aws3';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Sound from 'react-native-sound';
-import NavigationBar from 'react-native-navbar';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import ImagePicker from 'react-native-image-picker';
-import { firebaseDB } from './config/FirebaseConfig';
-import awsConfig from './config/AwsConfig';
-
-import { Submit, SubmitButton } from './styles';
+import NavigationBar from 'react-native-navbar';
+import Sound from 'react-native-sound';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '~/utils/colors';
+import { awsConfig } from './config/AwsConfig';
+import { firebaseDB } from './config/FirebaseConfig';
+import { Submit } from './styles';
 
 export default class Chat extends Component {
   static propTypes = {
     user: propTypes.object,
+  };
+
+  static defaultProps = {
+    user: null,
   };
 
   state = {
@@ -64,6 +54,7 @@ export default class Chat extends Component {
   componentWillMount() {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
+    const customer = navigation.getParam('customer');
 
     // console.log(awsConfig, 'awsConfig');
     // console.log(this.props, 'chat props');
@@ -88,15 +79,17 @@ export default class Chat extends Component {
         message.text = node.messageType === 'message' ? node.text : '';
         message.createdAt = node.createdAt;
         message.user = {
-          _id: node.user._id,
-          name: node.user.name,
-          avatar: node.user.avatar,
+          _id: node.from,
+          name: node.from === user._id ? user.name : customer.name,
+          avatar: node.from === user._id ? user.avatar : customer.avatar,
         };
-        message.image = node.messageType === 'image' ? node.image : '';
+        (message.from = node.from),
+          (message.image = node.messageType === 'image' ? node.image : '');
         message.audio = node.messageType === 'audio' ? node.audio : '';
         message.messageType = node.messageType;
         return message;
       });
+
       this.setState({
         messages: [...messages],
       });
@@ -161,32 +154,40 @@ export default class Chat extends Component {
   }
 
   onSend(messages = []) {
+    const { navigation } = this.props;
+    const user = navigation.getParam('user');
+
     messages[0].messageType = 'message';
+    messages[0].from = user._id;
+
+    const updatedMessages = [messages[0], ...this.state.messages].map(
+      ({ user, ...message }) => message
+    );
+
     this.chatsFromFB.update({
-      messages: [messages[0], ...this.state.messages],
+      messages: updatedMessages,
     });
   }
 
   renderName = props => {
-    const { navigation } = this.props;
-    // const user = navigation.getParam('user');
+    const { user: currentMessageUser } = props.currentMessage;
+    const { user: previousMessageUser } = props.previousMessage;
 
-    const { user: self } = navigation.getParam('user'); // where your user data is stored;
-    const { user = {} } = props.currentMessage;
-    const { user: pUser = {} } = props.previousMessage;
-    const isSameUser = pUser._id === user._id;
-    // const isSelf = user._id === self._Id;
-    const shouldNotRenderName = isSameUser;
-    const firstName = user.name.split(' ')[0];
-    // let lastName = user.name.split(' ')[1][0];
-    return shouldNotRenderName ? (
-      <View />
-    ) : (
+    const shouldRenderName =
+      !previousMessageUser ||
+      currentMessageUser._id !== previousMessageUser._id;
+
+    const { name } = currentMessageUser;
+    const firstName = name.split(' ')[0];
+
+    return shouldRenderName ? (
       <View>
         <Text style={{ color: 'grey', padding: 2, alignSelf: 'center' }}>
           {`${firstName}.`}
         </Text>
       </View>
+    ) : (
+      <View />
     );
   };
 
@@ -308,18 +309,16 @@ export default class Chat extends Component {
           }
           const message = {};
           message._id = this.messageIdGenerator();
-          message.createdAt = Date.now();
-          message.user = {
-            _id: user._id,
-            name: `${user.firstName}`,
-            avatar: user.avatar,
-          };
+          message.createdAt = new Date().toISOString();
+          message.from = user._id;
           message.text = '';
           message.audio = response.headers.Location;
           message.messageType = 'audio';
 
           this.chatsFromFB.update({
-            messages: [message, ...this.state.messages],
+            messages: [message, ...this.state.messages].map(
+              ({ user, ...message }) => message
+            ),
           });
         })
         .catch(err => {
@@ -393,17 +392,15 @@ export default class Chat extends Component {
             }
             const message = {};
             message._id = this.messageIdGenerator();
-            message.createdAt = Date.now();
-            message.user = {
-              _id: user._id,
-              name: `${user.firstName}`,
-              avatar: user.avatar,
-            };
+            message.createdAt = new Date().toISOString();
+            message.from = user._id;
             message.image = response.headers.Location;
             message.messageType = 'image';
 
             this.chatsFromFB.update({
-              messages: [message, ...this.state.messages],
+              messages: [message, ...this.state.messages].map(
+                ({ user, ...message }) => message
+              ),
             });
           });
         if (!allowedExtensions.includes(extension)) {
@@ -447,6 +444,11 @@ export default class Chat extends Component {
     }
   }
 
+  openNewSolicitationModal() {
+    const { navigation } = this.props;
+    navigation.navigate('NewSolicitation');
+  }
+
   render() {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
@@ -470,8 +472,6 @@ export default class Chat extends Component {
           leftButton={leftButtonConfig}
         />
         {this.renderLoading()}
-
-        <SubmitButton>Contratar Serviço</SubmitButton>
 
         <GiftedChat
           messages={this.state.messages}
