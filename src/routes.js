@@ -1,8 +1,10 @@
 /* eslint-disable */
 
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {
   createAppContainer,
   createBottomTabNavigator,
@@ -34,17 +36,8 @@ import Statistics from './pages/Statistics';
 import Wallet from './pages/Wallet';
 import { colors } from './values/colors';
 
+export default (isSigned = false,token,profileid) =>
 
-
-
-
-
-
-
-
-
-
-export default (isSigned = false, token, profileid) =>
   createAppContainer(
     createSwitchNavigator(
       {
@@ -55,12 +48,12 @@ export default (isSigned = false, token, profileid) =>
         NewProvider: {
           screen: createStackNavigator(
             {
-              AddressScreen,
               ActuationAreaScreen,
               PaymentMethodsScreen,
+              QualificationScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
-              //QualificationScreen,
+
             },
             {
               defaultNavigationOptions: {
@@ -130,9 +123,11 @@ export default (isSigned = false, token, profileid) =>
                         }
                       },
 
+     
                     },
 
-                  },
+                    },
+                
 
                   Estatisticas: {
                     screen: Statistics,
@@ -146,8 +141,10 @@ export default (isSigned = false, token, profileid) =>
                     screen: SocialMedia,
                   },
                   Address: {
-                    screen: props => <Address {...props} token={token} profileid={profileid} />,
-                    navigationOptions: {
+
+                    screen:  props => <Address {...props} token={token} profileid={profileid.id} />, 
+                    navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -160,9 +157,11 @@ export default (isSigned = false, token, profileid) =>
                   AdditionalInfo,
                 }),
                 Serviços: createBottomTabNavigator({
-                  Service: {
-                    screen: props => <Service {...props} token={token} profileid={profileid} />,
-                    navigationOptions: {
+
+                  Service :  {
+                    screen:  props => <Service {...props} token={token} profileid={profileid.id} />, 
+                    navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -173,8 +172,10 @@ export default (isSigned = false, token, profileid) =>
                     }
                   },
                   Payment: {
-                    screen: props => <Payment {...props} token={token} profileid={profileid} />,
-                    navigationOptions: {
+
+                    screen:  props => <Payment {...props} token={token} profileid={profileid.id} />, 
+                    navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -192,7 +193,9 @@ export default (isSigned = false, token, profileid) =>
 
                   },
 
-                }),
+
+                  }),
+
               },
               {
                 contentComponent: ContentMenu,
@@ -244,8 +247,10 @@ export default (isSigned = false, token, profileid) =>
         ),
       },
       {
-        initialRouteName: isSigned ? 'NewApp' : 'Sign',
-        //initialRouteName: 'NewProvider',
+
+        //initialRouteName: isSigned ? 'NewApp' : 'Sign',
+        initialRouteName: 'NewProvider',
+
       }
     )
   );

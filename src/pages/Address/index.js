@@ -1,11 +1,11 @@
-import React, { PureComponent, createRef } from 'react';
+import React, { PureComponent } from 'react';
 import { Keyboard, Alert, ScrollView } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Form } from '@unform/mobile';
 
 import cepApi from '../../services/cep';
 import Background from '../../components/Background';
+import api from '../../services/api';
 import {
   Container,
   FormInput,
@@ -15,25 +15,44 @@ import {
   Title,
 } from './styles';
 import { colors } from '~/values/colors';
-import UnformInput from '~/components/UnformField';
 
 export default class AdditionalInfo extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      endereco: {
-        cep: '',
-        logradouro: '',
-        complemento: '',
-        bairro: '',
-        localidade: '',
-        uf: '',
-      },
       cep: '',
+      logradouro: '',
+      complemento: '',
+      bairro: '',
+      localidade: '',
+      uf: '',
+      number: '',
     };
+  }
 
-    this.formRef = createRef();
+  async componentDidMount() {
+    const { token, profileid } = this.props;
+
+    console.log(profileid);
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .get(`users/10/address`)
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          cep: response.data.zip_code,
+          logradouro: response.data.public_place,
+          complemento: response.data.complement,
+          bairro: response.data.neighborhood,
+          localidade: response.data.city,
+          uf: response.data.state,
+          number: response.data.number,
+        });
+      })
+      .catch(err => {
+        console.log('erromeudeus', err);
+      });
   }
 
   handleSubmit = () => {
@@ -42,23 +61,63 @@ export default class AdditionalInfo extends PureComponent {
       Alert.alert('Atenção', 'Digite um CEP válido');
     } else
       cepApi(cep).then(data => {
-        this.setState({ endereco: data });
+        this.setState({ cep: data.cep });
+        this.setState({ logradouro: data.logradouro });
+        this.setState({ complemento: data.complemento });
+        this.setState({ bairro: data.bairro });
+        this.setState({ localidade: data.localidade });
+        this.setState({ uf: data.uf });
+        this.setState({ number: '' });
         Keyboard.dismiss();
       });
   };
 
   handleSubmitNewProvider = () => {
-    const { endereco } = this.state;
     const { onSubmitNewProvider } = this.props;
-    onSubmitNewProvider(endereco);
+    onSubmitNewProvider(this.state);
   };
 
-  handleFormSubmit = values => {
-    console.warn(this.formRef.current);
-  };
+  async updateAddress() {
+    const { token, profileid } = this.props;
+    const {
+      cep,
+      logradouro,
+      number,
+      bairro,
+      localidade,
+      uf,
+      complemento,
+    } = this.state;
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .put(`users/${profileid}/address`, {
+        zipCode: cep,
+        publicPlace: logradouro,
+        number,
+        neighborhood: bairro,
+        city: localidade,
+        state: uf,
+        complement: complemento,
+      })
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          cep: response.data.zip_code,
+          logradouro: response.data.public_place,
+          complemento: response.data.complement,
+          bairro: response.data.neighborhood,
+          localidade: response.data.city,
+          uf: response.data.state,
+          number: response.data.number,
+        });
+      })
+      .catch(err => {
+        console.log('erro', err);
+      });
+  }
 
   render() {
-    const { cep, endereco } = this.state;
+    const { cep } = this.state;
     const { isNewProvider, submitting } = this.props;
 
     return (
@@ -77,7 +136,7 @@ export default class AdditionalInfo extends PureComponent {
               autoCorrect={false}
               placeholder="Digite seu CEP"
               keyboardType="numeric"
-              maxLength={8}
+              maxLength={9}
             />
 
             <Submit onPress={this.handleSubmit}>
@@ -86,70 +145,68 @@ export default class AdditionalInfo extends PureComponent {
 
             <Separator />
 
-            <Form ref={this.formRef} onSubmit={this.handleFormSubmit}>
-              <UnformInput
-                inputComponent={FormInput}
-                // value={endereco.logradouro}
-                name="logradouro"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Logradouro"
-              />
+            <FormInput
+              value={this.state.logradouro}
+              name="logradouro"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Logradouro"
+            />
 
-              <UnformInput
-                inputComponent={FormInput}
-                name="numero"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Numero"
-              />
+            <FormInput
+              name="numero"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Numero"
+              value={this.state.number}
+              onChangeText={number => this.setState({ number })}
+            />
 
-              <UnformInput
-                inputComponent={FormInput}
-                // value={endereco.bairro}
-                name="bairro"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Bairro"
-              />
+            <FormInput
+              value={this.state.bairro}
+              name="bairro"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Bairro"
+            />
 
-              <UnformInput
-                inputComponent={FormInput}
-                name="complemento"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Complemento"
-              />
+            <FormInput
+              value={this.state.complemento}
+              name="complemento"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Complemento"
+              onChangeText={complemento => this.setState({ complemento })}
+            />
 
-              <UnformInput
-                inputComponent={FormInput}
-                // value={endereco.localidade}
-                name="cidade"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Cidade"
-              />
+            <FormInput
+              value={this.state.localidade}
+              name="cidade"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Cidade"
+            />
 
-              <UnformInput
-                inputComponent={FormInput}
-                // value={endereco.uf}
-                name="uf"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Estado"
-              />
+            <FormInput
+              value={this.state.uf}
+              name="uf"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Estado"
+            />
 
-              {isNewProvider ? (
-                <SubmitButton
-                  loading={submitting}
-                  onPress={() => this.formRef.current.submitForm()}
-                >
-                  Próximo
-                </SubmitButton>
-              ) : (
-                <SubmitButton>Atualizar Endereço</SubmitButton>
-              )}
-            </Form>
+            {isNewProvider ? (
+              <SubmitButton
+                loading={submitting}
+                onPress={() => this.handleSubmitNewProvider()}
+              >
+                Próximo
+              </SubmitButton>
+            ) : (
+              <SubmitButton onPress={() => this.updateAddress()}>
+                Atualizar Endereço
+              </SubmitButton>
+            )}
           </ScrollView>
         </Container>
       </Background>

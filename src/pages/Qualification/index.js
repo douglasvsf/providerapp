@@ -11,7 +11,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements';
-
+import { useSelector } from 'react-redux';
+import api from '../../services/api';
 import { colors } from '~/values/colors';
 import { Background, Title, FormInput, Label } from './styles';
 
@@ -109,18 +110,52 @@ const ListDivider = () => <View style={styles.listDivider} />;
 
 const Spacer = () => <View style={styles.spacer} />;
 
-const QualificationModal = ({ visible, onDismiss, onAdd }) => {
+const QualificationModal = ({ visible, onDismiss, onAdd, isNewProvider }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-
+  const [newQualification, setNewQualification] = useState([]);
+  const newArrayQualification = Array.from(newQualification);
   const onDismissModal = () => {
     setTitle('');
     setDescription('');
     onDismiss();
   };
 
-  const onAddQualification = () => {
+  // const onAddQualificacoes = qualificacao => {
+  //   setQualificacoes([...qualificacoes, qualificacao]);
+  // };
+
+  const onAddQualification = async () => {
     onAdd({ title, description });
+
+    if (isNewProvider) {
+      const profileId = useSelector(state => state.user.profile.id);
+      const token = useSelector(state => state.auth.token);
+
+      try {
+        newArrayQualification.push({
+          title,
+          description,
+        });
+
+        const resultNewArrayQualification = newArrayQualification.find(obj => {
+          return obj;
+        });
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+        const response = await api.post(
+          `providers/${profileId}/qualifications`,
+          {
+            qualifications: resultNewArrayQualification,
+          }
+        );
+        console.log(response);
+      } catch (ex) {
+        console.warn(ex);
+      } finally {
+       // setSubmitting(false);
+      }
+    }
+
     setTitle('');
     setDescription('');
     onDismiss();
@@ -216,8 +251,8 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
   const [qualificacoes, setQualificacoes] = useState([]);
 
   const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider({});
-  }, [onSubmitNewProvider]);
+    onSubmitNewProvider(qualificacoes);
+  }, [onSubmitNewProvider, qualificacoes]);
 
   const showModal = () => {
     setModalVisible(true);
@@ -273,14 +308,13 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
       <View style={styles.saveButtonContainer}>
         {isNewProvider ? (
           <Button onPress={handleSubmitNewProvider} title="Finalizar" />
-        ) : (
-          <Button title="Salvar" />
-        )}
+        ) : null}
       </View>
       <QualificationModal
         visible={modalVisible}
         onDismiss={onDismissModal}
         onAdd={onAddQualificacoes}
+        isNewProvider
       />
     </Background>
   );

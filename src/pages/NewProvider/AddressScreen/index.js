@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import api from '../../../services/api';
 
 import Address from '../../Address';
 
@@ -21,15 +22,22 @@ import Address from '../../Address';
 
 function AddressScreen({ navigation }) {
   const [submitting, setSubmitting] = useState(false);
+  const token = useSelector(state => state.auth.token);
+  const profileId = useSelector(state => state.user.profile.id);
+
   const onSubmit = useCallback(
     // eslint-disable-next-line no-unused-vars
     async address => {
       try {
-        const { data } = await axios.post('', {
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+        const { data } = await api.post(`users/${profileId}/address`, {
           zipCode: address.cep,
           publicPlace: address.logradouro,
-          number: 123,
+          number: address.number,
           neighborhood: address.bairro,
+          city: address.localidade,
+          state: address.uf,
+          complement: address.complemento,
         });
 
         navigation.navigate('ActuationAreaScreen');
@@ -39,7 +47,7 @@ function AddressScreen({ navigation }) {
         setSubmitting(false);
       }
     },
-    [navigation]
+    [navigation, profileId, token]
   );
 
   return (
