@@ -2,51 +2,39 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  createAppContainer,
-  createSwitchNavigator,
-  createBottomTabNavigator,
-  createStackNavigator,
-  createDrawerNavigator,
-} from 'react-navigation';
-
 import { Image } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-
-import Dashboard from './pages/Dashboard';
+import {
+  createAppContainer,
+  createBottomTabNavigator,
+  createDrawerNavigator,
+  createStackNavigator,
+  createSwitchNavigator
+} from 'react-navigation';
+import solicitationIcon from '~/assets/solicitation.png';
+import ContentMenu from '~/components/ContentMenu';
+import { Touchable } from './components/Touchable';
+import AdditionalInfo from './pages/AdditionalInfo';
+import Address from './pages/Address';
 import enterRoom from './pages/Chat';
 import Chat from './pages/Chat/chat';
-import Profile from './pages/Profile';
-
-import solicitationIcon from '~/assets/solicitation.png';
-import solicitationIconFocused from '~/assets/solicitation.png';
-
-import Address from './pages/Address';
-import AdditionalInfo from './pages/AdditionalInfo';
-import Statistics from './pages/Statistics';
-import Payment from './pages/Payment';
-import Qualification from './pages/Qualification';
-import Service from './pages/Service';
-import Wallet from './pages/Wallet';
-
-import SocialMedia from './pages/SocialMedia';
-
+import Dashboard from './pages/Dashboard';
 import ActuationAreaScreen from './pages/NewProvider/ActuationAreaScreen';
 import AddressScreen from './pages/NewProvider/AddressScreen';
 import AditionalInfoScreen from './pages/NewProvider/AditionalInfoScreen';
 import PaymentMethodsScreen from './pages/NewProvider/PaymentMethodsScreen';
-import QualificationScreen from './pages/NewProvider/QualificationScreen';
 import SocialMediaScreen from './pages/NewProvider/SocialMediaScreen';
-
-import ContentMenu from '~/components/ContentMenu';
-import { Touchable } from './components/Touchable';
+import Payment from './pages/Payment';
+import Profile from './pages/Profile';
+import Qualification from './pages/Qualification';
+import Service from './pages/Service';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import SocialMedia from './pages/SocialMedia';
+import Statistics from './pages/Statistics';
+import Wallet from './pages/Wallet';
 import { colors } from './values/colors';
-
-
 
 export default (isSigned = false,token,profileid) =>
 
@@ -65,7 +53,7 @@ export default (isSigned = false,token,profileid) =>
               QualificationScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
-              //AddressScreen,
+
             },
             {
               defaultNavigationOptions: {
@@ -134,11 +122,13 @@ export default (isSigned = false,token,profileid) =>
                           );
                         }
                       },
+
      
                     },
 
                     },
                 
+
                   Estatisticas: {
                     screen: Statistics,
                   },
@@ -151,8 +141,10 @@ export default (isSigned = false,token,profileid) =>
                     screen: SocialMedia,
                   },
                   Address: {
+
                     screen:  props => <Address {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -165,9 +157,11 @@ export default (isSigned = false,token,profileid) =>
                   AdditionalInfo,
                 }),
                 Serviços: createBottomTabNavigator({
+
                   Service :  {
                     screen:  props => <Service {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -178,8 +172,10 @@ export default (isSigned = false,token,profileid) =>
                     }
                   },
                   Payment: {
+
                     screen:  props => <Payment {...props} token={token} profileid={profileid.id} />, 
                     navigationOptions : {
+
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -197,7 +193,9 @@ export default (isSigned = false,token,profileid) =>
 
                   },
 
+
                   }),
+
               },
               {
                 contentComponent: ContentMenu,
@@ -249,8 +247,10 @@ export default (isSigned = false,token,profileid) =>
         ),
       },
       {
+
         //initialRouteName: isSigned ? 'NewApp' : 'Sign',
         initialRouteName: 'NewProvider',
+
       }
     )
   );

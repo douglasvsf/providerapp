@@ -12,6 +12,7 @@ export function* signIn({ payload }) {
     const response = yield call(api.post, 'sessions', {
       email,
       password,
+      provider: true,
     });
 
     const { token, user } = response.data;
