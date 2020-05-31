@@ -27,9 +27,9 @@ function AddressScreen({ navigation }) {
 
         navigation.navigate('ActuationAreaScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
-        setSubmitting(true);
+        setSubmitting(false);
       }
     },
     [navigation, profileId, token]

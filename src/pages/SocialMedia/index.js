@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 import Background from '~/components/Background';
-
 import api from '../../services/api';
 
 import {
@@ -46,7 +46,6 @@ export default function SocialMedia({
       await api
         .get(`users/${profileId}/social_media`)
         .then(response => {
-          console.log('aa', response);
           // se for cpf
           if (response.data !== null) {
             setPhonenumber(response.data.telephone_number);
@@ -58,7 +57,10 @@ export default function SocialMedia({
           setIsBack(verifyIsBack);
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com a internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
     loadAdditionalInfo();
@@ -73,7 +75,6 @@ export default function SocialMedia({
     await api
       .put(`users/${profileId}/social_media`, result)
       .then(response => {
-        console.log('aa', response);
         // se for cpf
 
         if (response.data !== null) {
@@ -88,13 +89,24 @@ export default function SocialMedia({
         }
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que todos campos estão preenchidos',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
-  const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider(socialMediasArray);
-    setIsBack(true);
+  const handleSubmitNewProvider = useCallback(async () => {
+    const responseSubmitNew = await onSubmitNewProvider(socialMediasArray);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      setIsBack(true);
+    }
   }, [onSubmitNewProvider, socialMediasArray]);
   return (
     <Background>

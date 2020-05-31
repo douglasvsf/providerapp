@@ -82,13 +82,13 @@ function PaymentMethodsScreen({ navigation }) {
           }
         );
 
-        console.log(
-          'oq envio',
-          JSON.stringify({
-            credit: resultAllowedCreditBanner,
-            debit: resultAllowedDebitBanner,
-          })
-        );
+        // console.log(
+        //   'oq envio',
+        //   JSON.stringify({
+        //     credit: resultAllowedCreditBanner,
+        //     debit: resultAllowedDebitBanner,
+        //   })
+        // );
 
         const responseBanner = await api.post(
           `providers/${profileId}/allowed_card_banners`,
@@ -97,11 +97,11 @@ function PaymentMethodsScreen({ navigation }) {
             debit: resultAllowedDebitBanner,
           }
         );
-        console.log('respondenormal', response);
-        console.log('respondebanner', responseBanner);
+        // console.log('respondenormal', response);
+        // console.log('respondebanner', responseBanner);
         navigation.navigate('AditionalInfoScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }

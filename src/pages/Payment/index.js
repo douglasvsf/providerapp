@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Button, CheckBox } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Background from '~/components/Background';
@@ -79,15 +80,10 @@ class Payment extends PureComponent {
 
   async componentDidMount() {
     const { token, profileid, isNewProvider } = this.props;
-    console.log('token', token);
-    console.log('profileid', profileid);
-    console.log('isNewProvider', isNewProvider);
     api.defaults.headers.Authorization = `Bearer ${token}`;
     await api
       .get(`providers/${profileid}/payment_methods`)
       .then(response => {
-        console.log('aa', response);
-
         if (response.data !== null) {
           this.setState({
             onlinepayment: response.data.online_payment,
@@ -100,13 +96,15 @@ class Payment extends PureComponent {
         this.setState({ isBack: verifyIsBack });
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que possui conexão com internet',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
 
     await api
       .get(`providers/${profileid}/allowed_card_banners`)
       .then(response => {
-        console.log('aa', response);
         this.setState({
           visacredit: response.data.allowedCreditBanners.visa,
           mastercredit: response.data.allowedCreditBanners.mastercard,
@@ -119,15 +117,28 @@ class Payment extends PureComponent {
         });
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que possui conexão com internet',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
-  handleSubmitNewProvider = () => {
+  handleSubmitNewProvider = async () => {
     const { onSubmitNewProvider } = this.props;
 
-    onSubmitNewProvider(this.state);
-    this.setState({ isBack: true });
+    // onSubmitNewProvider(this.state);
+    // this.setState({ isBack: true });
+
+    const responseSubmitNew = await onSubmitNewProvider(this.state);
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      this.setState({ isBack: true });
+    }
   };
 
   async updatePaymenthMethods() {
@@ -190,13 +201,6 @@ class Payment extends PureComponent {
     });
     try {
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      // console.log(
-      //   'oq envio',
-      //   JSON.stringify({
-      //     credit: resultAllowedCreditBanner,
-      //     debit: resultAllowedDebitBanner,
-      //   })
-      // );
 
       const responseBanner = await api
         .put(`providers/${profileid}/allowed_card_banners`, {
@@ -204,9 +208,6 @@ class Payment extends PureComponent {
           debit: resultAllowedDebitBanner,
         })
         .then(responseBanner => {
-
-
-          console.log('respondebanner', responseBanner);
           this.setState({
             visacredit: responseBanner.data.allowedCreditBanners.visa,
             mastercredit: responseBanner.data.allowedCreditBanners.mastercard,
@@ -218,50 +219,49 @@ class Payment extends PureComponent {
             masterdebit: responseBanner.data.allowedDebitBanners.mastercard,
             elodebit: responseBanner.data.allowedDebitBanners.elo,
           });
-
-          // const verifyIsBack = !!(
-          //   isNewProvider &&
-          //   responseBanner.data.allowedCreditBanners.length > 0 &&
-          //   responseBanner.data.allowedDebitBanners.length > 0
-          // ); // if is a newprovider and get sucessfull --> then he is turning back on flow
-          //     console.log('verifyIsBackkkk',verifyIsBack);
-          //     console.log('responseBanner.data.allowedCreditBanners.length',responseBanner.data.allowedCreditBanners.length);
-          //     console.log('responseBanner.data.allowedDebitBanners.length',responseBanner.data.allowedDebitBanners.length);
-          // if (verifyIsBack) {
-          //   navigation.navigate('AditionalInfoScreen');
-          // }
-        })
-        .catch(err => {
-          console.log('erromeudeukkkkks', err);
         });
 
-        const response = await api
-        .put(`providers/${profileid}/payment_methods/${paymentId}`, {
-          cash: cashpayment,
-          machineCredit: machinecredit,
-          machineDebit: machinedebit,
-          onlinePayment: onlinepayment,
-        })
-        .then(response => {
+      await api
+        .get(`providers/${profileid}/payment_methods`)
+        .then(async Newresponse => {
+          if (Newresponse.data !== null) {
+            const response = await api
+              .put(
+                `providers/${profileid}/payment_methods/${Newresponse.data.id}`,
+                {
+                  cash: cashpayment,
+                  machineCredit: machinecredit,
+                  machineDebit: machinedebit,
+                  onlinePayment: onlinepayment,
+                }
+              )
+              .then(response => {
+                this.setState({
+                  onlinepayment: response.data.online_payment,
+                  cashpayment: response.data.cash,
+                  paymentId: response.data.id,
+                });
 
-          console.log('respondenormal', response);
-          this.setState({
-            onlinepayment: response.data.online_payment,
-            cashpayment: response.data.cash,
-            paymentId: response.data.id,
-          });
+                const verifyIsBack = !!(
+                  isNewProvider && response.data !== null
+                );
+                if (verifyIsBack) {
+                  navigation.navigate('AditionalInfoScreen');
+                }
 
-          const verifyIsBack = !!(isNewProvider && response.data !== null); // if is a newprovider and get sucessfull --> then he is turning back on flow
-
-          if (verifyIsBack) {
-            navigation.navigate('AditionalInfoScreen');
+                const NewverifyIsBack = !!(
+                  isNewProvider && response.data !== null
+                );
+                this.setState({ isBack: NewverifyIsBack });
+                // const verifyIsBack = !!(isNewProvider && response.data !== null); // if is a newprovider and get sucessfull --> then he is turning back on flow
+              });
           }
-
         });
-
-
     } catch (ex) {
-      console.warn(ex);
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
     }
   }
 

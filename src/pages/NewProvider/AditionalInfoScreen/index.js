@@ -30,7 +30,7 @@ function AditionalInfoScreen({ navigation }) {
         // console.log(response);
         navigation.navigate('SocialMediaScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }

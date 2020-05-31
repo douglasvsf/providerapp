@@ -22,12 +22,12 @@ export default function auth(state = INITIAL_STATE, action) {
         break;
       }
       case '@auth/ACTIVE_REQUEST': {
-        draft.loading = true;
+        draft.loading = false;
         break;
       }
       case '@auth/ACTIVE_SUCCESS': {
         draft.active = action.payload.active;
-        draft.loading = true;
+        draft.loading = false;
         break;
       }
       case '@auth/SIGN_FAILURE': {

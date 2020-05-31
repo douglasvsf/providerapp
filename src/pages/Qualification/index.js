@@ -7,7 +7,7 @@ import {
   TouchableNativeFeedback,
   Alert,
 } from 'react-native';
-
+import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements';
@@ -110,20 +110,13 @@ const ListDivider = () => <View style={styles.listDivider} />;
 
 const Spacer = () => <View style={styles.spacer} />;
 
-const QualificationModal = ({
-  visible,
-  onDismiss,
-  onAdd,
-  isNewProvider,
-
-}) => {
+const QualificationModal = ({ visible, onDismiss, onAdd, isNewProvider }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [newQualification, setNewQualification] = useState([]);
   const newArrayQualification = Array.from(newQualification);
   const profileId = useSelector(state => state.user.profile.id);
   const token = useSelector(state => state.auth.token);
-  const [isBack, setIsBack] = useState(false);
 
   const onDismissModal = () => {
     setTitle('');
@@ -156,9 +149,11 @@ const QualificationModal = ({
             qualifications: newArrayQualification,
           }
         );
-        console.log('wtf', response);
       } catch (ex) {
-        console.warn(ex);
+        Snackbar.show({
+          text: 'Ocorreu um Erro. Tente Novamente',
+          duration: Snackbar.LENGTH_LONG,
+        });
       }
     }
 
@@ -252,11 +247,7 @@ const RemoveButton = ({ onRemove, index, id }) => {
   );
 };
 
-export default function Qualification({
-  onSubmitNewProvider,
-  isNewProvider,
-  navigation,
-}) {
+export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [qualificacoes, setQualificacoes] = useState([]);
   const profileId = useSelector(state => state.user.profile.id);
@@ -267,19 +258,29 @@ export default function Qualification({
       await api
         .get(`providers/${profileId}/qualifications`)
         .then(response => {
-          console.log('aa', response);
-          // se for cpf
           setQualificacoes(response.data);
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
     loadQualification();
   }, [profileId, token]);
 
-  const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider(qualificacoes);
+  const handleSubmitNewProvider = useCallback(async () => {
+    // onSubmitNewProvider(qualificacoes);
+
+    const responseSubmitNew = await onSubmitNewProvider(qualificacoes);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }, [onSubmitNewProvider, qualificacoes]);
 
   const showModal = () => {
@@ -305,7 +306,6 @@ export default function Qualification({
         `providers/${profileId}/qualifications/${id}`
       );
     }
-
   };
 
   const renderItem = ({ item, index }) => {

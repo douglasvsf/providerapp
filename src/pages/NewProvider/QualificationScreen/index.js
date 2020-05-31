@@ -30,7 +30,7 @@ function QualificationScreen({ navigation }) {
         );
         console.log(response);
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       }
       dispatch(ActiveRequest(email, profileId));
       navigation.navigate('Painel');

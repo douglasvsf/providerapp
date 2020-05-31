@@ -10,6 +10,7 @@ import {
   Alert,
   Button,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -139,7 +140,6 @@ class Service extends PureComponent {
     await api
       .get(`providers/${profileid}/occupation_areas`)
       .then(response => {
-        console.log('aa', response);
         const occupationAreasArray = Array.from(this.state.occupationAreas);
 
         if (response.data !== null) {
@@ -157,7 +157,6 @@ class Service extends PureComponent {
           });
         }
 
-        console.log('response.data.userOccupationArea.length',response.data.userOccupationArea.length);
         const verifyIsBack = !!(
           isNewProvider &&
           response.data.userOccupationArea.length > 0 &&
@@ -166,7 +165,10 @@ class Service extends PureComponent {
         this.setState({ isBack: verifyIsBack });
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que possui conexão com internet',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
@@ -194,12 +196,25 @@ class Service extends PureComponent {
     });
   };
 
-  handleSubmitNewProvider = () => {
+  handleSubmitNewProvider = async () => {
     const { onSubmitNewProvider } = this.props;
     const { selectedCities, selectedAreaAtuacao } = this.state;
 
-    onSubmitNewProvider({ selectedCities, selectedAreaAtuacao });
-    this.setState({ isBack: true });
+    // onSubmitNewProvider({ selectedCities, selectedAreaAtuacao });
+    // this.setState({ isBack: true });
+
+    const responseSubmitNew = await onSubmitNewProvider({
+      selectedCities,
+      selectedAreaAtuacao,
+    });
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      this.setState({ isBack: true });
+    }
   };
 
   onAddCity = () => {
@@ -214,7 +229,6 @@ class Service extends PureComponent {
     } = this.state;
 
     const occupationCitiesArray = Array.from(occupationCities);
-    console.log('selectedValueEstado', selectedValueEstado);
     const newCity = {
       city: selectedValueCidade,
       state: selectedValueEstado.nome,
@@ -252,7 +266,6 @@ class Service extends PureComponent {
       );
     } else if (isNewProvider && !isBack) {
       // fluxo sem voltar
-      console.log('newCity', newCity);
       this.setState({
         selectedCities: [...selectedCities, newCity],
       });
@@ -277,7 +290,10 @@ class Service extends PureComponent {
           });
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
   };
@@ -319,11 +335,13 @@ class Service extends PureComponent {
       await api
         .delete(`providers/${profileid}/occupationCity/${city.id}`)
         .then(response => {
-          console.log('aa', response);
           this.setState({ selectedCities: newSelectedCities });
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
   };
@@ -380,8 +398,6 @@ class Service extends PureComponent {
   };
 
   onSelectAreaAtuacao = async areaAtuacao => {
-    console.log('areaAtuacao', areaAtuacao);
-    console.log('areaAtuacao.id', areaAtuacao.id);
     const { selectedAreaAtuacao, occupationAreasUnique, isBack } = this.state;
     const { token, profileid, isNewProvider } = this.props;
     // Request pro back aqui
@@ -412,7 +428,6 @@ class Service extends PureComponent {
           await api
             .get(`providers/${profileid}/occupation_areas`)
             .then(responseGet => {
-              console.log('aa', responseGet);
               const occupationAreasArray = Array.from(
                 this.state.occupationAreas
               );
@@ -432,11 +447,17 @@ class Service extends PureComponent {
               });
             })
             .catch(err => {
-              console.log('erro', err);
+              Snackbar.show({
+                text: 'Certifique-se que possui conexão com a internet',
+                duration: Snackbar.LENGTH_LONG,
+              });
             });
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
   };
@@ -465,8 +486,6 @@ class Service extends PureComponent {
           selectedAreaAtuacao: newSelectedAreasAtuacao,
         }),
         () => {
-          console.log('areaAtuacao', areaAtuacao);
-          console.log('profileid', profileid);
           api.delete(
             `providers/${profileid}/occupationArea/${areaAtuacao.idTable}`
           );

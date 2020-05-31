@@ -29,7 +29,7 @@ function SocialMediaScreen({ navigation }) {
         console.log(response);
         navigation.navigate('QualificationScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }

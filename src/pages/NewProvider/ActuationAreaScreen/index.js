@@ -62,7 +62,7 @@ function ActuationAreaScreen({ navigation }) {
         setSubmitting(true);
         navigation.navigate('PaymentMethodsScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Keyboard, Alert, ScrollView } from 'react-native';
 import { withNavigation } from 'react-navigation';
-
+import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import cepApi from '../../services/cep';
@@ -40,8 +40,6 @@ class Address extends PureComponent {
     await api
       .get(`users/${profileid}/address`)
       .then(response => {
-        console.log('aa', response);
-
         if (response.data !== null) {
           this.setState({
             cep: response.data.zip_code,
@@ -57,7 +55,10 @@ class Address extends PureComponent {
         this.setState({ isBack: verifyIsBack });
       })
       .catch(err => {
-        console.log('erromeudeus', err);
+        Snackbar.show({
+          text: 'Certifique-se que possui conexão com internet',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
@@ -78,10 +79,18 @@ class Address extends PureComponent {
       });
   };
 
-  handleSubmitNewProvider = () => {
+  handleSubmitNewProvider = async () => {
     const { onSubmitNewProvider } = this.props;
-    onSubmitNewProvider(this.state);
-    this.setState({ isBack: true });
+
+    const responseSubmitNew = await onSubmitNewProvider(this.state);
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      this.setState({ isBack: true });
+    }
   };
 
   async updateAddress() {
@@ -107,7 +116,6 @@ class Address extends PureComponent {
         complement: complemento,
       })
       .then(response => {
-        console.log('aa', response);
         this.setState({
           cep: response.data.zip_code,
           logradouro: response.data.public_place,
@@ -125,7 +133,10 @@ class Address extends PureComponent {
         }
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que todos campos estão preenchidos',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Switch } from 'react-native';
-
+import Snackbar from 'react-native-snackbar';
 import { useSelector } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -118,13 +118,6 @@ export default function AdditionalInfo({
       await api
         .get(`users/${profileId}/additional_info`)
         .then(response => {
-          console.log('aa', response);
-          // const newData =
-          //   response.data.additionalInfoCpf == null
-          //     ? response.data.additionalInfoCnpj
-          //     : response.data.additionalInfoCpf;
-          // setAdditionalInfos(newData);
-
           if (response.data.cpf != undefined) {
             // se for cpf
             setIsEnabled(false);
@@ -153,7 +146,10 @@ export default function AdditionalInfo({
           }
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
     loadAdditionalInfo();
@@ -170,7 +166,7 @@ export default function AdditionalInfo({
     await api
       .put(`users/${profileId}/additional_info`, resultNewAdditionalInfo)
       .then(response => {
-        console.log('bb', response);
+        // console.log('bb', response);
         // const newData =
         //   response.data.additionalInfoCpf == null
         //     ? response.data.additionalInfoCnpj
@@ -193,7 +189,6 @@ export default function AdditionalInfo({
           const verifyIsBack = !!isNewProvider;
 
           if (verifyIsBack) {
-            console.log('navigationwtf',navigation);
             navigation.navigate('SocialMediaScreen');
           }
         } else if (type === 'cnpj') {
@@ -208,18 +203,31 @@ export default function AdditionalInfo({
           const verifyIsBack = !!isNewProvider;
 
           if (verifyIsBack) {
-            console.log('capetaa',navigation);
             navigation.navigate('SocialMediaScreen');
           }
         }
+      })
+      .catch(err => {
+        Snackbar.show({
+          text: 'Certifique-se que todos campos estão preenchidos',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
-  const handleSubmitNewProvider = useCallback(() => {
+  const handleSubmitNewProvider = useCallback(async () => {
     const arrayGeneral =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
-    onSubmitNewProvider(arrayGeneral);
-    setIsBack(true);
+    const responseSubmitNew = await onSubmitNewProvider(arrayGeneral);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      setIsBack(true);
+    }
   }, [additionalCnpjArray, additionalCpfArray, onSubmitNewProvider, type]);
 
   return (
