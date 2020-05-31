@@ -25,6 +25,7 @@ import AddressScreen from './pages/NewProvider/AddressScreen';
 import AditionalInfoScreen from './pages/NewProvider/AditionalInfoScreen';
 import PaymentMethodsScreen from './pages/NewProvider/PaymentMethodsScreen';
 import SocialMediaScreen from './pages/NewProvider/SocialMediaScreen';
+import QualificationScreen from './pages/NewProvider/QualificationScreen';
 import Payment from './pages/Payment';
 import Profile from './pages/Profile';
 import Qualification from './pages/Qualification';
@@ -36,7 +37,7 @@ import Statistics from './pages/Statistics';
 import Wallet from './pages/Wallet';
 import { colors } from './values/colors';
 
-export default (isSigned = false,token,profileid) =>
+export default (isSigned = false,token,profileid,active) =>
 
   createAppContainer(
     createSwitchNavigator(
@@ -48,11 +49,12 @@ export default (isSigned = false,token,profileid) =>
         NewProvider: {
           screen: createStackNavigator(
             {
+              AddressScreen,
               ActuationAreaScreen,
               PaymentMethodsScreen,
-              QualificationScreen,
               AditionalInfoScreen,
               SocialMediaScreen,
+              QualificationScreen,
 
             },
             {
@@ -154,7 +156,9 @@ export default (isSigned = false,token,profileid) =>
                       ),
                     }
                   },
-                  AdditionalInfo,
+                  AdditionalInfo: {
+                    screen: AdditionalInfo,
+                  },
                 }),
                 Serviços: createBottomTabNavigator({
 
@@ -248,8 +252,8 @@ export default (isSigned = false,token,profileid) =>
       },
       {
 
-        //initialRouteName: isSigned ? 'NewApp' : 'Sign',
-        initialRouteName: 'NewProvider',
+        initialRouteName: (isSigned && active) ? 'NewApp' : ((isSigned && !active) ? 'NewProvider' : 'Sign'),
+       
 
       }
     )

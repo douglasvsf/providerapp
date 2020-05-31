@@ -1,40 +1,19 @@
-import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Qualification from '~/pages/Qualification';
 import api from '../../../services/api';
+import { ActiveRequest } from '~/store/modules/auth/actions';
 
 function QualificationScreen({ navigation }) {
+  const dispatch = useDispatch();
   const token = useSelector(state => state.auth.token);
   const profileId = useSelector(state => state.user.profile.id);
-
+  const email = useSelector(state => state.user.profile.email);
+  const [submitting, setSubmitting] = useState(false);
   const onSubmit = useCallback(
     // eslint-disable-next-line no-unused-vars
 
     async Arrayqualifications => {
-      // console.log(selectedCities);
-      // console.log(selectedAreaAtuacao);
-
-      // selectedCities.map(selectedCities => console.log(selectedCities.city));
-
-      // qualifications.map(function(qualifications) {
-      //   // console.log(selectedCities.city);
-      //   // console.log(selectedCities.uf.nome);
-
-      //   qualifications.push({
-      //     city: selectedCities.city,
-      //     state: selectedCities.uf.nome,
-      //   });
-      //   setOccupationCities(occupationCitiesArray);
-      // });
-      // console.log('aaa', occupationCities);
-      // console.log(
-      //   'oq envio',
-      //   JSON.stringify({
-      //     occupationAreas: occupationAreasArray,
-      //     occupationCities: occupationCitiesArray,
-      //   })
-      // );
-
       console.log(
         'oq envio',
         JSON.stringify({
@@ -50,17 +29,22 @@ function QualificationScreen({ navigation }) {
           }
         );
         console.log(response);
-        navigation.navigate('Painel');
       } catch (ex) {
         console.warn(ex);
-      } finally {
-        setSubmitting(false);
       }
+      dispatch(ActiveRequest(email, profileId));
+      navigation.navigate('Painel');
     },
 
-    [navigation, profileId, token]
+    [dispatch, email, navigation, profileId, token]
   );
-  return <Qualification isNewProvider onSubmitNewProvider={onSubmit} />;
+  return (
+    <Qualification
+      isNewProvider
+      onSubmitNewProvider={onSubmit}
+      navigation={navigation}
+    />
+  );
 }
 
 export default QualificationScreen;

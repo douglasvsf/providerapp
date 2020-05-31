@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Button, CheckBox } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Background from '~/components/Background';
 import CardBrands from '~/components/CardBrands';
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Payment extends PureComponent {
+class Payment extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -69,53 +70,200 @@ export default class Payment extends PureComponent {
       elocredit: false,
       elodebit: false,
       hipercredit: false,
+      isBack: false,
+      debitBanner: [],
+      creditBanner: [],
+      paymentId: '',
     };
   }
 
-
-
   async componentDidMount() {
-    const { token, profileid } = this.props;
-
+    const { token, profileid, isNewProvider } = this.props;
+    console.log('token', token);
+    console.log('profileid', profileid);
+    console.log('isNewProvider', isNewProvider);
     api.defaults.headers.Authorization = `Bearer ${token}`;
     await api
       .get(`providers/${profileid}/payment_methods`)
       .then(response => {
         console.log('aa', response);
-        this.setState({
-          onlinepayment: response.data.online_payment,
-          cashpayment: response.data.cash,
-          americancredit: response.data.machine_credit,
-          masterdebit: response.data.machine_debit,
-        });
+
+        if (response.data !== null) {
+          this.setState({
+            onlinepayment: response.data.online_payment,
+            cashpayment: response.data.cash,
+            paymentId: response.data.id,
+          });
+        }
+
+        const verifyIsBack = !!(isNewProvider && response.data !== null);
+        this.setState({ isBack: verifyIsBack });
       })
       .catch(err => {
         console.log('erro', err);
       });
 
-
-      // to do : Preencher valores vindos do get para as bandeiras;
-      // await api
-      // .get(`providers/${profileid}/allowed_card_banners`)
-      // .then(response => {
-      //   console.log('aa', response);
-      //   this.setState({
-      //     onlinepayment: response.data.online_payment,
-      //     cashpayment: response.data.cash,
-      //     americancredit: response.data.machine_credit,
-      //     masterdebit: response.data.machine_debit,
-      //   });
-      // })
-      // .catch(err => {
-      //   console.log('erro', err);
-      // });
+    await api
+      .get(`providers/${profileid}/allowed_card_banners`)
+      .then(response => {
+        console.log('aa', response);
+        this.setState({
+          visacredit: response.data.allowedCreditBanners.visa,
+          mastercredit: response.data.allowedCreditBanners.mastercard,
+          americancredit: response.data.allowedCreditBanners.american_express,
+          hipercredit: response.data.allowedCreditBanners.hipercard,
+          elocredit: response.data.allowedCreditBanners.elo,
+          visadebit: response.data.allowedDebitBanners.visa,
+          masterdebit: response.data.allowedDebitBanners.mastercard,
+          elodebit: response.data.allowedDebitBanners.elo,
+        });
+      })
+      .catch(err => {
+        console.log('erro', err);
+      });
   }
 
   handleSubmitNewProvider = () => {
     const { onSubmitNewProvider } = this.props;
 
     onSubmitNewProvider(this.state);
+    this.setState({ isBack: true });
   };
+
+  async updatePaymenthMethods() {
+    const { token, profileid, isNewProvider, navigation } = this.props;
+    const {
+      onlinepayment,
+      cashpayment,
+      visacredit,
+      visadebit,
+      mastercredit,
+      masterdebit,
+      americancredit,
+      elocredit,
+      elodebit,
+      hipercredit,
+      isBack,
+      debitBanner,
+      creditBanner,
+      paymentId,
+    } = this.state;
+
+    const allowedDebitBanner = Array.from(debitBanner);
+    const allowedCreditBanner = Array.from(creditBanner);
+
+    const machinecredit = !!(
+      visacredit === true ||
+      mastercredit === true ||
+      americancredit === true ||
+      hipercredit === true ||
+      elocredit === true
+    );
+    const machinedebit = !!(
+      visadebit === true ||
+      masterdebit === true ||
+      elodebit === true
+    );
+
+    // console.log(selectedCities.city);
+    // console.log(selectedCities.uf.nome);
+
+    allowedCreditBanner.push({
+      visa: visacredit,
+      americanExpress: americancredit,
+      elo: elocredit,
+      mastercard: mastercredit,
+      hipercard: hipercredit,
+    });
+
+    allowedDebitBanner.push({
+      visa: visadebit,
+      mastercard: masterdebit,
+      elo: elodebit,
+    });
+
+    const resultAllowedCreditBanner = allowedCreditBanner.find(obj => {
+      return obj;
+    });
+    const resultAllowedDebitBanner = allowedDebitBanner.find(obj => {
+      return obj;
+    });
+    try {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      // console.log(
+      //   'oq envio',
+      //   JSON.stringify({
+      //     credit: resultAllowedCreditBanner,
+      //     debit: resultAllowedDebitBanner,
+      //   })
+      // );
+
+      const responseBanner = await api
+        .put(`providers/${profileid}/allowed_card_banners`, {
+          credit: resultAllowedCreditBanner,
+          debit: resultAllowedDebitBanner,
+        })
+        .then(responseBanner => {
+
+
+          console.log('respondebanner', responseBanner);
+          this.setState({
+            visacredit: responseBanner.data.allowedCreditBanners.visa,
+            mastercredit: responseBanner.data.allowedCreditBanners.mastercard,
+            americancredit:
+              responseBanner.data.allowedCreditBanners.american_express,
+            hipercredit: responseBanner.data.allowedCreditBanners.hipercard,
+            elocredit: responseBanner.data.allowedCreditBanners.elo,
+            visadebit: responseBanner.data.allowedDebitBanners.visa,
+            masterdebit: responseBanner.data.allowedDebitBanners.mastercard,
+            elodebit: responseBanner.data.allowedDebitBanners.elo,
+          });
+
+          // const verifyIsBack = !!(
+          //   isNewProvider &&
+          //   responseBanner.data.allowedCreditBanners.length > 0 &&
+          //   responseBanner.data.allowedDebitBanners.length > 0
+          // ); // if is a newprovider and get sucessfull --> then he is turning back on flow
+          //     console.log('verifyIsBackkkk',verifyIsBack);
+          //     console.log('responseBanner.data.allowedCreditBanners.length',responseBanner.data.allowedCreditBanners.length);
+          //     console.log('responseBanner.data.allowedDebitBanners.length',responseBanner.data.allowedDebitBanners.length);
+          // if (verifyIsBack) {
+          //   navigation.navigate('AditionalInfoScreen');
+          // }
+        })
+        .catch(err => {
+          console.log('erromeudeukkkkks', err);
+        });
+
+        const response = await api
+        .put(`providers/${profileid}/payment_methods/${paymentId}`, {
+          cash: cashpayment,
+          machineCredit: machinecredit,
+          machineDebit: machinedebit,
+          onlinePayment: onlinepayment,
+        })
+        .then(response => {
+
+          console.log('respondenormal', response);
+          this.setState({
+            onlinepayment: response.data.online_payment,
+            cashpayment: response.data.cash,
+            paymentId: response.data.id,
+          });
+
+          const verifyIsBack = !!(isNewProvider && response.data !== null); // if is a newprovider and get sucessfull --> then he is turning back on flow
+
+          if (verifyIsBack) {
+            navigation.navigate('AditionalInfoScreen');
+          }
+
+        });
+
+
+    } catch (ex) {
+      console.warn(ex);
+    }
+  }
 
   render() {
     const { isNewProvider } = this.props;
@@ -131,8 +279,8 @@ export default class Payment extends PureComponent {
       elocredit,
       elodebit,
       hipercredit,
+      isBack,
     } = this.state;
-    console.log('PQP', americancredit);
 
     const AMERICAN_EXPRESS = 'AMERICAN_EXPRESS';
     const ELO = 'ELO';
@@ -491,12 +639,14 @@ export default class Payment extends PureComponent {
             </CategoriesList>
           </View>
 
-          {isNewProvider ? (
+          {isNewProvider && !isBack ? (
             <SubmitButton onPress={() => this.handleSubmitNewProvider()}>
               Próximo
             </SubmitButton>
           ) : (
-            <SubmitButton>Atualizar Formas de Pagamento</SubmitButton>
+            <SubmitButton onPress={() => this.updatePaymenthMethods()}>
+              Atualizar Formas de Pagamento
+            </SubmitButton>
           )}
         </Container>
       </Background>
@@ -513,3 +663,5 @@ Payment.navigationOptions = {
     <Icon name="cash-multiple" size={20} color={tintColor} />
   ),
 };
+
+export default withNavigation(Payment);

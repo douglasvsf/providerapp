@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Keyboard, Alert, ScrollView } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -16,7 +17,7 @@ import {
 } from './styles';
 import { colors } from '~/values/colors';
 
-export default class AdditionalInfo extends PureComponent {
+class Address extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -28,27 +29,32 @@ export default class AdditionalInfo extends PureComponent {
       localidade: '',
       uf: '',
       number: '',
+      isBack: false,
     };
   }
 
   async componentDidMount() {
-    const { token, profileid } = this.props;
+    const { token, profileid, isNewProvider } = this.props;
 
-    console.log(profileid);
     api.defaults.headers.Authorization = `Bearer ${token}`;
     await api
-      .get(`users/10/address`)
+      .get(`users/${profileid}/address`)
       .then(response => {
         console.log('aa', response);
-        this.setState({
-          cep: response.data.zip_code,
-          logradouro: response.data.public_place,
-          complemento: response.data.complement,
-          bairro: response.data.neighborhood,
-          localidade: response.data.city,
-          uf: response.data.state,
-          number: response.data.number,
-        });
+
+        if (response.data !== null) {
+          this.setState({
+            cep: response.data.zip_code,
+            logradouro: response.data.public_place,
+            complemento: response.data.complement,
+            bairro: response.data.neighborhood,
+            localidade: response.data.city,
+            uf: response.data.state,
+            number: response.data.number,
+          });
+        }
+        const verifyIsBack = !!(isNewProvider && response.data !== null);
+        this.setState({ isBack: verifyIsBack });
       })
       .catch(err => {
         console.log('erromeudeus', err);
@@ -75,10 +81,11 @@ export default class AdditionalInfo extends PureComponent {
   handleSubmitNewProvider = () => {
     const { onSubmitNewProvider } = this.props;
     onSubmitNewProvider(this.state);
+    this.setState({ isBack: true });
   };
 
   async updateAddress() {
-    const { token, profileid } = this.props;
+    const { token, profileid, isNewProvider, navigation } = this.props;
     const {
       cep,
       logradouro,
@@ -110,6 +117,12 @@ export default class AdditionalInfo extends PureComponent {
           uf: response.data.state,
           number: response.data.number,
         });
+
+        const verifyIsBack = !!(isNewProvider && response.data !== null); // if is a newprovider and get sucessfull --> then he is turning back on flow
+
+        if (verifyIsBack) {
+          navigation.navigate('ActuationAreaScreen');
+        }
       })
       .catch(err => {
         console.log('erro', err);
@@ -117,7 +130,7 @@ export default class AdditionalInfo extends PureComponent {
   }
 
   render() {
-    const { cep } = this.state;
+    const { cep, isBack } = this.state;
     const { isNewProvider, submitting } = this.props;
 
     return (
@@ -195,7 +208,7 @@ export default class AdditionalInfo extends PureComponent {
               placeholder="Estado"
             />
 
-            {isNewProvider ? (
+            {isNewProvider && !isBack ? ( // esta no fluxo e não voltou
               <SubmitButton
                 loading={submitting}
                 onPress={() => this.handleSubmitNewProvider()}
@@ -214,7 +227,7 @@ export default class AdditionalInfo extends PureComponent {
   }
 }
 
-AdditionalInfo.navigationOptions = {
+Address.navigationOptions = {
   tabBarOptions: {
     activeTintColor: colors.primary,
   },
@@ -223,3 +236,5 @@ AdditionalInfo.navigationOptions = {
     <Icon name="home" size={20} color={tintColor} />
   ),
 };
+
+export default withNavigation(Address);

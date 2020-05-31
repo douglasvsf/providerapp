@@ -17,7 +17,11 @@ import {
 } from './styles';
 import { colors } from '~/values/colors';
 
-export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
+export default function SocialMedia({
+  onSubmitNewProvider,
+  isNewProvider,
+  navigation,
+}) {
   const instaRef = useRef();
   const whatsRef = useRef();
 
@@ -26,6 +30,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
   const [instaid, setInstaid] = useState('');
   const [socialMedia, setSocialMedia] = useState([]);
   const socialMediasArray = Array.from(socialMedia);
+  const [isBack, setIsBack] = useState(false);
 
   socialMediasArray.push({
     facebookUrl: facebookurl,
@@ -43,16 +48,21 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
         .then(response => {
           console.log('aa', response);
           // se for cpf
-          setPhonenumber(response.data.telephone_number);
-          setFacebookurl(response.data.facebook_url);
-          setInstaid(response.data.instagram_id);
+          if (response.data !== null) {
+            setPhonenumber(response.data.telephone_number);
+            setFacebookurl(response.data.facebook_url);
+            setInstaid(response.data.instagram_id);
+          }
+
+          const verifyIsBack = !!(isNewProvider && response.data !== null);
+          setIsBack(verifyIsBack);
         })
         .catch(err => {
           console.log('erro', err);
         });
     }
     loadAdditionalInfo();
-  }, [profileId, token]);
+  }, [isNewProvider, profileId, token]);
 
   async function UpdateSocialMedia() {
     const result = socialMediasArray.find(obj => {
@@ -65,9 +75,17 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
       .then(response => {
         console.log('aa', response);
         // se for cpf
-        setPhonenumber(response.data.telephone_number);
-        setFacebookurl(response.data.facebook_url);
-        setInstaid(response.data.instagram_id);
+
+        if (response.data !== null) {
+          setPhonenumber(response.data.telephone_number);
+          setFacebookurl(response.data.facebook_url);
+          setInstaid(response.data.instagram_id);
+        }
+
+        const verifyIsBack = !!(isNewProvider && response.data !== null);
+        if (verifyIsBack) {
+          navigation.navigate('QualificationScreen');
+        }
       })
       .catch(err => {
         console.log('erro', err);
@@ -76,6 +94,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
 
   const handleSubmitNewProvider = useCallback(() => {
     onSubmitNewProvider(socialMediasArray);
+    setIsBack(true);
   }, [onSubmitNewProvider, socialMediasArray]);
   return (
     <Background>
@@ -132,7 +151,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
             />
           </ContainerTelephone>
 
-          {isNewProvider ? (
+          {isNewProvider && !isBack ? (
             <SubmitButton onPress={handleSubmitNewProvider}>
               Próximo
             </SubmitButton>

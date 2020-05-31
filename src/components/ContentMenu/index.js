@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useSelector } from 'react-redux';
 import { AirbnbRating } from 'react-native-elements';
 
 import { DrawerItems } from 'react-navigation';
@@ -8,6 +8,9 @@ import { Container, Left, Avatar, Info, Name } from './styles';
 import { colors } from '~/values/colors';
 
 export default function ContentMenu({ ...props }) {
+
+  const profile = useSelector(state => state.user.profile);
+
   return (
     <Container>
       <Left>
@@ -18,7 +21,7 @@ export default function ContentMenu({ ...props }) {
         />
 
         <Info>
-          <Name>Usuario Final teste</Name>
+          <Name>{profile.name}</Name>
           <AirbnbRating
             count={5}
             reviews={['Péssimo', 'Ruim', 'Regular', 'Bom', 'Ótimo']}

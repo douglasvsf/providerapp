@@ -3,7 +3,7 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 
 import api from '~/services/api';
 
-import { signInSuccess, signFailure } from './actions';
+import { signInSuccess, signFailure, ActiveSuccess } from './actions';
 
 export function* signIn({ payload }) {
   try {
@@ -12,7 +12,6 @@ export function* signIn({ payload }) {
     const response = yield call(api.post, 'sessions', {
       email,
       password,
-      provider: true,
     });
 
     const { token, user } = response.data;
@@ -38,6 +37,32 @@ export function* signIn({ payload }) {
     yield put(signFailure());
   }
 }
+
+export function* activeRequest({ payload }) {
+  try {
+    const { email, id } = payload;
+
+    const response = yield call(api.put, `users/${id}`, {
+      email,
+      active: true,
+    });
+
+    const { active } = response.data;
+
+    console.log('kkkksofalta',response);
+    yield put(ActiveSuccess(active));
+
+    // history.push('/dashboard');
+  } catch (err) {
+    console.log('kakatey',err);
+    Alert.alert(
+      'Falha na autenticação',
+      'Houve um erro no login, verifique seus dados'
+    );
+    yield put(signFailure());
+  }
+}
+
 
 export function* signUp({ payload, navigation }) {
   try {
@@ -76,4 +101,5 @@ export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
+  takeLatest('@auth/ACTIVE_REQUEST', activeRequest),
 ]);

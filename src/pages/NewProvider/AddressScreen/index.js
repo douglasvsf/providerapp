@@ -1,24 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import api from '../../../services/api';
 
 import Address from '../../Address';
-
-// zipCode: Yup.string().required(),
-//       publicPlace: Yup.string().required(),
-//       number: Yup.string().required(),
-//       neighborhood: Yup.string().required(),
-//       city: Yup.string().required(),
-//       state: Yup.string().required(),
-//       complement: Yup.string(),
-
-// cep: '',
-// logradouro: '',
-// complemento: '',
-// bairro: '',
-// localidade: '',
-// uf: '',
 
 function AddressScreen({ navigation }) {
   const [submitting, setSubmitting] = useState(false);
@@ -44,7 +29,7 @@ function AddressScreen({ navigation }) {
       } catch (ex) {
         console.warn(ex);
       } finally {
-        setSubmitting(false);
+        setSubmitting(true);
       }
     },
     [navigation, profileId, token]
@@ -55,6 +40,8 @@ function AddressScreen({ navigation }) {
       isNewProvider
       onSubmitNewProvider={onSubmit}
       submitting={submitting}
+      token={token}
+      profileid={profileId}
     />
   );
 }

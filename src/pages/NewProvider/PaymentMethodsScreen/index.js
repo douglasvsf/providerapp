@@ -109,7 +109,14 @@ function PaymentMethodsScreen({ navigation }) {
     [allowedCreditBanner, allowedDebitBanner, navigation, profileId, token]
   );
 
-  return <Payment isNewProvider onSubmitNewProvider={onSubmit} />;
+  return (
+    <Payment
+      isNewProvider
+      onSubmitNewProvider={onSubmit}
+      token={token}
+      profileid={profileId}
+    />
+  );
 }
 
 export default PaymentMethodsScreen;
