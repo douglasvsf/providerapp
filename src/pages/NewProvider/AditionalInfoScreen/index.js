@@ -18,19 +18,19 @@ function AditionalInfoScreen({ navigation }) {
       });
       try {
         api.defaults.headers.Authorization = `Bearer ${token}`;
-         console.log(
-           'aaaaaaaaa',
+        console.log(
+          'aaaaaaaaa',
 
-           result
+          result
         );
         const response = await api.post(
           `users/${profileId}/additional_info`,
           result
         );
-        //console.log(response);
+        // console.log(response);
         navigation.navigate('SocialMediaScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }
@@ -38,7 +38,13 @@ function AditionalInfoScreen({ navigation }) {
     [navigation, profileId, token]
   );
 
-  return <AdditionalInfo isNewProvider onSubmitNewProvider={onSubmit} />;
+  return (
+    <AdditionalInfo
+      isNewProvider
+      onSubmitNewProvider={onSubmit}
+      navigation={navigation}
+    />
+  );
 }
 
 export default AditionalInfoScreen;

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Switch } from 'react-native';
-
+import Snackbar from 'react-native-snackbar';
 import { useSelector } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -51,13 +51,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
+export default function AdditionalInfo({
+  isNewProvider,
+  onSubmitNewProvider,
+  navigation,
+}) {
   const fantasyRef = useRef();
   const briefref = useRef();
   const generalref = useRef();
   const fullnameref = useRef();
 
   const [isEnabled, setIsEnabled] = useState(false);
+  const [isBack, setIsBack] = useState(false);
   const [type, setType] = useState('cpf');
   const [cpf, setCpf] = useState('');
   const [genre, setGenre] = useState('Selecione');
@@ -113,13 +118,6 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
       await api
         .get(`users/${profileId}/additional_info`)
         .then(response => {
-          console.log('aa', response);
-          // const newData =
-          //   response.data.additionalInfoCpf == null
-          //     ? response.data.additionalInfoCnpj
-          //     : response.data.additionalInfoCpf;
-          // setAdditionalInfos(newData);
-
           if (response.data.cpf != undefined) {
             // se for cpf
             setIsEnabled(false);
@@ -132,7 +130,10 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
             setPlaceholder('CPF');
             // console.log(new Date(newData.birthday));
             setBirthday(new Date(response.data.birthday));
-          } else {
+
+            const verifyIsBack = !!isNewProvider;
+            setIsBack(verifyIsBack);
+          } else if (response.data.cnpj != undefined) {
             setIsEnabled(true);
             setType('cnpj');
             setCpf(response.data.cnpj);
@@ -140,18 +141,23 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
             setFantasyname(response.data.fantasy_name);
             setBriefdesc(response.data.brief_description);
             setPlaceholder('CNPJ');
+            const verifyIsBack = !!isNewProvider;
+            setIsBack(verifyIsBack);
           }
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
     loadAdditionalInfo();
-  }, [profileId, token]);
+  }, [isNewProvider, profileId, token]);
 
   async function UpdateAdditionalInfo() {
     const newAdditionalInfo =
-      type == 'cpf' ? additionalCpfArray : additionalCnpjArray;
+      type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
 
     const resultNewAdditionalInfo = newAdditionalInfo.find(obj => {
       return obj;
@@ -160,44 +166,68 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
     await api
       .put(`users/${profileId}/additional_info`, resultNewAdditionalInfo)
       .then(response => {
-        console.log('bb', response);
-        const newData =
-          response.data.additionalInfoCpf == null
-            ? response.data.additionalInfoCnpj
-            : response.data.additionalInfoCpf;
-        setAdditionalInfos(newData);
+        // console.log('bb', response);
+        // const newData =
+        //   response.data.additionalInfoCpf == null
+        //     ? response.data.additionalInfoCnpj
+        //     : response.data.additionalInfoCpf;
+        // setAdditionalInfos(newData);
 
-        if (newData.cpf != undefined) {
+        if (type === 'cpf') {
           // se for cpf
           setIsEnabled(false);
           setType('cpf');
-          setCpf(newData.cpf);
-          setGenre(newData.genre);
-          setRg(newData.rg);
-          setFullname(newData.full_name);
-          setBriefdesc(newData.brief_description);
+          setCpf(response.data.cpf);
+          setGenre(response.data.genre);
+          setRg(response.data.rg);
+          setFullname(response.data.full_name);
+          setBriefdesc(response.data.brief_description);
           setPlaceholder('CPF');
           // console.log(new Date(newData.birthday));
-          setBirthday(new Date(newData.birthday));
-        } else {
+          setBirthday(new Date(response.data.birthday));
+
+          const verifyIsBack = !!isNewProvider;
+
+          if (verifyIsBack) {
+            navigation.navigate('SocialMediaScreen');
+          }
+        } else if (type === 'cnpj') {
           setIsEnabled(true);
           setType('cnpj');
-          setCpf(newData.cnpj);
-          setCompanyname(newData.company_name);
-          setFantasyname(newData.fantasy_name);
-          setBriefdesc(newData.brief_description);
+          setCpf(response.data.cnpj);
+          setCompanyname(response.data.company_name);
+          setFantasyname(response.data.fantasy_name);
+          setBriefdesc(response.data.brief_description);
           setPlaceholder('CNPJ');
+
+          const verifyIsBack = !!isNewProvider;
+
+          if (verifyIsBack) {
+            navigation.navigate('SocialMediaScreen');
+          }
         }
       })
       .catch(err => {
-        console.warn('errowtf', err);
+        Snackbar.show({
+          text: 'Certifique-se que todos campos estão preenchidos',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
-  const handleSubmitNewProvider = useCallback(() => {
+  const handleSubmitNewProvider = useCallback(async () => {
     const arrayGeneral =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
-    onSubmitNewProvider(arrayGeneral);
+    const responseSubmitNew = await onSubmitNewProvider(arrayGeneral);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      setIsBack(true);
+    }
   }, [additionalCnpjArray, additionalCpfArray, onSubmitNewProvider, type]);
 
   return (
@@ -339,7 +369,7 @@ export default function AdditionalInfo({ isNewProvider, onSubmitNewProvider }) {
             />
           </View>
 
-          {isNewProvider ? (
+          {isNewProvider && !isBack ? (
             <SubmitButton onPress={handleSubmitNewProvider}>
               Próximo
             </SubmitButton>

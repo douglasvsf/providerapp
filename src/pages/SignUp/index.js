@@ -189,76 +189,300 @@ export default function SignUp({ navigation }) {
             <Text style={styles.title}>Termos e Condições</Text>
             <ScrollView style={styles.tcContainer} onScroll={onScroll}>
               <Text style={styles.tcP}>
-                Welcome to our website. If you continue to browse and use this
-                website, you are agreeing to comply with and be bound by the
-                following terms and conditions of use, which together with our
-                privacy policy govern [business name]’s relationship with you in
-                relation to this website. If you disagree with any part of these
-                terms and conditions, please do not use our website.
+                OS TERMOS DE USO (“TERMOS”) REGULAM O ACESSO OU UTILIZAÇÃO PELO
+                USUÁRIO, EM QUALQUER LUGAR DO BRASIL, DO TECNE (APLICAÇÕES, WEB
+                SITES, CONTEÚDO, PRODUTOS E SERVIÇOS) DISPONIBILIZADOS PELA
+                TECNE TECNOLOGIA LTDA, INSCRITA NO CNPJ N. -----------------
+                QUE, PARA EFEITOS DESTE CONTRATO DENOMINADAS “TECNE”, “SERVIÇOS”
+                OU “APLICATIVO”.
               </Text>
               <Text style={styles.tcP}>
-                The term ‘[business name]’ or ‘us’ or ‘we’ refers to the owner
-                of the website whose registered office is [address]. Our company
-                registration number is [company registration number and place of
-                registration]. The term ‘you’ refers to the user or viewer of
-                our website.
+                CAPÍTULO PRIMEIRO: SOBRE O USO DA PLATAFORMA MÓVEL
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} The content of the pages of this website is for your
-                general information and use only. It is subject to change
-                without notice.
+                {'\u2022'} 1.1 DA FINALIDADE OS SERVIÇOS SÃO DISPONIBILIZADOS
+                POR MEIO DE UMA PLATAFORMA TECNOLÓGICA (SHOPPING VIRTUAL) QUE
+                PERMITE AOS CONSUMIDORES DAS APLICAÇÕES MÓVEIS OU WEB SITES DO
+                TECNE, CONCRETIZAREM OS SEGUINTES SERVIÇOS: (I) PERMITIR AOS
+                CONSUMIDORES DIVULGAR SUAS NECESSIDADES DE SERVIÇOS E ATRAIR,
+                PRESTADORES DE SERVIÇOS “HELPERS” QUALIFICADOS; (II) PERMITIR
+                QUE PRESTADORES DE SERVIÇO ”HELPERS” PUBLIQUEM NO TECNE SUAS
+                HABILIDADES DE FORMA A POSSIBILITAR ENCONTRAR CONSUMIDORES
+                INTERESSADOS NESSAS HABILIDADES; (III) VIABILIZAR O ENCONTRO
+                ENTRE CONSUMIDORES E PRESTADORES DE SERVIÇOS ATRAVÉS DO CHAT DO
+                APLICATIVO; (IV) RECEBIMENTO DOS VALORES COBRADOS PELOS SERVIÇOS
+                ATRAVÉS DE MEIOS DE PAGAMENTOS DIVERSOS; (V) GERAÇÃO DE
+                AUTOMÁTICA DE RECIBOS DOS SERVIÇOS PRESTADOS.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} This website uses cookies to monitor browsing
-                preferences. If you do allow cookies to be used, the following
-                personal information may be stored by us for use by third
-                parties: [insert list of information].
+                {'\u2022'} 1.2 DA LICENÇA DE USO NA QUALIDADE DE FORNECEDORA DA
+                PLATAFORMA, TECNE FORNECE UMA LICENÇA GRATUITA E NÃO EXCLUSIVA
+                DO APLICATIVO E REVOGÁVEL PARA: (I) ACESSAR E UTILIZAR AS
+                APLICAÇÕES NO SEU EQUIPAMENTO PESSOAL, UNICAMENTE PARA EFEITOS
+                DA RESPECTIVA UTILIZAÇÃO DOS SERVIÇOS; E (II) ACESSAR E UTILIZAR
+                QUALQUER CONTEÚDO, INFORMAÇÃO E MATERIAIS RELACIONADOS QUE
+                VENHAM A SER DISPONIBILIZADOS ATRAVÉS DOS SERVIÇOS. QUAISQUER
+                DIREITOS NÃO EXPRESSAMENTE GARANTIDOS NOS PRESENTES TERMOS SÃO
+                RESERVADOS PARA TECNE E RESPETIVOS LICENCIANTES.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} Neither we nor any third parties provide any warranty
-                or guarantee as to the accuracy, timeliness, performance,
-                completeness or suitability of the information and materials
-                found or offered on this website for any particular purpose. You
-                acknowledge that such information and materials may contain
-                inaccuracies or errors and we expressly exclude liability for
-                any such inaccuracies or errors to the fullest extent permitted
-                by law.
+                {'\u2022'} 1.3 TECNOLOGIAS OU FERRAMENTAS DE TERCEIROS FAZEM
+                PARTE DA INFRAESTRUTURA TECNOLÓGICA DO TECNE FERRAMENTAS OU
+                SERVIÇOS DE TERCEIROS INCLUINDO, SERVIÇOS FINANCEIROS, SERVIÇOS
+                DE MENSAGENS, SERVIÇOS DE LOCALIZAÇÃO, ETC. O USUÁRIO RECONHECE
+                QUE A UTILIZAÇÃO DE SERVIÇOS E CONTEÚDO DE TERCEIROS PODERÁ
+                ESTAR SUJEITA A TERMOS DE UTILIZAÇÃO E POLÍTICAS DE PRIVACIDADE
+                DIFERENTES. CASO O USUÁRIO ACESSE AOS SERVIÇOS ATRAVÉS DE
+                APLICAÇÕES DESENVOLVIDAS, RESPECTIVAMENTE, PARA EQUIPAMENTOS
+                MÓVEIS COM OS SISTEMAS APPLE IOS, ANDROID OU MICROSOFT WINDOWS.
+                A APPLE INC., GOOGLE, INC. OU MICROSOFT CORPORATION SÃO AS
+                BENEFICIÁRIAS TERCEIRAS DO PRESENTE CONTRATO. O TECNE NÃO
+                OFERECE QUALQUER GARANTIA RELATIVAMENTE A PRODUTOS, SERVIÇOS E
+                CONTEÚDO DE TERCEIROS.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} Your use of any information or materials on this
-                website is entirely at your own risk, for which we shall not be
-                liable. It shall be your own responsibility to ensure that any
-                products, services or information available through this website
-                meet your specific requirements.
+                {'\u2022'}
+                1.4 DAS CONTAS DE USUÁRIO PARA PODER USUFRUIR DA MAIOR PARTE DAS
+                FUNCIONALIDADES DOS SERVIÇOS, O USUÁRIO TERÁ DE REGISTRAR E
+                MANTER UMA CONTA PESSOAL DE USUÁRIO DE SERVIÇOS ATIVA (“CONTA”).
+                O USUÁRIO DEVERÁ TER PELO MENOS 18 ANOS DE IDADE, OU A IDADE
+                CORRESPONDENTE À MAIORIDADE LEGAL NA RESPECTIVA JURISDIÇÃO
+                (QUANDO DIFERENTE DE 18), PARA PODER OBTER UMA CONTA. O REGISTRO
+                DE UMA CONTA OBRIGA QUE O USUÁRIO SUBMETA CERTAS INFORMAÇÕES
+                PESSOAIS, TAIS COMO FOTO PESSOAL, FOTO DE UM DOCUMENTO, O SEU
+                NOME, ENDEREÇO, NÚMERO DE TELEFONE CELULAR, CPF OU CNPJ. O
+                USUÁRIO É RESPONSÁVEL POR TODA A ATIVIDADE NA SUA CONTA E ACEITA
+                MANTER SEMPRE A SEGURANÇA E A CONFIDENCIALIDADE DO NOME DE
+                USUÁRIO E SUA SENHA. O USUÁRIO AUTORIZA QUE O TECNE FAÇA A
+                VERIFICAÇÃO PERIÓDICA DE IDONEIDADE JUNTO A SERVIÇOS
+                ESPECIALIZADOS. O TECNE POSSUI TOTAL AUTONOMIA DE NÃO ACEITAR OU
+                MESMO CANCELAR CONTAS DE USUÁRIOS COM ANTECEDENTES QUE CAUSEM
+                ALGUM CONSTRANGIMENTO AOS CLIENTES.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} This website contains material which is owned by or
-                licensed to us. This material includes, but is not limited to,
-                the design, layout, look, appearance and graphics. Reproduction
-                is prohibited other than in accordance with the copyright
-                notice, which forms part of these terms and conditions.
+                {'\u2022'}
+                1.5 DEVERES DE CONDUTA O USUÁRIO ACEITA CUMPRIR TODAS AS LEIS
+                APLICÁVEIS NA UTILIZAÇÃO DOS SERVIÇOS E APENAS PODERÁ UTILIZAR
+                OS MESMOS PARA FINS LÍCITOS. AO UTILIZAR OS SERVIÇOS, O
+                PRESTADOR DE SERVIÇO NÃO PROVOCARÁ ABORRECIMENTOS, EMBARAÇOS,
+                DISTÚRBIOS OU DANOS EM PROPRIEDADE, QUER AO PRESTADOR DE
+                SERVIÇOS TERCEIRO OU A QUALQUER OUTRA PARTE. O CONSUMIDOR ACEITA
+                NÃO SUBMETER CONTEÚDO DE CARÁTER DIFAMATÓRIO, CALUNIOSO,
+                VIOLENTO, OBSCENO, PORNOGRÁFICO, ILEGAL OU DE OUTRA FORMA
+                OFENSIVO. O PROFISSIONAL ACEITA CONDUZIR AS NEGOCIAÇÕES COM
+                ÉTICA, CORDIALIDADE E OBSERVANDO OS PROCESSOS OFERECIDOS PELO
+                APLICATIVO. TECNE PODE, MAS NÃO É OBRIGADO, CONTROLAR OU
+                ELIMINAR CONTEÚDO DE USUÁRIO, AO SEU EXCLUSIVO CRITÉRIO E EM
+                QUALQUER MOMENTO E POR QUALQUER MOTIVO, SEM PRÉ-AVISO AO
+                USUÁRIO. TECNE POSSUI TOTAL AUTORIDADE DE CANCELAR AS CONTAS DE
+                USUÁRIOS IDENTIFICADOS COM CONDUTAS SUSPEITAS, ILEGAIS OU
+                IMPRÓPRIAS.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} All trademarks reproduced in this website, which are
-                not the property of, or licensed to the operator, are
-                acknowledged on the website. Unauthorised use of this website
-                may give rise to a claim for damages and/or be a criminal
-                offence.
+                {'\u2022'}
+                1.6 INFORMAÇÕES CONFIDENCIAIS A COLETA E UTILIZAÇÃO DE
+                INFORMAÇÕES PESSOAIS COMO RG, CPF, É EFETUADA NOS TERMOS DA LEI
+                NO 12.965, DE 23 DE ABRIL DE 2014 QUE ESTABELECE PRINCÍPIOS,
+                GARANTIAS, DIREITOS E DEVERES PARA O USO DA INTERNET NO BRASIL.
+                INFORMAÇÕES SENSÍVEIS DE CARTÕES DE CRÉDITO OU CONTAS BANCÁRIAS
+                NÃO SÃO MANTIDAS NOS BANCOS DE DADOS TECNE. NO MOMENTO DA
+                TRANSAÇÃO FINANCEIRA, SÃO CRIPTOGRAFADAS COM TOTAL SEGURANÇA E
+                PROTEGIDAS DE ACORDO COM AS NORMAS DO PCI DSS – PAYMENT CARD
+                INDUSTRY DATA SECURITY STANDARD CUJAS NORMAS AS EMPRESAS
+                PARCEIRAS SÃO SIGNATÁRIAS.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} From time to time, this website may also include
-                links to other websites. These links are provided for your
-                convenience to provide further information. They do not signify
-                that we endorse the website(s). We have no responsibility for
-                the content of the linked website(s).
+                {'\u2022'}
+                1.7 INFORMAÇÕES NÃO CONFIDENCIAIS TODO O CONTEÚDO NÃO
+                CONFIDENCIAL FORNECIDO PELO USUÁRIO MANTÉM-SE PROPRIEDADE DO
+                MESMO. CONTUDO, AO FORNECER CONTEÚDO DE USUÁRIO PARA TECNE, O
+                USUÁRIO CONCEDE PARA TECNE UMA LICENÇA MUNDIAL, PERPÉTUA,
+                IRREVOGÁVEL, TRANSFERÍVEL, ISENTA DE ROYALTIES, PARA UTILIZAR,
+                COPIAR, MODIFICAR, CRIAR OBRAS DERIVADAS, DISTRIBUIR, APRESENTAR
+                E EXECUTAR PUBLICAMENTE, E DE OUTRA FORMA EXPLORAR, SOB QUALQUER
+                MODO, TAL CONTEÚDO DE USUÁRIO, EM TODOS OS FORMATOS E CANAIS DE
+                DISTRIBUIÇÃO CONHECIDOS OU FUTURAMENTE CONCEBIDOS (INCLUINDO EM
+                RELAÇÃO AOS SERVIÇOS E À ATIVIDADE DO TECNE E EM SITES E
+                SERVIÇOS DE TERCEIROS), SEM AVISO OU CONSENTIMENTO PRÉVIO DO
+                USUÁRIO, E SEM A NECESSIDADE DE QUALQUER PAGAMENTO AO MESMO OU A
+                QUALQUER OUTRA PESSOA OU ENTIDADE.
               </Text>
               <Text style={styles.tcL}>
-                {'\u2022'} Your use of this website and any dispute arising out
-                of such use of the website is subject to the laws of England,
-                Northern Ireland, Scotland and Wales.
+                1.8 DO ACESSO À REDE OU EQUIPAMENTOS O USUÁRIO É RESPONSÁVEL POR
+                OBTER O ACESSO NECESSÁRIO À REDE DE DADOS COM VISTA À UTILIZAÇÃO
+                DOS SERVIÇOS. TAMBÉM É RESPONSÁVEL PELA AQUISIÇÃO E ATUALIZAÇÃO
+                DO APARELHO OU DOS DISPOSITIVOS NECESSÁRIOS PARA ACESSAR E
+                UTILIZAR OS SERVIÇOS. TECNE NÃO GARANTE QUE OS SERVIÇOS OU
+                QUALQUER PARTE DOS MESMOS IRÃO FUNCIONAR NUM DETERMINADO
+                EQUIPAMENTO OU DISPOSITIVO. ALÉM DISSO, OS SERVIÇOS PODERÃO
+                ESTAR SUJEITOS A FALHAS E ATRASOS INERENTES AO USO DA INTERNET E
+                COMUNICAÇÕES ELETRÔNICAS.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                1.9 DOS CÓDIGOS PROMOCIONAIS O TECNE PODE, AO SEU EXCLUSIVO
+                CRITÉRIO, CRIAR CÓDIGOS PROMOCIONAIS PASSÍVEIS DE SEREM
+                UTILIZADOS COMO DESCONTO PARA CONSUMIDORES EM COMPRAS DE
+                SERVIÇOS. TODO CÓDIGO PROMOCIONAL POSSUI VALOR, PRAZO DE
+                VALIDADE, FINALIDADE E CONVÊNIO COM PRESTADORES DE SERVIÇO OU
+                PATROCINADORES. PODENDO SER CANCELADOS PELO TECNE EM QUALQUER
+                MOMENTO E POR QUALQUER MOTIVO SEM AVISO PRÉVIO;
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                1.10 DAS GARANTIAS TECNE É FORNECIDO “DE ACORDO COM QUE ESTÁ
+                DISPONÍVEL”. EMBORA O TECNE EMPENHARÁ TODO ESFORÇO PARA QUE OS
+                SERVIÇOS SEJAM OFERECIDOS COM A MELHOR CONFIABILIDADE,
+                QUALIDADE, ADEQUAÇÃO E DISPONIBILIDADE DO APLICATIVO, NÃO PODERÁ
+                GARANTIR QUE NÃO EXISTAM FALHAS. O USUÁRIO É RESPONSÁVEL PELA
+                VERIFICAÇÃO DA QUALIDADE DAS INFORMAÇÕES RELATIVAS ÀS SUAS
+                TRANSAÇÕES NO TECNE.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                1.11 O USUÁRIO RECONHECE QUE O TECNE NÃO FORNECE SERVIÇOS E NEM
+                FUNCIONA COMO UMA EMPRESA DE SERVIÇOS E QUE TODOS OS SERVIÇOS
+                SÃO PRESTADOS POR TERCEIROS QUE NÃO SÃO CONTRATADOS PELO TECNE
+                OU POR QUALQUER UMA DAS SUAS AFILIADAS, E QUE PORTANTO, NÃO HÁ
+                NENHUMA RELAÇÃO DE SUBORDINAÇÃO ENTRE O TECNE E OS PRESTADORES
+                DE SERVIÇO, SENDO ASSIM, O TECNE NÃO GARANTE A QUALIDADE OU
+                ENTREGA DOS SERVIÇOS AVENÇADOS ENTRE OS USUÁRIOS.
               </Text>
               <Text style={styles.tcP}>
-                The use of this website is subject to the following terms of use
+                CAPÍTULO SEGUNDO: SOBRE AS RELAÇÕES ENTRE AS PARTES
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                2.1 DA RELAÇÃO DIRETA NA RELAÇÃO ENTRE O CONSUMIDOR E O
+                PRESTADOR DE SERVIÇOS, NÃO HÁ NENHUMA INTERFERÊNCIA DO TECNE NO
+                QUE DIZ RESPEITO A PRAZOS, QUALIDADE, RESPONSABILIDADES CIVIS,
+                FISCAIS E TRABALHISTAS. O TECNE APENAS VIABILIZA UMA RELAÇÃO
+                DIRETA ENTRE CONSUMIDORES E FORNECEDORES, ATRAVÉS DO
+                LICENCIAMENTO DA PLATAFORMA TECNE.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                2.2 DA AUSÊNCIA DE VINCULOS A RESPONSABILIDADE SOBRE A
+                QUALIDADE, ADEQUAÇÃO, SEGURANÇA, ACIDENTES OU COMPETÊNCIA DE
+                CADA SERVIÇO PRESTADO É DE INTEIRA RESPONSABILIDADE DO
+                PROFISSIONAL. A UTILIZAÇÃO DO TECNE NÃO IMPLICA EM VINCULO
+                EMPREGATÍCIO ENTRE PRESTADORES DE SERVIÇOS, CONSUMIDORES OU
+                TECNE. A RELAÇÃO COM TECNE É DE CLIENTE, USUÁRIO DO APLICATIVO.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                2.3 DAS RESPONSABILIDADES FISCAIS OS VALORES PAGOS PELOS
+                CLIENTES SÃO TRANSFERIDOS PELO APLICATIVO DIRETAMENTE PARA A
+                CONTA DO CARTÃO DE CRÉDITO TECNE FORNECIDO POR TECNE. PERTENCEM
+                AO PROFISSIONAL AS RESPONSABILIDADES FISCAIS, ESCRITURAÇÃO E
+                RECOLHIMENTO DE IMPOSTOS CONFORME EXIGIDO PELAS LEIS
+                BRASILEIRAS. TECNE POSSUI RESPONSABILIDADE SOBRE OS VALORES
+                AUFERIDOS COMO TAXA DE INTERMEDIAÇÃO COBRADA DO PRESTADOR DE
+                SERVIÇO.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                2.4 FATURAMENTO DOS SERVIÇOS TECNE CONTEMPLA AS FUNÇÕES DE
+                FATURAMENTO E COBRANÇA DOS SERVIÇOS NEGOCIADOS COM O CLIENTE
+                FINAL. ASSIM QUE O CLIENTE AUTORIZAR O PAGAMENTO, O VALOR, NAS
+                CONDIÇÕES NEGOCIADAS, SERÁ TRANSFERIDO PARA A CONTA DIGITAL
+                TECNE DE ONDE O PRESTADOR DE SERVIÇOS FARÁ SUAS MOVIMENTAÇÕES,
+                INCLUINDO SAQUES, DÉBITOS NO CARTÃO OU TRANSFERÊNCIAS PARA
+                OUTRAS CONTAS. AO ACEITAR OS PRESENTES TERMOS O USUÁRIO CONCORDA
+                QUE ESSA CONTA DIGITAL SEJA ABERTA. MAIORES INFORMAÇÕES EM
+                HTTPS://WWW.TECNE.COM.BR/CARTOES/. SERÁ DESCONTADO A TAXA DE USO
+                DA PLATAFORMA TECNE, DE ACORDO COM O “PLANO DE RECEBIMENTO”
+                ESCOLHIDO NO PERFIL DO APLICATIVO. QUALQUER COBRANÇA POR FORA DO
+                APLICATIVO NÃO É UMA CONDUTA ESPERADA PARA UM PROFISSIONAL
+                USUÁRIO DO TECNE.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                2.5 DA PRIORIDADE NAS BUSCAS QUANDO UM CONSUMIDOR BUSCA
+                PROFISSIONAIS PARA ATENDER ALGUMA NECESSIDADE, TERÃO PRIORIDADE
+                OS PROFISSIONAIS ENQUADRADOS NOS SEGUINTES CRITÉRIOS: (I)
+                QUANTIDADE DE ESTRELAS DAS AVALIAÇÕES FEITAS CLIENTES; (II)
+                QUANTIDADE DE NEGÓCIOS FECHADOS COM O APLICATIVO; (III) RAPIDEZ
+                NAS RESPOSTAS DE OPORTUNIDADES E CONVERSAS NOS CHATS DE
+                NEGOCIAÇÕES; (IV) PROXIMIDADE DO LOCAL DO SERVIÇO; (V)
+                QUANTIDADE DE CERTIFICADOS TECNE CONQUISTADOS E (VI) PATROCÍNIOS
+                DIVERSOS. AS PONTUAÇÕES ORIUNDAS DAS AVALIAÇÕES DE SERVIÇOS
+                PRESTADOS ACONTECEM QUANDO UM PEDIDO DE SERVIÇOS É ENCERRADO NO
+                APLICATIVO E O PAGAMENTO LIBERADO PELO CLIENTE.
+              </Text>
+              <Text style={styles.tcP}>
+                CAPÍTULO TERCEIRO: SOBRE AS CONDIÇÕES GERAIS
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'} 3.1 DO USUÁRIO CORPORATIVO USUÁRIOS CORPORATIVOS QUE
+                NECESSITAM PUBLICAR OFERTAS EM MAIOR ESCALA PARA DIFERENTES
+                PROFISSIONAIS PODEM OPTAR POR UTILIZAR A PLATAFORMA MEDIANTE O
+                CADASTRAMENTO DE UM MEIO DE PAGAMENTO UNIFICADO PARA TODAS AS
+                DEMANDAS APURADAS AO FINAL DE UM PERÍODO DE 30 (TRINTA) DIAS COM
+                PAGAMENTO EM ATÉ 05 (CINCO) DIAS ÚTEIS APÓS O FECHAMENTO DA
+                APURAÇÃO DO NÚMERO DE SOLICITAÇÕES RECEBIDAS NESTE PERÍODO.
+                ESSES USUÁRIOS AUTORIZAM QUE O TECNE FAÇA A ANÁLISE DE CRÉDITO
+                JUNTO A SERVIÇOS ESPECIALIZADOS PARA A SUA APROVAÇÃO E
+                MANUTENÇÃO. O TECNE POSSUI TOTAL AUTONOMIA DE NÃO ACEITAR OU
+                MESMO CANCELAR CONTAS DE USUÁRIOS CORPORATIVOS.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                3.1.1 DA INADIMPLÊNCIA O NÃO PAGAMENTO DO VALOR FATURADO
+                ACARRETARÁ NA COBRANÇA DE JUROS DE MORA À RAZÃO DE 1% (UM POR
+                CENTO AO MÊS) E CORREÇÃO MONETÁRIA COM BASE NA VARIAÇÃO POSITIVA
+                DO IGPM /FGV; DEVIDOS DA DATA DO VENCIMENTO ATÉ O EFETIVO
+                PAGAMENTO, MULTA DE 10% (DEZ POR CENTO) SOBRE O VALOR TOTAL EM
+                ATRASO, ARCANDO AINDA O USUÁRIO EM CASO DE COBRANÇA JUDICIAL
+                HONORÁRIOS ADVOCATÍCIOS DE 20% (VINTE POR CENTO). NA HIPÓTESE DE
+                ATRASO NO PAGAMENTO, PODERÁ O TECNE REALIZAR APONTAMENTOS DOS
+                USUÁRIOS NOS ORGÃOS DE PROTEÇÃO AO CRÉDITO, PODENDO AINDA BUSCAR
+                OS MEIOS JURÍDICOS NECESSÁRIOS PARA O RECEBIMENTO DO CRÉDITO,
+                VEZ QUE, APÓS APROVADA AS SOLICITAÇÕES DE SERVIÇOS O VALOR
+                DEVIDO É RECONHECIDO COMO CRÉDITO LÍQUIDO, CERTO E EXIGÍVEL.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                3.2 DA COMUNICAÇÃO O TECNE PODERÁ PROCEDER A NOTIFICAÇÕES
+                ATRAVÉS DE UM AVISO GERAL PUBLICADO NO SITE WWW.TECNE.COM.BR ,
+                OU POR E-MAIL PARA O ENDEREÇO DE CORREIO ELETRÔNICO INDICADO NA
+                CONTA DO USUÁRIO, OU POR MENSAGENS NO CELULAR DO USUÁRIO, OU
+                AINDA POR COMUNICAÇÃO ESCRITA ENVIADA PARA O ENDEREÇO INDICADO
+                NA MESMA. O USUÁRIO PODERÁ NOTIFICAR O TECNE POR MENSAGEM NA
+                PAGINA DE SUPORTE AOS USUÁRIOS AJUDA.TECNE.COM.BR.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}3.3 DA ALTERAÇÃO DOS TERMOS DO SERVIÇO. O TECNE
+                PODERÁ, OCASIONALMENTE, ALTERAR OS TERMOS RELACIONADOS COM OS
+                SERVIÇOS. AS ALTERAÇÕES PRODUZEM EFEITOS APÓS A PUBLICAÇÃO, PELO
+                TECNE, DOS TERMOS, POLÍTICAS OU TERMOS SUPLEMENTARES ALTERADOS
+                NO ESPAÇO DEDICADO AO SERVIÇO APLICÁVEL. A CONTINUAÇÃO DO ACESSO
+                OU DA UTILIZAÇÃO DOS SERVIÇOS APÓS A REFERIDA PUBLICAÇÃO
+                CONSTITUI A ACEITAÇÃO, DO USUÁRIO, EM FICAR VINCULADO PELOS
+                PRESENTES TERMOS NA SUA VERSÃO ALTERADA.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                3.4 DA ILEGALIDADE DE CLÁUSULAS SE QUALQUER CLÁUSULA DOS
+                PRESENTES TERMOS FOR CONSIDERADA ILEGAL, INVÁLIDA OU
+                INAPLICÁVEL, NO SEU TODO OU EM PARTE, AO ABRIGO DE QUALQUER LEI,
+                ESSA CLÁUSULA OU PARTE DA MESMA SERÃO NESSA MEDIDA ENTENDIDAS
+                COMO NÃO FAZENDO PARTE DOS PRESENTES TERMOS, SENDO QUE A
+                LEGALIDADE, VALIDADE E APLICABILIDADE DAS RESTANTES CLÁUSULAS
+                DOS PRESENTES TERMOS NÃO SERÃO AFETADAS. NESSE CASO, AS PARTES
+                DEVEM SUBSTITUIR A PARTE DA DISPOSIÇÃO ILEGAL, INVÁLIDA OU
+                INAPLICÁVEL COM UMA (PARTE DE UMA) DISPOSIÇÃO QUE SEJA LEGAL,
+                VÁLIDA E APLICÁVEL E QUE TENHA, NA MAIOR MEDIDA POSSÍVEL, UM
+                EFEITO SEMELHANTE À DISPOSIÇÃO OU À SUA PARTE ILEGAL, INVÁLIDA
+                OU INAPLICÁVEL, TENDO EM CONTA O CONTEÚDO E A FINALIDADE DO
+                PRESENTE CONTRATO.
+              </Text>
+              <Text style={styles.tcL}>
+                {'\u2022'}
+                3.5 DO ACORDO INTEGRAL ESTES TERMOS CONSTITUEM O ACORDO E
+                ENTENDIMENTO INTEGRAL DAS PARTES NO QUE RESPEITA AO SEU ASSUNTO
+                E SUBSTITUEM E SOBREPÕEM-SE A TODOS OS ACORDOS E COMPROMISSOS
+                ANTERIORES E ATUAIS EM RELAÇÃO A ESSE ASSUNTO.
               </Text>
             </ScrollView>
 

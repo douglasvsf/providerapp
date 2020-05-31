@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,7 @@ import {
   TouchableNativeFeedback,
   Alert,
 } from 'react-native';
-
+import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import { Button } from 'react-native-elements';
@@ -115,6 +115,9 @@ const QualificationModal = ({ visible, onDismiss, onAdd, isNewProvider }) => {
   const [description, setDescription] = useState('');
   const [newQualification, setNewQualification] = useState([]);
   const newArrayQualification = Array.from(newQualification);
+  const profileId = useSelector(state => state.user.profile.id);
+  const token = useSelector(state => state.auth.token);
+
   const onDismissModal = () => {
     setTitle('');
     setDescription('');
@@ -128,31 +131,29 @@ const QualificationModal = ({ visible, onDismiss, onAdd, isNewProvider }) => {
   const onAddQualification = async () => {
     onAdd({ title, description });
 
-    if (isNewProvider) {
-      const profileId = useSelector(state => state.user.profile.id);
-      const token = useSelector(state => state.auth.token);
-
+    // eslint-disable-next-line no-empty
+    if (!isNewProvider) {
       try {
         newArrayQualification.push({
           title,
           description,
         });
 
-        const resultNewArrayQualification = newArrayQualification.find(obj => {
-          return obj;
-        });
+        // const resultNewArrayQualification = newArrayQualification.find(obj => {
+        //   return obj;
+        // });
         api.defaults.headers.Authorization = `Bearer ${token}`;
         const response = await api.post(
           `providers/${profileId}/qualifications`,
           {
-            qualifications: resultNewArrayQualification,
+            qualifications: newArrayQualification,
           }
         );
-        console.log(response);
       } catch (ex) {
-        console.warn(ex);
-      } finally {
-       // setSubmitting(false);
+        Snackbar.show({
+          text: 'Ocorreu um Erro. Tente Novamente',
+          duration: Snackbar.LENGTH_LONG,
+        });
       }
     }
 
@@ -222,7 +223,7 @@ const QualificationModal = ({ visible, onDismiss, onAdd, isNewProvider }) => {
   );
 };
 
-const RemoveButton = ({ onRemove, index }) => {
+const RemoveButton = ({ onRemove, index, id }) => {
   const handleRemove = useCallback(() => {
     Alert.alert(
       'Remover qualificação',
@@ -233,11 +234,11 @@ const RemoveButton = ({ onRemove, index }) => {
         },
         {
           text: 'Sim',
-          onPress: () => onRemove(index),
+          onPress: () => onRemove({ index, id }),
         },
       ]
     );
-  }, [onRemove, index]);
+  }, [onRemove, index, id]);
 
   return (
     <TouchableNativeFeedback onPress={handleRemove}>
@@ -249,9 +250,37 @@ const RemoveButton = ({ onRemove, index }) => {
 export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [qualificacoes, setQualificacoes] = useState([]);
+  const profileId = useSelector(state => state.user.profile.id);
+  const token = useSelector(state => state.auth.token);
+  useEffect(() => {
+    async function loadQualification() {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      await api
+        .get(`providers/${profileId}/qualifications`)
+        .then(response => {
+          setQualificacoes(response.data);
+        })
+        .catch(err => {
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
+        });
+    }
+    loadQualification();
+  }, [profileId, token]);
 
-  const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider(qualificacoes);
+  const handleSubmitNewProvider = useCallback(async () => {
+    // onSubmitNewProvider(qualificacoes);
+
+    const responseSubmitNew = await onSubmitNewProvider(qualificacoes);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }, [onSubmitNewProvider, qualificacoes]);
 
   const showModal = () => {
@@ -266,11 +295,17 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
     setQualificacoes([...qualificacoes, qualificacao]);
   };
 
-  const removeQualificacao = qualificacaoIndex => {
+  const removeQualificacao = async ({ index, id }) => {
     const newQualificacoes = [...qualificacoes];
 
-    newQualificacoes.splice(qualificacaoIndex, 1);
+    newQualificacoes.splice(index, 1);
     setQualificacoes(newQualificacoes);
+
+    if (!isNewProvider) {
+      const response = await api.delete(
+        `providers/${profileId}/qualifications/${id}`
+      );
+    }
   };
 
   const renderItem = ({ item, index }) => {
@@ -280,7 +315,11 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
           <Text>{item.title}</Text>
           <Text>{item.description}</Text>
         </View>
-        <RemoveButton index={index} onRemove={removeQualificacao} />
+        <RemoveButton
+          index={index}
+          id={item.id}
+          onRemove={removeQualificacao}
+        />
       </View>
     );
   };
@@ -314,7 +353,7 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
         visible={modalVisible}
         onDismiss={onDismissModal}
         onAdd={onAddQualificacoes}
-        isNewProvider
+        isNewProvider={isNewProvider}
       />
     </Background>
   );

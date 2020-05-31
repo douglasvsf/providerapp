@@ -26,7 +26,7 @@ function ActuationAreaScreen({ navigation }) {
 
         occupationCitiesArray.push({
           city: selectedCities.city,
-          state: selectedCities.uf.nome,
+          state: selectedCities.state,
         });
         setOccupationCities(occupationCitiesArray);
       });
@@ -59,9 +59,10 @@ function ActuationAreaScreen({ navigation }) {
           }
         );
         console.log(response);
+        setSubmitting(true);
         navigation.navigate('PaymentMethodsScreen');
       } catch (ex) {
-        console.warn(ex);
+        return 0;
       } finally {
         setSubmitting(false);
       }
@@ -69,7 +70,15 @@ function ActuationAreaScreen({ navigation }) {
     [navigation, occupationAreasArray, occupationCitiesArray, profileId, token]
   );
 
-  return <Service isNewProvider onSubmitNewProvider={onSubmit} />;
+  return (
+    <Service
+      isNewProvider
+      onSubmitNewProvider={onSubmit}
+      submitting={submitting}
+      token={token}
+      profileid={profileId}
+    />
+  );
 }
 
 export default ActuationAreaScreen;

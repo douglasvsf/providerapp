@@ -1,8 +1,8 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
+import Snackbar from 'react-native-snackbar';
 import Background from '~/components/Background';
-
 import api from '../../services/api';
 
 import {
@@ -17,7 +17,11 @@ import {
 } from './styles';
 import { colors } from '~/values/colors';
 
-export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
+export default function SocialMedia({
+  onSubmitNewProvider,
+  isNewProvider,
+  navigation,
+}) {
   const instaRef = useRef();
   const whatsRef = useRef();
 
@@ -26,6 +30,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
   const [instaid, setInstaid] = useState('');
   const [socialMedia, setSocialMedia] = useState([]);
   const socialMediasArray = Array.from(socialMedia);
+  const [isBack, setIsBack] = useState(false);
 
   socialMediasArray.push({
     facebookUrl: facebookurl,
@@ -41,18 +46,25 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
       await api
         .get(`users/${profileId}/social_media`)
         .then(response => {
-          console.log('aa', response);
           // se for cpf
-          setPhonenumber(response.data.telephone_number);
-          setFacebookurl(response.data.facebook_url);
-          setInstaid(response.data.instagram_id);
+          if (response.data !== null) {
+            setPhonenumber(response.data.telephone_number);
+            setFacebookurl(response.data.facebook_url);
+            setInstaid(response.data.instagram_id);
+          }
+
+          const verifyIsBack = !!(isNewProvider && response.data !== null);
+          setIsBack(verifyIsBack);
         })
         .catch(err => {
-          console.log('erro', err);
+          Snackbar.show({
+            text: 'Certifique-se que possui conexão com a internet',
+            duration: Snackbar.LENGTH_LONG,
+          });
         });
     }
     loadAdditionalInfo();
-  }, [profileId, token]);
+  }, [isNewProvider, profileId, token]);
 
   async function UpdateSocialMedia() {
     const result = socialMediasArray.find(obj => {
@@ -63,19 +75,38 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
     await api
       .put(`users/${profileId}/social_media`, result)
       .then(response => {
-        console.log('aa', response);
         // se for cpf
-        setPhonenumber(response.data.telephone_number);
-        setFacebookurl(response.data.facebook_url);
-        setInstaid(response.data.instagram_id);
+
+        if (response.data !== null) {
+          setPhonenumber(response.data.telephone_number);
+          setFacebookurl(response.data.facebook_url);
+          setInstaid(response.data.instagram_id);
+        }
+
+        const verifyIsBack = !!(isNewProvider && response.data !== null);
+        if (verifyIsBack) {
+          navigation.navigate('QualificationScreen');
+        }
       })
       .catch(err => {
-        console.log('erro', err);
+        Snackbar.show({
+          text: 'Certifique-se que todos campos estão preenchidos',
+          duration: Snackbar.LENGTH_LONG,
+        });
       });
   }
 
-  const handleSubmitNewProvider = useCallback(() => {
-    onSubmitNewProvider(socialMediasArray);
+  const handleSubmitNewProvider = useCallback(async () => {
+    const responseSubmitNew = await onSubmitNewProvider(socialMediasArray);
+
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      setIsBack(true);
+    }
   }, [onSubmitNewProvider, socialMediasArray]);
   return (
     <Background>
@@ -132,7 +163,7 @@ export default function SocialMedia({ onSubmitNewProvider, isNewProvider }) {
             />
           </ContainerTelephone>
 
-          {isNewProvider ? (
+          {isNewProvider && !isBack ? (
             <SubmitButton onPress={handleSubmitNewProvider}>
               Próximo
             </SubmitButton>

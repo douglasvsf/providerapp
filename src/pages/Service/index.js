@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { PureComponent } from 'react';
 import {
   Keyboard,
@@ -9,6 +10,8 @@ import {
   Alert,
   Button,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
+import { withNavigation } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -106,6 +109,8 @@ class Service extends PureComponent {
       selectedAreaAtuacao: [],
       occupationCities: [],
       occupationAreas: [],
+      occupationAreasUnique: [],
+      isBack: false,
     };
   }
 
@@ -130,33 +135,41 @@ class Service extends PureComponent {
       selectedValueCidade: '',
     });
 
-    const { token, profileid } = this.props;
-    const { isNewProvider } = this.props;
+    const { token, profileid, isNewProvider } = this.props;
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+    await api
+      .get(`providers/${profileid}/occupation_areas`)
+      .then(response => {
+        const occupationAreasArray = Array.from(this.state.occupationAreas);
 
-    if (!isNewProvider) {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-      await api
-        .get(`providers/${profileid}/occupation_areas`)
-        .then(response => {
-          console.log('aa', response);
-          const occupationAreasArray = Array.from(this.state.occupationAreas);
-
+        if (response.data !== null) {
           const list = response.data.userOccupationArea.map((details, i) => {
             occupationAreasArray.push({
               id: details.occupation_area_id,
+              idTable: details.id,
               label: details.occupation_area.title,
             });
           });
 
           this.setState({
             selectedAreaAtuacao: occupationAreasArray,
-            selectedCitiesGet: response.data.userOccupationCity,
+            selectedCities: response.data.userOccupationCity,
           });
-        })
-        .catch(err => {
-          console.log('erro', err);
+        }
+
+        const verifyIsBack = !!(
+          isNewProvider &&
+          response.data.userOccupationArea.length > 0 &&
+          response.data.userOccupationCity.length > 0
+        );
+        this.setState({ isBack: verifyIsBack });
+      })
+      .catch(err => {
+        Snackbar.show({
+          text: 'Certifique-se que possui conexão com internet',
+          duration: Snackbar.LENGTH_LONG,
         });
-    }
+      });
   }
 
   async componentDidUpdate(_, prevState) {
@@ -183,24 +196,48 @@ class Service extends PureComponent {
     });
   };
 
-  handleSubmitNewProvider = () => {
+  handleSubmitNewProvider = async () => {
     const { onSubmitNewProvider } = this.props;
     const { selectedCities, selectedAreaAtuacao } = this.state;
 
-    onSubmitNewProvider({ selectedCities, selectedAreaAtuacao });
+    // onSubmitNewProvider({ selectedCities, selectedAreaAtuacao });
+    // this.setState({ isBack: true });
+
+    const responseSubmitNew = await onSubmitNewProvider({
+      selectedCities,
+      selectedAreaAtuacao,
+    });
+    if (responseSubmitNew === 0) {
+      Snackbar.show({
+        text: 'Certifique-se que todos campos estão preenchidos',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } else {
+      this.setState({ isBack: true });
+    }
   };
 
   onAddCity = () => {
+    const { token, profileid, isNewProvider } = this.props;
+
     const {
       selectedValueCidade,
       selectedValueEstado,
       selectedCities,
+      occupationCities,
+      isBack,
     } = this.state;
 
+    const occupationCitiesArray = Array.from(occupationCities);
     const newCity = {
       city: selectedValueCidade,
-      uf: selectedValueEstado,
+      state: selectedValueEstado.nome,
     };
+
+    occupationCitiesArray.push({
+      city: newCity.city,
+      state: newCity.state,
+    });
 
     if (!selectedValueCidade || !selectedValueEstado) return;
 
@@ -219,7 +256,7 @@ class Service extends PureComponent {
       );
     } else if (
       selectedCities.some(
-        city => city.uf === newCity.uf && city.city === newCity.city
+        city => city.state === newCity.state && city.city === newCity.city
       )
     ) {
       Alert.alert(
@@ -227,10 +264,37 @@ class Service extends PureComponent {
         'Você já esta atuando na que esta tentando adicionar',
         [{ text: 'OK', onPress: () => null }]
       );
-    } else {
+    } else if (isNewProvider && !isBack) {
+      // fluxo sem voltar
       this.setState({
         selectedCities: [...selectedCities, newCity],
       });
+    } else {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      api
+        .post(`providers/${profileid}/only_occupation_city`, {
+          occupationCities: occupationCitiesArray,
+        })
+        .then(response => {
+          const result = response.data.userOccupationCity.find(obj => {
+            return obj;
+          });
+
+          const newCityResponse = {
+            city: result.city,
+            state: result.state,
+            id: result.id,
+          };
+          this.setState({
+            selectedCities: [...selectedCities, newCityResponse],
+          });
+        })
+        .catch(err => {
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
+        });
     }
   };
 
@@ -251,18 +315,35 @@ class Service extends PureComponent {
     Keyboard.dismiss();
   };
 
-  removeCity = city => {
-    const { selectedCities } = this.state;
+  removeCity = async city => {
+    const { profileid, isNewProvider } = this.props;
+
+    const { selectedCities, isBack } = this.state;
 
     const cityIndex = selectedCities.findIndex(
-      c => c.city === city.city && c.uf.sigla === city.uf.sigla
+      c => c.city === city.city && c.state === city.state
     );
 
     const newSelectedCities = [...selectedCities];
 
     newSelectedCities.splice(cityIndex, 1);
 
-    this.setState({ selectedCities: newSelectedCities });
+    if (isNewProvider && !isBack) {
+      // fluxo sem voltar
+      this.setState({ selectedCities: newSelectedCities });
+    } else {
+      await api
+        .delete(`providers/${profileid}/occupationCity/${city.id}`)
+        .then(response => {
+          this.setState({ selectedCities: newSelectedCities });
+        })
+        .catch(err => {
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
+        });
+    }
   };
 
   renderItem = ({ item }) => {
@@ -270,19 +351,24 @@ class Service extends PureComponent {
 
     return (
       <View style={styles.cityItem}>
-        {isNewProvider ? (
+        <>
+          <Text>
+            {item.city} - {item.state}
+          </Text>
+        </>
+        {/* {isNewProvider ? (
           <>
             <Text>
-              {item.city} - {item.uf.sigla}
+              {item.city} - {item.uf.nome}
             </Text>
           </>
         ) : (
           <>
             <Text>
-              {item.city} - {item.state}
+              {item.city} - {item.state || item.uf.nome}
             </Text>
           </>
-        )}
+        )} */}
 
         <TouchableNativeFeedback
           onPress={() =>
@@ -311,13 +397,69 @@ class Service extends PureComponent {
     return <View style={styles.separator} />;
   };
 
-  onSelectAreaAtuacao = areaAtuacao => {
-    const { selectedAreaAtuacao } = this.state;
-
+  onSelectAreaAtuacao = async areaAtuacao => {
+    const { selectedAreaAtuacao, occupationAreasUnique, isBack } = this.state;
+    const { token, profileid, isNewProvider } = this.props;
     // Request pro back aqui
-    this.setState({
-      selectedAreaAtuacao: [...selectedAreaAtuacao, areaAtuacao],
-    });
+    if (isNewProvider && !isBack) {
+      // fluxo sem voltar
+
+      this.setState({
+        selectedAreaAtuacao: [...selectedAreaAtuacao, areaAtuacao],
+      });
+    } else {
+      const occupationAreasArrayUnique = Array.from(occupationAreasUnique);
+
+      occupationAreasArrayUnique.push({
+        occupationAreaId: areaAtuacao.id,
+      });
+
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      await api
+        .post(`providers/${profileid}/only_occupation_area`, {
+          occupationAreas: occupationAreasArrayUnique,
+        })
+        .then(async response => {
+          const result = response.data.userOccupationArea.find(obj => {
+            return obj;
+          });
+
+          api.defaults.headers.Authorization = `Bearer ${token}`;
+          await api
+            .get(`providers/${profileid}/occupation_areas`)
+            .then(responseGet => {
+              const occupationAreasArray = Array.from(
+                this.state.occupationAreas
+              );
+
+              const list = responseGet.data.userOccupationArea.map(
+                (details, i) => {
+                  occupationAreasArray.push({
+                    id: details.occupation_area_id,
+                    idTable: details.id,
+                    label: details.occupation_area.title,
+                  });
+                }
+              );
+
+              this.setState({
+                selectedAreaAtuacao: occupationAreasArray,
+              });
+            })
+            .catch(err => {
+              Snackbar.show({
+                text: 'Certifique-se que possui conexão com a internet',
+                duration: Snackbar.LENGTH_LONG,
+              });
+            });
+        })
+        .catch(err => {
+          Snackbar.show({
+            text: 'Ocorreu um erro, tente novamente',
+            duration: Snackbar.LENGTH_LONG,
+          });
+        });
+    }
   };
 
   emptyContainer = () => {
@@ -330,47 +472,27 @@ class Service extends PureComponent {
     );
   };
 
-  removeAreaAtuacao = index => {
-    const { selectedAreaAtuacao } = this.state;
+  removeAreaAtuacao = async ({ index, areaAtuacao }) => {
+    const { profileid, isNewProvider } = this.props;
+    const { selectedAreaAtuacao, isBack } = this.state;
     const newSelectedAreasAtuacao = [...selectedAreaAtuacao];
     newSelectedAreasAtuacao.splice(index, 1);
-    this.setState({ selectedAreaAtuacao: newSelectedAreasAtuacao });
+    if (isNewProvider && !isBack) {
+      // fluxo sem voltar
+      this.setState({ selectedAreaAtuacao: newSelectedAreasAtuacao });
+    } else {
+      this.setState(
+        () => ({
+          selectedAreaAtuacao: newSelectedAreasAtuacao,
+        }),
+        () => {
+          api.delete(
+            `providers/${profileid}/occupationArea/${areaAtuacao.idTable}`
+          );
+        }
+      );
+    }
   };
-
-  // async updateActuation() {
-
-  //   const { token, profileid } = this.props;
-
-  //   const occupationCitiesArray = Array.from(this.state.occupationCities);
-  //   const occupationAreasArray = Array.from(this.state.occupationAreas);
-
-  //   this.state.selectedCities.map(function(selectedCities) {
-  //     occupationCitiesArray.push({
-  //       city: selectedCities.city,
-  //       state: selectedCities.uf.nome,
-  //     });
-  //   });
-  //   // console.log('aaa', occupationCities);
-  //   this.state.selectedAreaAtuacao.map(function(selectedAreaAtuacao) {
-  //     // console.log(selectedCities.city);
-  //     // console.log(selectedCities.uf.nome);
-
-  //     occupationAreasArray.push({
-  //       occupation_area_id: selectedAreaAtuacao.id,
-  //     });
-  //   });
-
-  //   try {
-  //     api.defaults.headers.Authorization = `Bearer ${token}`;
-  //     const response = await api.post(`users/${profileId}/occupation_area`, {
-  //       occupationAreas: occupationAreasArray,
-  //       occupationCities: occupationCitiesArray,
-  //     });
-  //     console.log(response);
-  //   } catch (ex) {
-  //     console.warn(ex);
-  //   }
-  // }
 
   renderAreaAtuacao = (areaAtuacao, index) => {
     return (
@@ -387,7 +509,7 @@ class Service extends PureComponent {
                 },
                 {
                   text: 'Sim',
-                  onPress: () => this.removeAreaAtuacao(index),
+                  onPress: () => this.removeAreaAtuacao({ index, areaAtuacao }),
                 },
               ]
             )
@@ -407,9 +529,10 @@ class Service extends PureComponent {
       selectedCities,
       selectedAreaAtuacao,
       selectedCitiesGet,
+      isBack,
     } = this.state;
 
-    const { isNewProvider } = this.props;
+    const { isNewProvider, navigation } = this.props;
 
     return (
       <Background>
@@ -437,25 +560,14 @@ class Service extends PureComponent {
               onPress={this.onAddCity}
             />
 
-            {isNewProvider ? (
-              <FlatList
-                style={styles.flatList}
-                data={selectedCities}
-                renderItem={this.renderItem}
-                keyExtractor={KEY_EXTRACTOR}
-                ItemSeparatorComponent={this.renderSeparator}
-                ListEmptyComponent={this.emptyContainer}
-              />
-            ) : (
-              <FlatList
-                style={styles.flatList}
-                data={selectedCitiesGet}
-                renderItem={this.renderItem}
-                keyExtractor={KEY_EXTRACTOR}
-                ItemSeparatorComponent={this.renderSeparator}
-                ListEmptyComponent={this.emptyContainer}
-              />
-            )}
+            <FlatList
+              style={styles.flatList}
+              data={selectedCities}
+              renderItem={this.renderItem}
+              keyExtractor={KEY_EXTRACTOR}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListEmptyComponent={this.emptyContainer}
+            />
 
             <Separator />
 
@@ -470,7 +582,7 @@ class Service extends PureComponent {
 
             {selectedAreaAtuacao.map(this.renderAreaAtuacao)}
 
-            {isNewProvider ? (
+            {isNewProvider && !isBack ? ( // fluxo sem voltar
               <>
                 <Separator />
 
@@ -484,6 +596,12 @@ class Service extends PureComponent {
                   onPress={this.handleSubmitNewProvider()}
                 /> */}
               </>
+            ) : isNewProvider ? ( // somente no fluxo
+              <SubmitButton
+                onPress={() => navigation.navigate('PaymentMethodsScreen')}
+              >
+                Atualizar Áreas de Atuação
+              </SubmitButton>
             ) : null}
           </Form>
         </Container>
@@ -502,4 +620,4 @@ Service.navigationOptions = {
   ),
 };
 
-export default Service;
+export default withNavigation(Service);
