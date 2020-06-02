@@ -58,7 +58,7 @@ export default class Chat extends Component {
 
     // console.log(awsConfig, 'awsConfig');
     // console.log(this.props, 'chat props');
-    this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}`);
+    this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}/messages`);
     // console.log(this.chatsFromFB, 'chats from fb');
 
     this.checkPermissionCamera();
@@ -71,27 +71,32 @@ export default class Chat extends Component {
         });
         return;
       }
-      let { messages } = snapshot.val();
-      messages = messages.map(node => {
-        // console.log(node, 'node');
-        const message = {};
-        message._id = node._id;
-        message.text = node.messageType === 'message' ? node.text : '';
-        message.createdAt = node.createdAt;
-        message.user = {
-          _id: node.from,
-          name: node.from === user._id ? user.name : customer.name,
-          avatar: node.from === user._id ? user.avatar : customer.avatar,
+
+      const messages = [];
+
+      snapshot.forEach(nodeRef => {
+        const node = nodeRef.val();
+
+        const message = {
+          _id: node._id,
+          text: node.messageType === 'message' ? node.text : '',
+          createdAt: node.createdAt,
+          user: {
+            _id: node.from,
+            name: node.from === user._id ? user.name : customer.name,
+            avatar: node.from === user._id ? user.avatar : customer.avatar,
+          },
+          from: node.from,
+          image: node.messageType === 'image' ? node.image : '',
+          audio: node.messageType === 'audio' ? node.audio : '',
+          messageType: node.messageType,
         };
-        (message.from = node.from),
-          (message.image = node.messageType === 'image' ? node.image : '');
-        message.audio = node.messageType === 'audio' ? node.audio : '';
-        message.messageType = node.messageType;
-        return message;
+
+        messages.push(message);
       });
 
       this.setState({
-        messages: [...messages],
+        messages: messages.reverse(),
       });
     });
   }
@@ -159,14 +164,11 @@ export default class Chat extends Component {
 
     messages[0].messageType = 'message';
     messages[0].from = user._id;
+    messages[0].createdAt = new Date().toISOString();
 
-    const updatedMessages = [messages[0], ...this.state.messages].map(
-      ({ user, ...message }) => message
-    );
+    delete messages[0].user;
 
-    this.chatsFromFB.update({
-      messages: updatedMessages,
-    });
+    this.chatsFromFB.push(messages[0]);
   }
 
   renderName = props => {
@@ -315,11 +317,9 @@ export default class Chat extends Component {
           message.audio = response.headers.Location;
           message.messageType = 'audio';
 
-          this.chatsFromFB.update({
-            messages: [message, ...this.state.messages].map(
-              ({ user, ...message }) => message
-            ),
-          });
+          delete message.user;
+
+          this.chatsFromFB.push(message);
         })
         .catch(err => {
           // console.log(err, 'err from audio upload');
@@ -397,11 +397,7 @@ export default class Chat extends Component {
             message.image = response.headers.Location;
             message.messageType = 'image';
 
-            this.chatsFromFB.update({
-              messages: [message, ...this.state.messages].map(
-                ({ user, ...message }) => message
-              ),
-            });
+            this.chatsFromFB.push(message);
           });
         if (!allowedExtensions.includes(extension)) {
           return alert('That file type is not allowed.');
@@ -442,11 +438,6 @@ export default class Chat extends Component {
         </View>
       );
     }
-  }
-
-  openNewSolicitationModal() {
-    const { navigation } = this.props;
-    navigation.navigate('NewSolicitation');
   }
 
   render() {
