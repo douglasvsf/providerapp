@@ -8,6 +8,7 @@ import {
   PermissionsAndroid,
   Platform,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
@@ -20,6 +21,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '~/utils/colors';
 import { awsConfig } from './config/AwsConfig';
 import { firebaseDB } from './config/FirebaseConfig';
+import SolicitationDetailsModal from './SolicitationDetailsModal';
 import { Submit } from './styles';
 
 export default class Chat extends Component {
@@ -49,6 +51,8 @@ export default class Chat extends Component {
       IncludeBase64: true,
       AudioEncodingBitRate: 32000,
     },
+    selectedSolicitation: null,
+    showSolicitationDetailsModal: false,
   };
 
   componentWillMount() {
@@ -230,21 +234,87 @@ export default class Chat extends Component {
     );
   };
 
-  renderBubble = props => {
+  renderSolicitationDetailsModal = () => {
+    const { showSolicitationDetailsModal } = this.state;
+
     return (
-      <View>
-        {this.renderName(props)}
-        {this.renderAudio(props)}
-        <Bubble
-          {...props}
-          wrapperStyle={{
-            right: {
-              backgroundColor: colors.primary,
-            },
+      <SolicitationDetailsModal
+        isVisible={showSolicitationDetailsModal}
+        onDismiss={this.hideSolicitationDetailsModal}
+      />
+    );
+  };
+
+  openSolicitationDetailsModal = solicitation => {
+    this.setState({
+      showSolicitationDetailsModal: true,
+      selectedSolicitation: solicitation,
+    });
+  };
+
+  hideSolicitationDetailsModal = () => {
+    this.setState({
+      showSolicitationDetailsModal: false,
+      selectedSolicitation: null,
+    });
+  };
+
+  renderSolicitation = currentMessage => {
+    return (
+      <View style={{ backgroundColor: colors.primaryLight, borderRadius: 20 }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            padding: 12,
+            paddingHorizontal: 24,
           }}
-        />
+        >
+          <Text>Nova solicitação</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            padding: 12,
+            paddingHorizontal: 24,
+            borderTopWidth: 1,
+            borderTopColor: colors.transparentWhite50,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => this.openSolicitationDetailsModal(currentMessage)}
+          >
+            <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Abrir</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
+  };
+
+  renderBubble = props => {
+    switch (props.currentMessage.messageType) {
+      case 'solicitation':
+        return this.renderSolicitation(props.currentMessage);
+
+      default:
+        return (
+          <View>
+            {this.renderName(props)}
+            {this.renderAudio(props)}
+            <Bubble
+              {...props}
+              wrapperStyle={{
+                right: {
+                  backgroundColor: colors.primary,
+                },
+              }}
+            />
+          </View>
+        );
+    }
   };
 
   renderSend = ({ onSend, ...props }) => {
@@ -463,6 +533,7 @@ export default class Chat extends Component {
           leftButton={leftButtonConfig}
         />
         {this.renderLoading()}
+        {this.renderSolicitationDetailsModal()}
 
         <GiftedChat
           messages={this.state.messages}
