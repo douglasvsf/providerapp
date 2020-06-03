@@ -18,6 +18,7 @@ import ImagePicker from 'react-native-image-picker';
 import NavigationBar from 'react-native-navbar';
 import Sound from 'react-native-sound';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import api from '~/services/api';
 import { colors } from '~/utils/colors';
 import { awsConfig } from './config/AwsConfig';
 import { firebaseDB } from './config/FirebaseConfig';
@@ -51,8 +52,9 @@ export default class Chat extends Component {
       IncludeBase64: true,
       AudioEncodingBitRate: 32000,
     },
-    selectedSolicitation: null,
+    solicitation: null,
     showSolicitationDetailsModal: false,
+    isLoadingSolicitation: false,
   };
 
   componentWillMount() {
@@ -94,6 +96,8 @@ export default class Chat extends Component {
           image: node.messageType === 'image' ? node.image : '',
           audio: node.messageType === 'audio' ? node.audio : '',
           messageType: node.messageType,
+          solicitationId:
+            node.messageType === 'solicitation' ? node.solicitationId : '',
         };
 
         messages.push(message);
@@ -235,27 +239,61 @@ export default class Chat extends Component {
   };
 
   renderSolicitationDetailsModal = () => {
-    const { showSolicitationDetailsModal } = this.state;
+    const {
+      showSolicitationDetailsModal,
+      isLoadingSolicitation,
+      solicitation,
+    } = this.state;
 
     return (
       <SolicitationDetailsModal
         isVisible={showSolicitationDetailsModal}
         onDismiss={this.hideSolicitationDetailsModal}
+        isLoading={isLoadingSolicitation}
+        solicitation={solicitation}
       />
     );
   };
 
-  openSolicitationDetailsModal = solicitation => {
+  requestSolicitationDetails = async solicitationId => {
+    try {
+      const { data: solicitationDetails } = await api.get(
+        `/solicitation/${solicitationId}`
+      );
+      return solicitationDetails;
+    } catch (error) {
+      Alert.alert(
+        'Erro',
+        'Não foi possível consultar os detalhes da solicitação'
+      );
+      return null;
+    }
+  };
+
+  openSolicitationDetailsModal = async solicitationId => {
     this.setState({
       showSolicitationDetailsModal: true,
-      selectedSolicitation: solicitation,
+      isLoadingSolicitation: true,
     });
+
+    const solicitation = await this.requestSolicitationDetails(solicitationId);
+
+    let newState = {
+      isLoadingSolicitation: false,
+      solicitation,
+    };
+
+    if (!solicitation) {
+      newState = { ...newState, showSolicitationDetailsModal: false };
+    }
+
+    this.setState(newState);
   };
 
   hideSolicitationDetailsModal = () => {
     this.setState({
       showSolicitationDetailsModal: false,
-      selectedSolicitation: null,
+      solicitation: null,
     });
   };
 
@@ -285,7 +323,9 @@ export default class Chat extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => this.openSolicitationDetailsModal(currentMessage)}
+            onPress={() =>
+              this.openSolicitationDetailsModal(currentMessage.solicitationId)
+            }
           >
             <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Abrir</Text>
           </TouchableOpacity>
