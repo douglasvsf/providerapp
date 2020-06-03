@@ -86,6 +86,9 @@ const SolicitationDetailsModal = ({
               value={solicitation.note}
             />
             <Title>Localização</Title>
+            <DetailsText>
+              {solicitation.address_text || 'Localização não encontrada'}
+            </DetailsText>
             <Title>Preço</Title>
             <DetailsText>
               {Number(solicitation.value).toLocaleString('pt-br', {
@@ -100,7 +103,7 @@ const SolicitationDetailsModal = ({
             {solicitation.payment_method === PaymentMethod.MONEY ? (
               <>
                 <Title>Precisa de troco?</Title>
-                <DetailsText>
+                <DetailsText style={{ marginBottom: 0 }}>
                   {solicitation.change_money
                     ? `Sim, para ${Number(solicitation.value).toLocaleString(
                         'pt-br',

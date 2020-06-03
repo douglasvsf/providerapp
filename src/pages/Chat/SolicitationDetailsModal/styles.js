@@ -57,7 +57,6 @@ export const DetailsText = styled.Text`
 export const ButtonsContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
-  padding: 12px;
 `;
 
 export const NoteInput = styled.TextInput`
