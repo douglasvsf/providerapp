@@ -105,13 +105,12 @@ const SolicitationDetailsModal = ({
                 <Title>Precisa de troco?</Title>
                 <DetailsText style={{ marginBottom: 0 }}>
                   {solicitation.change_money
-                    ? `Sim, para ${Number(solicitation.value).toLocaleString(
-                        'pt-br',
-                        {
-                          style: 'currency',
-                          currency: 'BRL',
-                        }
-                      )}`
+                    ? `Sim, para ${Number(
+                        solicitation.change_money
+                      ).toLocaleString('pt-br', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })}`
                     : 'Não'}
                 </DetailsText>
               </>
