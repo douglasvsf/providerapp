@@ -96,6 +96,7 @@ export default class Chat extends Component {
           image: node.messageType === 'image' ? node.image : '',
           audio: node.messageType === 'audio' ? node.audio : '',
           messageType: node.messageType,
+          status: node.status || '',
           solicitationId:
             node.messageType === 'solicitation' ? node.solicitationId : '',
         };
@@ -297,6 +298,22 @@ export default class Chat extends Component {
     });
   };
 
+  solicitationStatusToString = status => {
+    switch (status) {
+      case 'undefined':
+        return 'Em aberto';
+
+      case 'accepted':
+        return 'Aceita';
+
+      case 'not_accepted':
+        return 'Recusada';
+
+      default:
+        return 'Erro';
+    }
+  };
+
   renderSolicitation = currentMessage => {
     return (
       <View style={{ backgroundColor: colors.primaryLight, borderRadius: 20 }}>
@@ -327,7 +344,16 @@ export default class Chat extends Component {
               this.openSolicitationDetailsModal(currentMessage.solicitationId)
             }
           >
-            <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Abrir</Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 14,
+                color:
+                  currentMessage.status === 'not_accepted' ? 'red' : 'black',
+              }}
+            >
+              {this.solicitationStatusToString(currentMessage.status)}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

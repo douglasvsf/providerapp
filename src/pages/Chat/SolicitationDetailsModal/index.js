@@ -1,7 +1,9 @@
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
+import api from '~/services/api';
+import { firebaseDB } from '../config/FirebaseConfig';
 import {
   AcceptButton,
   AcceptButtonText,
@@ -45,6 +47,84 @@ const SolicitationDetailsModal = ({
         return 'Cartão de débito';
       default:
         return 'Tipo de pagamento inválido';
+    }
+  }
+
+  async function requestCreateAppointment() {
+    const { data: appointment } = await api.post('/appointments', {
+      solicitation_id: solicitation.id,
+    });
+
+    return appointment;
+  }
+
+  async function updateSolicitationOnFirebase(status) {
+    const firebaseMessagesRef = firebaseDB.ref(
+      `/chat/${solicitation.chat_id}/messages`
+    );
+
+    firebaseMessagesRef
+      .orderByChild('messageType')
+      .equalTo('solicitation')
+      .limitToLast(1)
+      .once('value', snapshot => {
+        try {
+          const childrens = snapshot.val();
+
+          if (!childrens) return;
+
+          const key = Object.keys(childrens)[0];
+          const solicitationMessage = childrens[key];
+
+          if (solicitationMessage.status === 'undefined') {
+            const solicitationMessageRef = firebaseDB.ref(
+              `/chat/${solicitation.chat_id}/messages/${key}`
+            );
+
+            solicitationMessageRef.update({ status });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      });
+  }
+
+  async function acceptSolicitation() {
+    try {
+      const appointment = await requestCreateAppointment();
+
+      if (!appointment) {
+        Alert.alert('Erro', 'Erro ao criar agendamento');
+        return;
+      }
+
+      updateSolicitationOnFirebase('accepted');
+
+      onDismiss();
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro', 'Erro ao aceitar solicitação');
+    }
+  }
+
+  async function rejectSolicitation() {
+    try {
+      const { data: rejectedSolicitation } = await api.put(
+        `/solicitation/${solicitation.id}`,
+        { status: 'not_accepted' }
+      );
+
+      if (!rejectedSolicitation) {
+        Alert.alert('Erro', 'Erro ao atualizar status da solicitação');
+        return;
+      }
+
+      updateSolicitationOnFirebase('not_accepted');
+
+      onDismiss();
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro', 'Erro ao recusar solicitação');
     }
   }
 
@@ -116,14 +196,16 @@ const SolicitationDetailsModal = ({
               </>
             ) : null}
           </DetailsContainer>
-          <ButtonsContainer>
-            <RefuseButton>
-              <RefuseButtonText>Recusar</RefuseButtonText>
-            </RefuseButton>
-            <AcceptButton>
-              <AcceptButtonText>Aceitar</AcceptButtonText>
-            </AcceptButton>
-          </ButtonsContainer>
+          {solicitation.status === 'undefined' && (
+            <ButtonsContainer>
+              <RefuseButton onPress={() => rejectSolicitation()}>
+                <RefuseButtonText>Recusar</RefuseButtonText>
+              </RefuseButton>
+              <AcceptButton onPress={() => acceptSolicitation()}>
+                <AcceptButtonText>Aceitar</AcceptButtonText>
+              </AcceptButton>
+            </ButtonsContainer>
+          )}
         </Content>
       ) : null}
     </SolicitationModal>
