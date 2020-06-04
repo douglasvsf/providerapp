@@ -129,70 +129,76 @@ export default function enterRoom({ navigation }) {
   const [Availableroom, setAvailableRooms] = useState([]);
   const [Finishedroom, setFinishedRooms] = useState([]);
 
+  function updateAvailableRoomAtIndex(availableRoom, idx) {
+    setAvailableRooms(previousState => [
+      ...previousState.slice(0, idx),
+      availableRoom,
+      ...previousState.slice(idx + 1),
+    ]);
+  }
+
   useEffect(() => {
-    async function requestChatDetailsFromFirebase(availableRoom) {
-      return new Promise((resolve, reject) => {
-        try {
-          const firebaseChatRef = firebaseDB.ref(
-            `/chat/${availableRoom.chat_id}`
-          );
+    async function listenToChatDetailsFromFirebase(availableRoom, idx) {
+      try {
+        const firebaseChatRef = firebaseDB.ref(
+          `/chat/${availableRoom.chat_id}`
+        );
 
-          firebaseChatRef.on('value', snapshot => {
-            if (!snapshot.val().messages || !snapshot.val().messages.length) {
-              resolve({ ...availableRoom });
-            } else {
-              const lastMessageText = snapshot.val().messages[0].text;
-              const lastMessageFrom = snapshot.val().messages[0].from;
-              const { isFinished } = snapshot.val();
+        firebaseChatRef.on('value', snapshot => {
+          const messages = Object.values(snapshot.val().messages);
+          if (!messages || !messages.length) {
+            updateAvailableRoomAtIndex(availableRoom, idx);
+          } else {
+            const lastMessage = messages[messages.length - 1];
 
-              const hasCreatedAtAttribute =
-                snapshot.val().messages[0].createdAt !== undefined;
+            const lastMessageText = lastMessage.text;
+            const lastMessageFrom = lastMessage.from;
+            const { isFinished } = snapshot.val();
 
-              if (hasCreatedAtAttribute) {
-                const lastMessageHour = formatRelative(
-                  parseISO(snapshot.val().messages[0].createdAt),
-                  new Date(),
+            const hasCreatedAtAttribute = lastMessage.createdAt !== undefined;
+
+            if (hasCreatedAtAttribute) {
+              const lastMessageHour = formatRelative(
+                parseISO(lastMessage.createdAt),
+                new Date(),
+                {
+                  locale: pt,
+                  addSuffix: true,
+                }
+              );
+
+              if (!isFinished) {
+                updateAvailableRoomAtIndex(
                   {
-                    locale: pt,
-                    addSuffix: true,
-                  }
-                );
-
-                if (!isFinished) {
-                  resolve({
                     ...availableRoom,
                     lastMessageText,
                     lastMessageHour,
                     lastMessageFrom,
-                  });
-                }
+                  },
+                  idx
+                );
               }
             }
-          });
-        } catch (error) {
-          reject(error);
-        }
-      });
+          }
+        });
+      } catch (error) {
+        Alert.alert('Erro', 'Não foi possível carregar as informações do chat');
+      }
     }
-
     async function requestAvailableRooms() {
       try {
         const { data: availableRooms } = await api.get('/available_rooms');
 
-        Promise.all(
-          availableRooms.map(availableRoom =>
-            requestChatDetailsFromFirebase(availableRoom)
-          )
-        ).then(availableRoomsWithFirebaseData => {
-          setAvailableRooms(availableRoomsWithFirebaseData);
-        });
+        availableRooms.forEach((availableRoom, idx) =>
+          listenToChatDetailsFromFirebase(availableRoom, idx)
+        );
       } catch (error) {
         Alert.alert('Erro ao carregar mensagens');
       }
     }
-
     requestAvailableRooms();
   }, []);
+
 
   const FirstRoute = () => (
     <View style={styles.container}>
