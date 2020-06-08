@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
-import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 
 import createRouter from './routes';
 
@@ -13,15 +13,21 @@ export default function App() {
   const profileId = useSelector(state => state.user.profile);
   const Routes = createRouter(signed, token, profileId, active);
 
-  async function saveTokenToDatabase(fcmToken) {
-    const userId = auth().currentUser.uid;
-
-    await database()
-      .ref(`users/${userId}`)
-      .update({ token: fcmToken });
-  }
-
   useEffect(() => {
+    async function saveTokenToDatabase(fcmToken) {
+      const userId = auth().currentUser.uid;
+
+      await firestore()
+        .collection('tokens')
+        .doc(userId)
+        .set(
+          {
+            tokens: firestore.FieldValue.arrayUnion(fcmToken),
+          },
+          { merge: true }
+        );
+    }
+
     async function onAuthStateChanged(user) {
       if (!user) return;
 
