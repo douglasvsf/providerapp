@@ -1,3 +1,4 @@
+import database from '@react-native-firebase/database';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -21,7 +22,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import api from '~/services/api';
 import { colors } from '~/utils/colors';
 import { awsConfig } from './config/AwsConfig';
-import { firebaseDB } from './config/FirebaseConfig';
 import SolicitationDetailsModal from './SolicitationDetailsModal';
 import { Submit } from './styles';
 
@@ -64,7 +64,7 @@ export default class Chat extends Component {
 
     // console.log(awsConfig, 'awsConfig');
     // console.log(this.props, 'chat props');
-    this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}/messages`);
+    this.chatsFromFB = database().ref(`/chat/${user.roomName}/messages`);
     // console.log(this.chatsFromFB, 'chats from fb');
 
     this.checkPermissionCamera();

@@ -1,9 +1,9 @@
+import database from '@react-native-firebase/database';
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import api from '~/services/api';
-import { firebaseDB } from '../config/FirebaseConfig';
 import {
   AcceptButton,
   AcceptButtonText,
@@ -59,7 +59,7 @@ const SolicitationDetailsModal = ({
   }
 
   async function updateSolicitationOnFirebase(status) {
-    const firebaseMessagesRef = firebaseDB.ref(
+    const firebaseMessagesRef = database().ref(
       `/chat/${solicitation.chat_id}/messages`
     );
 
@@ -77,7 +77,7 @@ const SolicitationDetailsModal = ({
           const solicitationMessage = childrens[key];
 
           if (solicitationMessage.status === 'undefined') {
-            const solicitationMessageRef = firebaseDB.ref(
+            const solicitationMessageRef = database().ref(
               `/chat/${solicitation.chat_id}/messages/${key}`
             );
 
