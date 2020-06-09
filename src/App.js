@@ -1,17 +1,39 @@
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import auth from '@react-native-firebase/auth';
-import messaging from '@react-native-firebase/messaging';
-import firestore from '@react-native-firebase/firestore';
-
+import NavigationService from './NavigationService';
+import createNotificationManager from './NotificationManager';
 import createRouter from './routes';
 
 export default function App() {
   const signed = useSelector(state => state.auth.signed);
   const token = useSelector(state => state.auth.token);
   const active = useSelector(state => state.auth.active);
-  const profileId = useSelector(state => state.user.profile);
-  const Routes = createRouter(signed, token, profileId, active);
+  const profile = useSelector(state => state.user.profile);
+  const Routes = createRouter(signed, token, profile, active);
+
+  useEffect(() => {
+    async function listenForegroundNotifications(notificationManager) {
+      messaging().onMessage(async remoteMessage => {
+        console.log('foreground', remoteMessage);
+      });
+    }
+
+    async function listenToNotificationClick(notificationManager) {
+      const remoteMessage = await messaging().getInitialNotification();
+
+      if (remoteMessage) {
+        notificationManager.onPushNotificationClick(remoteMessage);
+      }
+    }
+
+    const notificationManager = createNotificationManager(profile);
+
+    listenForegroundNotifications(notificationManager);
+    listenToNotificationClick(notificationManager);
+  }, [profile]);
 
   useEffect(() => {
     async function saveTokenToDatabase(fcmToken) {
@@ -40,9 +62,14 @@ export default function App() {
       });
     }
 
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
+    return auth().onAuthStateChanged(onAuthStateChanged);
   }, []);
 
-  return <Routes />;
+  return (
+    <Routes
+      ref={navigatorRef => {
+        NavigationService.setTopLevelNavigator(navigatorRef);
+      }}
+    />
+  );
 }
