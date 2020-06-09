@@ -1,25 +1,57 @@
+import messaging from '@react-native-firebase/messaging';
+import Snackbar from 'react-native-snackbar';
 import NavigationService from './NavigationService';
 
-export default function createNotificationManager(profile) {
-  function openChat(user, customer) {
+export default class NotificationManager {
+  constructor(profile) {
+    this.profile = profile;
+  }
+
+  openChat(user, customer) {
     NavigationService.navigate('Chat', {
       user: {
-        _id: profile.id,
-        name: profile.name,
-        firstName: profile.name,
-        lastName: profile.name,
+        _id: this.profile.id,
+        name: this.profile.name,
+        firstName: this.profile.name,
+        lastName: this.profile.name,
         ...user,
       },
       customer,
     });
   }
 
-  function showToastNotification() {}
-
-  function onPushNotificationClick(remoteMessage) {
+  showSnackBar(remoteMessage) {
     switch (remoteMessage?.data?.type) {
       case 'new-appointment-chat':
-        openChat(
+        Snackbar.show({
+          text: remoteMessage.notification.body,
+          duration: Snackbar.LENGTH_LONG,
+          action: {
+            text: 'Abrir',
+            textColor: 'green',
+            onPress: () =>
+              this.openChat(
+                JSON.parse(remoteMessage.data.user),
+                JSON.parse(remoteMessage.data.customer)
+              ),
+          },
+        });
+        break;
+
+      default:
+    }
+  }
+
+  listenForegroundNotifications() {
+    messaging().onMessage(async remoteMessage => {
+      this.showSnackBar(remoteMessage);
+    });
+  }
+
+  onPushNotificationClick(remoteMessage) {
+    switch (remoteMessage?.data?.type) {
+      case 'new-appointment-chat':
+        this.openChat(
           JSON.parse(remoteMessage.data.user),
           JSON.parse(remoteMessage.data.customer)
         );
@@ -28,11 +60,11 @@ export default function createNotificationManager(profile) {
     }
   }
 
-  function onToastNotificationClick() {}
+  async listenToNotificationClick() {
+    const remoteMessage = await messaging().getInitialNotification();
 
-  return {
-    showToastNotification,
-    onPushNotificationClick,
-    onToastNotificationClick,
-  };
+    if (remoteMessage) {
+      this.onPushNotificationClick(remoteMessage);
+    }
+  }
 }

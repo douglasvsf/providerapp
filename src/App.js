@@ -4,7 +4,7 @@ import messaging from '@react-native-firebase/messaging';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import NavigationService from './NavigationService';
-import createNotificationManager from './NotificationManager';
+import NotificationManager from './NotificationManager';
 import createRouter from './routes';
 
 export default function App() {
@@ -15,24 +15,10 @@ export default function App() {
   const Routes = createRouter(signed, token, profile, active);
 
   useEffect(() => {
-    async function listenForegroundNotifications(notificationManager) {
-      messaging().onMessage(async remoteMessage => {
-        console.log('foreground', remoteMessage);
-      });
-    }
+    const notificationManager = new NotificationManager(profile);
 
-    async function listenToNotificationClick(notificationManager) {
-      const remoteMessage = await messaging().getInitialNotification();
-
-      if (remoteMessage) {
-        notificationManager.onPushNotificationClick(remoteMessage);
-      }
-    }
-
-    const notificationManager = createNotificationManager(profile);
-
-    listenForegroundNotifications(notificationManager);
-    listenToNotificationClick(notificationManager);
+    notificationManager.listenForegroundNotifications();
+    notificationManager.listenToNotificationClick();
   }, [profile]);
 
   useEffect(() => {
