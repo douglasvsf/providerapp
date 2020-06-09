@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigationFocus } from 'react-navigation';
-
+import { useSelector } from 'react-redux';
 import api from '~/services/api';
 
 import Background from '~/components/Background';
@@ -13,8 +13,10 @@ import { colors } from '~/values/colors';
 function Dashboard({ isFocused }) {
   const [appointments, setAppointments] = useState([]);
 
+  const profileId = useSelector(state => state.user.profile.id);
+
   async function loadAppointments() {
-    const response = await api.get('appointments');
+    const response = await api.get(`providers/${profileId}/appointments`);
 
     setAppointments(response.data);
   }
@@ -23,7 +25,7 @@ function Dashboard({ isFocused }) {
     if (isFocused) {
       loadAppointments();
     }
-  }, [isFocused]);
+  }, [isFocused, loadAppointments]);
 
   async function handleCancel(id) {
     const response = await api.delete(`appointments/${id}`);
@@ -44,6 +46,7 @@ function Dashboard({ isFocused }) {
     <Background>
       <Container>
         <Title>Agendamentos</Title>
+
         <List
           data={appointments}
           keyExtractor={item => String(item.id)}

@@ -1,41 +1,64 @@
-import React, { useMemo } from 'react';
-import { parseISO, formatRelative } from 'date-fns';
+import React, { useMemo, useState } from 'react';
+import { parseISO, formatRelative, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import AppointmentDetailsModal from './AppointmentDetails';
 import { Container, Left, Avatar, Info, Name, Time } from './styles';
 
 export default function Appointment({ data, onCancel }) {
+  const [
+    showSolicitationDetailsModal,
+    setShowSolicitationDetailsModal,
+  ] = useState(false);
   const dateParsed = useMemo(() => {
-    return formatRelative(parseISO(data.date), new Date(), {
-      locale: pt,
-      addSuffix: true,
-    });
-  }, [data.date]);
+    return format(parseISO(data.solicitation.date), 'dd/MM/yyyy');
+    // formatRelative(parseISO(data.solicitation.date), new Date(), {
+    //   locale: pt,
+    //   addSuffix: true,
+    // });
+  }, [data.solicitation.date]);
+
+  const showOrderModal = () => {
+    setShowSolicitationDetailsModal(true);
+  };
+
+  const hideOrderModal = () => {
+    setShowSolicitationDetailsModal(false);
+  };
 
   return (
-    <Container past={data.past}>
-      <Left>
-        <Avatar
-          source={{
-            uri: data.provider.avatar
-              ? data.provider.avatar.url
-              : `https://api.adorable.io/avatar/50/${data.provider.name}.png`,
-          }}
-        />
+    <>
+      <AppointmentDetailsModal
+        isVisible={showSolicitationDetailsModal}
+        onDismiss={hideOrderModal}
+        solicitation={data.solicitation}
+      />
 
-        <Info>
-          <Name>{data.provider.name}</Name>
-          <Time>{dateParsed}</Time>
-        </Info>
-      </Left>
+      <Container past={data.past}>
+        <Left>
+          <Avatar
+            source={{
+              uri: `https://api.adorable.io/avatar/50/${data.id}.png`,
+            }}
+          />
 
-      {data.cancelable && !data.canceled_at && (
-        <TouchableOpacity onPress={onCancel}>
+          <Info>
+            <Name> Cliente Numero : {data.solicitation.customer_id}</Name>
+            <Time>{dateParsed}</Time>
+          </Info>
+        </Left>
+
+        <TouchableOpacity onPress={showOrderModal}>
           <Icon name="event-busy" size={20} color="#f64c75" />
         </TouchableOpacity>
-      )}
-    </Container>
+
+        {data.cancelable && !data.canceled_at && (
+          <TouchableOpacity onPress={onCancel}>
+            <Icon name="event-busy" size={20} color="#f64c75" />
+          </TouchableOpacity>
+        )}
+      </Container>
+    </>
   );
 }

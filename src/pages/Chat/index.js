@@ -16,7 +16,7 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import Background from '~/components/Background';
-import api from '../../services/tempApi';
+import api from '../../services/api';
 import { firebaseDB } from './config/FirebaseConfig';
 import { Separator, Title } from './styles';
 
@@ -187,7 +187,7 @@ export default function enterRoom({ navigation }) {
     }
     async function requestAvailableRooms() {
       try {
-        const { data: availableRooms } = await api.get('/available_rooms');
+        const { data: availableRooms } = await api.get('appointment_chat');
 
         availableRooms.forEach((availableRoom, idx) =>
           listenToChatDetailsFromFirebase(availableRoom, idx)
