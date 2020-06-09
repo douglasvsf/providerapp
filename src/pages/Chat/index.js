@@ -190,7 +190,7 @@ export default function enterRoom({ navigation }) {
     }
     async function requestAvailableRooms() {
       try {
-        const { data: availableRooms } = await api.get('/appointment_chat');
+        const { data: availableRooms } = await api.get('appointment_chat');
 
         availableRooms.forEach((availableRoom, idx) =>
           listenToChatDetailsFromFirebase(availableRoom, idx)
