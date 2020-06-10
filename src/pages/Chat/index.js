@@ -147,7 +147,9 @@ export default function enterRoom({ navigation }) {
         firebaseChatRef.on('value', snapshot => {
           if (!snapshot || !snapshot.val() || !snapshot.val().messages) return;
 
-          const messages = Object.values(snapshot.val().messages);
+          const messages = Object.values(snapshot.val().messages).sort((a, b) =>
+            a.createdAt.localeCompare(b.createdAt)
+          );
           if (!messages || !messages.length) {
             updateAvailableRoomAtIndex(availableRoom, idx);
           } else {
@@ -155,6 +157,8 @@ export default function enterRoom({ navigation }) {
 
             const lastMessageText = lastMessage.text;
             const lastMessageFrom = lastMessage.from;
+            const lastMessageType = lastMessage.messageType;
+
             const { isFinished } = snapshot.val();
 
             const hasCreatedAtAttribute = lastMessage.createdAt !== undefined;
@@ -176,6 +180,7 @@ export default function enterRoom({ navigation }) {
                     lastMessageText,
                     lastMessageHour,
                     lastMessageFrom,
+                    lastMessageType,
                   },
                   idx
                 );
@@ -201,6 +206,23 @@ export default function enterRoom({ navigation }) {
     }
     requestAvailableRooms();
   }, []);
+
+  const getLastMessageText = item => {
+    switch (item.lastMessageType) {
+      case 'message':
+        return item.lastMessageText;
+
+      case 'solicitation':
+        return 'solicitação';
+
+      case 'audio':
+        return 'audio';
+
+      case 'image':
+      default:
+        return 'imagem';
+    }
+  };
 
   const FirstRoute = () => (
     <View style={styles.container}>
@@ -251,7 +273,7 @@ export default function enterRoom({ navigation }) {
                     {profile.id == item.lastMessageFrom
                       ? 'Você: '
                       : `${item.customer_name}: `}
-                    {item.lastMessageText}
+                    {getLastMessageText(item)}
                   </Text>
                 </View>
               </View>
