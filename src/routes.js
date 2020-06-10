@@ -251,10 +251,7 @@ export default (isSigned = false,token,profileid,active) =>
         ),
       },
       {
-
         initialRouteName: (isSigned && active) ? 'NewApp' : ((isSigned && !active) ? 'NewProvider' : 'Sign'),
-       
-
       }
     )
   );

@@ -1,4 +1,5 @@
 /* eslint-disable eqeqeq */
+import database from '@react-native-firebase/database';
 import { formatRelative, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React, { useEffect, useState } from 'react';
@@ -17,7 +18,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import Background from '~/components/Background';
 import api from '../../services/api';
-import { firebaseDB } from './config/FirebaseConfig';
 import { Separator, Title } from './styles';
 
 const styles = StyleSheet.create({
@@ -140,11 +140,13 @@ export default function enterRoom({ navigation }) {
   useEffect(() => {
     async function listenToChatDetailsFromFirebase(availableRoom, idx) {
       try {
-        const firebaseChatRef = firebaseDB.ref(
+        const firebaseChatRef = database().ref(
           `/chat/${availableRoom.chat_id}`
         );
 
         firebaseChatRef.on('value', snapshot => {
+          if (!snapshot || !snapshot.val() || !snapshot.val().messages) return;
+
           const messages = Object.values(snapshot.val().messages);
           if (!messages || !messages.length) {
             updateAvailableRoomAtIndex(availableRoom, idx);
@@ -182,6 +184,7 @@ export default function enterRoom({ navigation }) {
           }
         });
       } catch (error) {
+        console.log(error);
         Alert.alert('Erro', 'Não foi possível carregar as informações do chat');
       }
     }
@@ -198,7 +201,6 @@ export default function enterRoom({ navigation }) {
     }
     requestAvailableRooms();
   }, []);
-
 
   const FirstRoute = () => (
     <View style={styles.container}>

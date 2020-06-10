@@ -1,4 +1,4 @@
-package com.providerapp;
+package com.tecneapp.provider;
 
 import android.app.Application;
 import android.util.Log;
@@ -17,6 +17,8 @@ import com.facebook.soloader.SoLoader;
 
 import java.util.List;
 
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -30,7 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
       @SuppressWarnings("UnnecessaryLocalVariable")
       List<ReactPackage> packages = new PackageList(this).getPackages();
       // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
+      packages.add(new ReactNativeFirebaseAppPackage());
       return packages;
     }
 

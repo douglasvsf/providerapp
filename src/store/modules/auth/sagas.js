@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import auth from '@react-native-firebase/auth';
 
 import api from '~/services/api';
 
@@ -23,6 +24,14 @@ export function* signIn({ payload }) {
           );
           return;
         } */
+
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => {
+        if (error.code === 'auth/user-not-found') {
+          auth().createUserWithEmailAndPassword(email, password);
+        }
+      });
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
@@ -49,12 +58,12 @@ export function* activeRequest({ payload }) {
 
     const { active } = response.data;
 
-    console.log('kkkksofalta',response);
+    console.log('kkkksofalta', response);
     yield put(ActiveSuccess(active));
 
     // history.push('/dashboard');
   } catch (err) {
-    console.log('kakatey',err);
+    console.log('kakatey', err);
     Alert.alert(
       'Falha na autenticação',
       'Houve um erro no login, verifique seus dados'
@@ -62,7 +71,6 @@ export function* activeRequest({ payload }) {
     yield put(signFailure());
   }
 }
-
 
 export function* signUp({ payload, navigation }) {
   try {
@@ -97,9 +105,14 @@ export function setToken({ payload }) {
   }
 }
 
+export function signOut() {
+  auth().signOut();
+}
+
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
   takeLatest('@auth/ACTIVE_REQUEST', activeRequest),
+  takeLatest('@auth/SIGN_OUT', signOut),
 ]);
