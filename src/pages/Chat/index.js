@@ -199,14 +199,24 @@ export default function enterRoom({ navigation }) {
         Alert.alert('Erro ao carregar mensagens');
       }
     }
-    requestAvailableRooms();
-  }, []);
+
+    const {
+      state: { params },
+    } = navigation;
+
+    if (params && params.openChat) {
+      navigation.navigate('Chat', params);
+    } else {
+      requestAvailableRooms();
+    }
+  }, [navigation]);
 
   const FirstRoute = () => (
     <View style={styles.container}>
       <View style={styles.topGroup} />
       <FlatList
         data={Availableroom}
+        keyExtractor={item => item.chat_id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
@@ -267,6 +277,7 @@ export default function enterRoom({ navigation }) {
       <View style={styles.topGroup} />
       <FlatList
         data={Finishedroom}
+        keyExtractor={item => item.chat_id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
