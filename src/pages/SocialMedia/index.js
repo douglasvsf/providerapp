@@ -182,7 +182,7 @@ SocialMedia.navigationOptions = {
   tabBarOptions: {
     activeTintColor: colors.primary,
   },
-  tabBarLabel: 'Redes Sociais',
+  tabBarLabel: 'Contato',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="share" size={20} color={tintColor} />
   ),
