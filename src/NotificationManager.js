@@ -8,7 +8,7 @@ export default class NotificationManager {
   }
 
   openChat(user, customer) {
-    NavigationService.navigate('Chat', {
+    NavigationService.navigate('enterRoom', {
       user: {
         _id: this.profile.id,
         name: this.profile.name,
@@ -17,6 +17,7 @@ export default class NotificationManager {
         ...user,
       },
       customer,
+      openChat: true,
     });
   }
 
