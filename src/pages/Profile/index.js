@@ -21,6 +21,7 @@ import { colors } from '~/values/colors';
 export default function Profile() {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.user.profile);
+  const active = useSelector(state => state.auth.active);
 
   const emailRef = useRef();
   const oldPasswordRef = useRef();
@@ -48,6 +49,7 @@ export default function Profile() {
         password,
         confirmPassword,
         profileid,
+        active,
       })
     );
   }

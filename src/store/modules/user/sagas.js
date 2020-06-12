@@ -6,19 +6,29 @@ import { updateProfileSuccess, updateProfileFailure } from './actions';
 
 export function* updateProfile({ payload }) {
   try {
-    const { name, email, profileid, ...rest } = payload.data;
+    const { name, email, profileid, active, ...rest } = payload.data;
 
     const profile = Object.assign(
-      { name, email },
+      { name, email, active },
       rest.oldPassword ? rest : {}
     );
+
     const response = yield call(api.put, `users/${profileid}`, profile);
 
     Alert.alert('Sucesso!', 'Perfil atualizado com sucesso');
 
     yield put(updateProfileSuccess(response.data));
   } catch (err) {
-    Alert.alert('Falha na atualização', err);
+    if (err.response.data.error === 'Password does not match') {
+      Alert.alert('Falha na atualização', 'Senha Incorreta');
+    } else if (err.response.data.error === 'Email already exists.') {
+      Alert.alert('Falha no cadastro', 'Email ja utilizado');
+    } else if (err.response.data.error === 'Validation fails') {
+      Alert.alert('Falha na atualização', 'Confirmação de senha incorreta');
+    } else {
+      Alert.alert('Falha na atualização', 'Entre em Contato com o Suporte');
+    }
+
     yield put(updateProfileFailure());
   }
 }
