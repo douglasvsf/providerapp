@@ -15,9 +15,9 @@ export function* signIn({ payload }) {
     });
 
     const { token, user } = response.data;
-    //é cliente
+    // é cliente
     if (user.provider === false) {
-      Alert.alert('Erro no login', 'O usuário ja possui cadastro como cliente');
+      Alert.alert('Erro no login', 'O email ja possui cadastro como cliente');
       return;
     }
 
@@ -27,10 +27,7 @@ export function* signIn({ payload }) {
 
     // history.push('/dashboard');
   } catch (err) {
-    Alert.alert(
-      'Falha na autenticação',
-      'Houve um erro no login, verifique seus dados'
-    );
+    Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
     yield put(signFailure());
   }
 }
@@ -47,13 +44,8 @@ export function* activeRequest({ payload }) {
     const { active } = response.data;
 
     yield put(ActiveSuccess(active));
-
   } catch (err) {
-    console.log('kakatey', err);
-    Alert.alert(
-      'Falha na autenticação',
-      'Houve um erro no login, verifique seus dados'
-    );
+    Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
     yield put(signFailure());
   }
 }
@@ -72,10 +64,7 @@ export function* signUp({ payload, navigation }) {
     Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');
     navigation.navigate('SignIn');
   } catch (err) {
-    Alert.alert(
-      'Falha no cadastro',
-      'Houve um erro no cadastro, verifique seus dados'
-    );
+    Alert.alert('Falha no cadastro', err);
 
     yield put(signFailure());
   }
