@@ -1,3 +1,4 @@
+import database from '@react-native-firebase/database';
 import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
@@ -8,6 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { AudioRecorder, AudioUtils } from 'react-native-audio';
@@ -17,9 +19,10 @@ import ImagePicker from 'react-native-image-picker';
 import NavigationBar from 'react-native-navbar';
 import Sound from 'react-native-sound';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import api from '~/services/api';
 import { colors } from '~/utils/colors';
 import { awsConfig } from './config/AwsConfig';
-import { firebaseDB } from './config/FirebaseConfig';
+import SolicitationDetailsModal from './SolicitationDetailsModal';
 import { Submit } from './styles';
 
 export default class Chat extends Component {
@@ -49,6 +52,9 @@ export default class Chat extends Component {
       IncludeBase64: true,
       AudioEncodingBitRate: 32000,
     },
+    solicitation: null,
+    showSolicitationDetailsModal: false,
+    isLoadingSolicitation: false,
   };
 
   componentWillMount() {
@@ -58,7 +64,7 @@ export default class Chat extends Component {
 
     // console.log(awsConfig, 'awsConfig');
     // console.log(this.props, 'chat props');
-    this.chatsFromFB = firebaseDB.ref(`/chat/${user.roomName}`);
+    this.chatsFromFB = database().ref(`/chat/${user.roomName}/messages`);
     // console.log(this.chatsFromFB, 'chats from fb');
 
     this.checkPermissionCamera();
@@ -71,27 +77,35 @@ export default class Chat extends Component {
         });
         return;
       }
-      let { messages } = snapshot.val();
-      messages = messages.map(node => {
-        // console.log(node, 'node');
-        const message = {};
-        message._id = node._id;
-        message.text = node.messageType === 'message' ? node.text : '';
-        message.createdAt = node.createdAt;
-        message.user = {
-          _id: node.from,
-          name: node.from === user._id ? user.name : customer.name,
-          avatar: node.from === user._id ? user.avatar : customer.avatar,
+
+      const messages = [];
+
+      snapshot.forEach(nodeRef => {
+        const node = nodeRef.val();
+
+        const message = {
+          _id: node._id,
+          text: node.messageType === 'message' ? node.text : '',
+          createdAt: node.createdAt,
+          user: {
+            _id: node.from,
+            name: node.from === user._id ? user.name : customer.name,
+            avatar: node.from === user._id ? user.avatar : customer.avatar,
+          },
+          from: node.from,
+          image: node.messageType === 'image' ? node.image : '',
+          audio: node.messageType === 'audio' ? node.audio : '',
+          messageType: node.messageType,
+          status: node.status || '',
+          solicitationId:
+            node.messageType === 'solicitation' ? node.solicitationId : '',
         };
-        (message.from = node.from),
-          (message.image = node.messageType === 'image' ? node.image : '');
-        message.audio = node.messageType === 'audio' ? node.audio : '';
-        message.messageType = node.messageType;
-        return message;
+
+        messages.push(message);
       });
 
       this.setState({
-        messages: [...messages],
+        messages: messages.reverse(),
       });
     });
   }
@@ -159,14 +173,11 @@ export default class Chat extends Component {
 
     messages[0].messageType = 'message';
     messages[0].from = user._id;
+    messages[0].createdAt = new Date().toISOString();
 
-    const updatedMessages = [messages[0], ...this.state.messages].map(
-      ({ user, ...message }) => message
-    );
+    delete messages[0].user;
 
-    this.chatsFromFB.update({
-      messages: updatedMessages,
-    });
+    this.chatsFromFB.push(messages[0]);
   }
 
   renderName = props => {
@@ -228,21 +239,148 @@ export default class Chat extends Component {
     );
   };
 
-  renderBubble = props => {
+  renderSolicitationDetailsModal = () => {
+    const {
+      showSolicitationDetailsModal,
+      isLoadingSolicitation,
+      solicitation,
+    } = this.state;
+
     return (
-      <View>
-        {this.renderName(props)}
-        {this.renderAudio(props)}
-        <Bubble
-          {...props}
-          wrapperStyle={{
-            right: {
-              backgroundColor: colors.primary,
-            },
+      <SolicitationDetailsModal
+        isVisible={showSolicitationDetailsModal}
+        onDismiss={this.hideSolicitationDetailsModal}
+        isLoading={isLoadingSolicitation}
+        solicitation={solicitation}
+      />
+    );
+  };
+
+  requestSolicitationDetails = async solicitationId => {
+    try {
+      const { data: solicitationDetails } = await api.get(
+        `/solicitation/${solicitationId}`
+      );
+      return solicitationDetails;
+    } catch (error) {
+      Alert.alert(
+        'Erro',
+        'Não foi possível consultar os detalhes da solicitação'
+      );
+      return null;
+    }
+  };
+
+  openSolicitationDetailsModal = async solicitationId => {
+    this.setState({
+      showSolicitationDetailsModal: true,
+      isLoadingSolicitation: true,
+    });
+
+    const solicitation = await this.requestSolicitationDetails(solicitationId);
+
+    let newState = {
+      isLoadingSolicitation: false,
+      solicitation,
+    };
+
+    if (!solicitation) {
+      newState = { ...newState, showSolicitationDetailsModal: false };
+    }
+
+    this.setState(newState);
+  };
+
+  hideSolicitationDetailsModal = () => {
+    this.setState({
+      showSolicitationDetailsModal: false,
+      solicitation: null,
+    });
+  };
+
+  solicitationStatusToString = status => {
+    switch (status) {
+      case 'undefined':
+        return 'Em aberto';
+
+      case 'accepted':
+        return 'Aceita';
+
+      case 'not_accepted':
+        return 'Recusada';
+
+      default:
+        return 'Erro';
+    }
+  };
+
+  renderSolicitation = currentMessage => {
+    return (
+      <View style={{ backgroundColor: colors.primaryLight, borderRadius: 20 }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            padding: 12,
+            paddingHorizontal: 24,
           }}
-        />
+        >
+          <Text>Nova solicitação</Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            padding: 12,
+            paddingHorizontal: 24,
+            borderTopWidth: 1,
+            borderTopColor: colors.transparentWhite50,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() =>
+              this.openSolicitationDetailsModal(currentMessage.solicitationId)
+            }
+          >
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 14,
+                color:
+                  currentMessage.status === 'not_accepted' ? 'red' : 'black',
+              }}
+            >
+              {this.solicitationStatusToString(currentMessage.status)}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
+  };
+
+  renderBubble = props => {
+    switch (props.currentMessage.messageType) {
+      case 'solicitation':
+        return this.renderSolicitation(props.currentMessage);
+
+      default:
+        return (
+          <View>
+            {this.renderName(props)}
+            {this.renderAudio(props)}
+            <Bubble
+              {...props}
+              wrapperStyle={{
+                right: {
+                  backgroundColor: colors.primary,
+                },
+              }}
+            />
+          </View>
+        );
+    }
   };
 
   renderSend = ({ onSend, ...props }) => {
@@ -315,11 +453,9 @@ export default class Chat extends Component {
           message.audio = response.headers.Location;
           message.messageType = 'audio';
 
-          this.chatsFromFB.update({
-            messages: [message, ...this.state.messages].map(
-              ({ user, ...message }) => message
-            ),
-          });
+          delete message.user;
+
+          this.chatsFromFB.push(message);
         })
         .catch(err => {
           // console.log(err, 'err from audio upload');
@@ -397,11 +533,7 @@ export default class Chat extends Component {
             message.image = response.headers.Location;
             message.messageType = 'image';
 
-            this.chatsFromFB.update({
-              messages: [message, ...this.state.messages].map(
-                ({ user, ...message }) => message
-              ),
-            });
+            this.chatsFromFB.push(message);
           });
         if (!allowedExtensions.includes(extension)) {
           return alert('That file type is not allowed.');
@@ -444,11 +576,6 @@ export default class Chat extends Component {
     }
   }
 
-  openNewSolicitationModal() {
-    const { navigation } = this.props;
-    navigation.navigate('NewSolicitation');
-  }
-
   render() {
     const { navigation } = this.props;
     const user = navigation.getParam('user');
@@ -472,6 +599,7 @@ export default class Chat extends Component {
           leftButton={leftButtonConfig}
         />
         {this.renderLoading()}
+        {this.renderSolicitationDetailsModal()}
 
         <GiftedChat
           messages={this.state.messages}

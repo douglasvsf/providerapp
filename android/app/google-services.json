@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "188520847922",
+    "firebase_url": "https://tecne-app.firebaseio.com",
+    "project_id": "tecne-app",
+    "storage_bucket": "tecne-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188520847922:android:d4609b5f01f55cbcd5fa2b",
+        "android_client_info": {
+          "package_name": "com.tecneapp.provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188520847922-qhm38rkqrciqcef3f41gv7u04ls43oj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tecneapp.provider",
+            "certificate_hash": "1b89d47fcab6c5a0b5cf51725518e553ad154376"
+          }
+        },
+        {
+          "client_id": "188520847922-mnlioton7tegoa4oft4kttl5h9h5c703.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG_y1-f09iuPPCyXHtVs8sIeuMSE7L7JE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188520847922-mnlioton7tegoa4oft4kttl5h9h5c703.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

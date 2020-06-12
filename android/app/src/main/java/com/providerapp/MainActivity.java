@@ -1,4 +1,4 @@
-package com.providerapp;
+package com.tecneapp.provider;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

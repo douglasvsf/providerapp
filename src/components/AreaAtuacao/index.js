@@ -79,13 +79,14 @@ const styles = StyleSheet.create({
 });
 
 const DATA = [
-  { id: 1, label: 'Mototaxistas' },
-  { id: 2, label: 'Frete Mudança' },
-  { id: 3, label: 'Diaristas' },
-  { id: 4, label: 'Babá' },
-  { id: 5, label: 'Pedreiro' },
-  { id: 6, label: 'Pintor' },
-  { id: 7, label: 'Azulejista' },
+  { id: 9, label: 'Assistência Técnica' },
+  { id: 10, label: 'Mão de Obra' },
+  { id: 11, label: 'Serviços Domésticos' },
+  { id: 12, label: 'Saúde e Bem estar' },
+  { id: 13, label: 'Tecnologia' },
+  { id: 14, label: 'Mobilidade' },
+  { id: 15, label: 'Eventos' },
+  { id: 16, label: 'Outros' },
 ];
 
 const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {

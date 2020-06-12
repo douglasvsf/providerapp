@@ -1,4 +1,5 @@
 /* eslint-disable eqeqeq */
+import database from '@react-native-firebase/database';
 import { formatRelative, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React, { useEffect, useState } from 'react';
@@ -16,8 +17,7 @@ import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import Background from '~/components/Background';
-import api from '../../services/tempApi';
-import { firebaseDB } from './config/FirebaseConfig';
+import api from '../../services/api';
 import { Separator, Title } from './styles';
 
 const styles = StyleSheet.create({
@@ -129,76 +129,116 @@ export default function enterRoom({ navigation }) {
   const [Availableroom, setAvailableRooms] = useState([]);
   const [Finishedroom, setFinishedRooms] = useState([]);
 
+  function updateAvailableRoomAtIndex(availableRoom, idx) {
+    setAvailableRooms(previousState => [
+      ...previousState.slice(0, idx),
+      availableRoom,
+      ...previousState.slice(idx + 1),
+    ]);
+  }
+
   useEffect(() => {
-    async function requestChatDetailsFromFirebase(availableRoom) {
-      return new Promise((resolve, reject) => {
-        try {
-          const firebaseChatRef = firebaseDB.ref(
-            `/chat/${availableRoom.chat_id}`
+    async function listenToChatDetailsFromFirebase(availableRoom, idx) {
+      try {
+        const firebaseChatRef = database().ref(
+          `/chat/${availableRoom.chat_id}`
+        );
+
+        firebaseChatRef.on('value', snapshot => {
+          if (!snapshot || !snapshot.val() || !snapshot.val().messages) return;
+
+          const messages = Object.values(snapshot.val().messages).sort((a, b) =>
+            a.createdAt.localeCompare(b.createdAt)
           );
+          if (!messages || !messages.length) {
+            updateAvailableRoomAtIndex(availableRoom, idx);
+          } else {
+            const lastMessage = messages[messages.length - 1];
 
-          firebaseChatRef.on('value', snapshot => {
-            if (!snapshot.val().messages || !snapshot.val().messages.length) {
-              resolve({ ...availableRoom });
-            } else {
-              const lastMessageText = snapshot.val().messages[0].text;
-              const lastMessageFrom = snapshot.val().messages[0].from;
-              const { isFinished } = snapshot.val();
+            const lastMessageText = lastMessage.text;
+            const lastMessageFrom = lastMessage.from;
+            const lastMessageType = lastMessage.messageType;
 
-              const hasCreatedAtAttribute =
-                snapshot.val().messages[0].createdAt !== undefined;
+            const { isFinished } = snapshot.val();
 
-              if (hasCreatedAtAttribute) {
-                const lastMessageHour = formatRelative(
-                  parseISO(snapshot.val().messages[0].createdAt),
-                  new Date(),
+            const hasCreatedAtAttribute = lastMessage.createdAt !== undefined;
+
+            if (hasCreatedAtAttribute) {
+              const lastMessageHour = formatRelative(
+                parseISO(lastMessage.createdAt),
+                new Date(),
+                {
+                  locale: pt,
+                  addSuffix: true,
+                }
+              );
+
+              if (!isFinished) {
+                updateAvailableRoomAtIndex(
                   {
-                    locale: pt,
-                    addSuffix: true,
-                  }
-                );
-
-                if (!isFinished) {
-                  resolve({
                     ...availableRoom,
                     lastMessageText,
                     lastMessageHour,
                     lastMessageFrom,
-                  });
-                }
+                    lastMessageType,
+                  },
+                  idx
+                );
               }
             }
-          });
-        } catch (error) {
-          reject(error);
-        }
-      });
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        Alert.alert('Erro', 'Não foi possível carregar as informações do chat');
+      }
     }
-
     async function requestAvailableRooms() {
       try {
-        const { data: availableRooms } = await api.get('/available_rooms');
+        const { data: availableRooms } = await api.get('appointment_chat');
 
-        Promise.all(
-          availableRooms.map(availableRoom =>
-            requestChatDetailsFromFirebase(availableRoom)
-          )
-        ).then(availableRoomsWithFirebaseData => {
-          setAvailableRooms(availableRoomsWithFirebaseData);
-        });
+        availableRooms.forEach((availableRoom, idx) =>
+          listenToChatDetailsFromFirebase(availableRoom, idx)
+        );
       } catch (error) {
         Alert.alert('Erro ao carregar mensagens');
       }
     }
 
-    requestAvailableRooms();
-  }, []);
+    const {
+      state: { params },
+    } = navigation;
+
+    if (params && params.openChat) {
+      navigation.navigate('Chat', params);
+    } else {
+      requestAvailableRooms();
+    }
+  }, [navigation]);
+
+  const getLastMessageText = item => {
+    switch (item.lastMessageType) {
+      case 'message':
+        return item.lastMessageText;
+
+      case 'solicitation':
+        return 'solicitação';
+
+      case 'audio':
+        return 'audio';
+
+      case 'image':
+      default:
+        return 'imagem';
+    }
+  };
 
   const FirstRoute = () => (
     <View style={styles.container}>
       <View style={styles.topGroup} />
       <FlatList
         data={Availableroom}
+        keyExtractor={item => item.chat_id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
@@ -243,7 +283,7 @@ export default function enterRoom({ navigation }) {
                     {profile.id == item.lastMessageFrom
                       ? 'Você: '
                       : `${item.customer_name}: `}
-                    {item.lastMessageText}
+                    {getLastMessageText(item)}
                   </Text>
                 </View>
               </View>
@@ -259,6 +299,7 @@ export default function enterRoom({ navigation }) {
       <View style={styles.topGroup} />
       <FlatList
         data={Finishedroom}
+        keyExtractor={item => item.chat_id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {

@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import auth from '@react-native-firebase/auth';
 
 import api from '~/services/api';
 
@@ -20,6 +21,14 @@ export function* signIn({ payload }) {
       Alert.alert('Erro no login', 'O email ja possui cadastro como cliente');
       return;
     }
+
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => {
+        if (error.code === 'auth/user-not-found') {
+          auth().createUserWithEmailAndPassword(email, password);
+        }
+      });
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
@@ -45,7 +54,9 @@ export function* activeRequest({ payload }) {
 
     yield put(ActiveSuccess(active));
   } catch (err) {
+
     Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
+
     yield put(signFailure());
   }
 }
@@ -87,9 +98,14 @@ export function setToken({ payload }) {
   }
 }
 
+export function signOut() {
+  auth().signOut();
+}
+
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
   takeLatest('@auth/ACTIVE_REQUEST', activeRequest),
+  takeLatest('@auth/SIGN_OUT', signOut),
 ]);
