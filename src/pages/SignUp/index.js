@@ -154,19 +154,19 @@ export default function SignUp({ navigation }) {
   const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit() {
-    setisModalVisible(!isModalVisible);
-  }
-
-  function handleLogin() {
     if (password === passwordCheck) {
       setisModalVisible(!isModalVisible);
-      dispatch(signUpRequest(name, email, password, navigation));
     } else {
       Snackbar.show({
         text: 'Senhas não conferem',
         duration: Snackbar.LENGTH_LONG,
       });
     }
+  }
+
+  function handleLogin() {
+    setisModalVisible(!isModalVisible);
+    dispatch(signUpRequest(name, email, password, navigation));
   }
 
   function handleConfirm() {
@@ -549,7 +549,7 @@ export default function SignUp({ navigation }) {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua senha"
             ref={passwordRef}
             returnKeyType="next"
@@ -560,7 +560,7 @@ export default function SignUp({ navigation }) {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Confirme sua senha"
             ref={passwordCheckRef}
             returnKeyType="send"

@@ -15,14 +15,11 @@ export function* signIn({ payload }) {
     });
 
     const { token, user } = response.data;
-    /* //parte para FORNEC
-        if (user.provider) {
-          Alert.alert(
-            'Erro no login',
-            'O usuário não pode ser prestador de serviços'
-          );
-          return;
-        } */
+    //é cliente
+    if (user.provider === false) {
+      Alert.alert('Erro no login', 'O usuário ja possui cadastro como cliente');
+      return;
+    }
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
@@ -49,12 +46,10 @@ export function* activeRequest({ payload }) {
 
     const { active } = response.data;
 
-    console.log('kkkksofalta',response);
     yield put(ActiveSuccess(active));
 
-    // history.push('/dashboard');
   } catch (err) {
-    console.log('kakatey',err);
+    console.log('kakatey', err);
     Alert.alert(
       'Falha na autenticação',
       'Houve um erro no login, verifique seus dados'
@@ -62,7 +57,6 @@ export function* activeRequest({ payload }) {
     yield put(signFailure());
   }
 }
-
 
 export function* signUp({ payload, navigation }) {
   try {

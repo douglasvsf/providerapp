@@ -94,7 +94,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua senha atual"
             ref={oldPasswordRef}
             returnKeyType="next"
@@ -105,7 +105,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua nova senha"
             ref={passwordRef}
             returnKeyType="next"
@@ -116,7 +116,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Confirmação de senha"
             ref={confirmPasswordRef}
             returnKeyType="send"
