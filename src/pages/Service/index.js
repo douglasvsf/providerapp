@@ -209,7 +209,7 @@ class Service extends PureComponent {
     });
     if (responseSubmitNew === 0) {
       Snackbar.show({
-        text: 'Certifique-se que todos campos estão preenchidos',
+        text: 'Certifique-se que possui pelo menos um cidade e Area de atuação',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
@@ -614,7 +614,7 @@ Service.navigationOptions = {
   tabBarOptions: {
     activeTintColor: colors.primary,
   },
-  tabBarLabel: 'Area de Atuação',
+  tabBarLabel: 'Informações Serviço',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="worker" size={20} color={tintColor} />
   ),

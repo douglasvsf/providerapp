@@ -1,5 +1,12 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { View, StyleSheet, TextInput, Switch } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Switch,
+  CheckBox,
+  Text,
+} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { useSelector } from 'react-redux';
 
@@ -49,6 +56,15 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     textAlignVertical: 'top',
   },
+  checkboxContainer: {
+    flexDirection: 'row',
+  },
+  checkbox: {
+    alignSelf: 'center',
+  },
+  label: {
+    margin: 8,
+  },
 });
 
 export default function AdditionalInfo({
@@ -60,16 +76,17 @@ export default function AdditionalInfo({
   const briefref = useRef();
   const generalref = useRef();
   const fullnameref = useRef();
-
-  const [isEnabled, setIsEnabled] = useState(false);
+  const profileName = useSelector(state => state.user.profile.name);
+  const [isCpfEnabled, setIsCpfEnabled] = useState(true);
+  const [isCnpjEnabled, setIsCnpjEnabled] = useState(false);
   const [isBack, setIsBack] = useState(false);
   const [type, setType] = useState('cpf');
   const [cpf, setCpf] = useState('');
   const [genre, setGenre] = useState('Selecione');
   const [companyname, setCompanyname] = useState('');
   const [rg, setRg] = useState('');
-  const [fantasyname, setFantasyname] = useState('');
-  const [fullname, setFullname] = useState('');
+  const [fantasyname, setFantasyname] = useState(profileName);
+  const [fullname, setFullname] = useState(profileName);
   const [briefdesc, setBriefdesc] = useState('');
   const [placeholder, setPlaceholder] = useState('CPF');
   const [birthday, setBirthday] = useState(new Date());
@@ -99,9 +116,10 @@ export default function AdditionalInfo({
     fantasyName: fantasyname,
     briefDescription: briefdesc,
   });
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
-    if (!isEnabled === true) {
+  const togglePessoa = () => {
+    setIsCpfEnabled(previousState => !previousState);
+    setIsCnpjEnabled(previousState => !previousState);
+    if (isCnpjEnabled === true) {
       setType('cnpj');
       setPlaceholder('CNPJ');
     } else {
@@ -118,31 +136,37 @@ export default function AdditionalInfo({
       await api
         .get(`users/${profileId}/additional_info`)
         .then(response => {
-          if (response.data.cpf != undefined) {
-            // se for cpf
-            setIsEnabled(false);
-            setType('cpf');
-            setCpf(response.data.cpf);
-            setGenre(response.data.genre);
-            setRg(response.data.rg);
-            setFullname(response.data.full_name);
-            setBriefdesc(response.data.brief_description);
-            setPlaceholder('CPF');
-            // console.log(new Date(newData.birthday));
-            setBirthday(new Date(response.data.birthday));
+          if (response.data != null) {
+            if (response.data.cpf != undefined) {
+              // se for cpf
+              setIsCpfEnabled(true);
+              setIsCnpjEnabled(false);
+              // setIsEnabled(false);
+              setType('cpf');
+              setCpf(response.data.cpf);
+              setGenre(response.data.genre);
+              setRg(response.data.rg);
+              setFullname(response.data.full_name);
+              setBriefdesc(response.data.brief_description);
+              setPlaceholder('CPF');
+              // console.log(new Date(newData.birthday));
+              setBirthday(new Date(response.data.birthday));
 
-            const verifyIsBack = !!isNewProvider;
-            setIsBack(verifyIsBack);
-          } else if (response.data.cnpj != undefined) {
-            setIsEnabled(true);
-            setType('cnpj');
-            setCpf(response.data.cnpj);
-            setCompanyname(response.data.company_name);
-            setFantasyname(response.data.fantasy_name);
-            setBriefdesc(response.data.brief_description);
-            setPlaceholder('CNPJ');
-            const verifyIsBack = !!isNewProvider;
-            setIsBack(verifyIsBack);
+              const verifyIsBack = !!isNewProvider;
+              setIsBack(verifyIsBack);
+            } else if (response.data.cnpj != undefined) {
+              setIsCpfEnabled(false);
+              setIsCnpjEnabled(true);
+              // setIsEnabled(true);
+              setType('cnpj');
+              setCpf(response.data.cnpj);
+              setCompanyname(response.data.company_name);
+              setFantasyname(response.data.fantasy_name);
+              setBriefdesc(response.data.brief_description);
+              setPlaceholder('CNPJ');
+              const verifyIsBack = !!isNewProvider;
+              setIsBack(verifyIsBack);
+            }
           }
         })
         .catch(err => {
@@ -175,7 +199,9 @@ export default function AdditionalInfo({
 
         if (type === 'cpf') {
           // se for cpf
-          setIsEnabled(false);
+          // setIsEnabled(false);
+          setIsCpfEnabled(true);
+          setIsCnpjEnabled(false);
           setType('cpf');
           setCpf(response.data.cpf);
           setGenre(response.data.genre);
@@ -192,7 +218,9 @@ export default function AdditionalInfo({
             navigation.navigate('SocialMediaScreen');
           }
         } else if (type === 'cnpj') {
-          setIsEnabled(true);
+          //setIsEnabled(true);
+          setIsCpfEnabled(false);
+          setIsCnpjEnabled(true);
           setType('cnpj');
           setCpf(response.data.cnpj);
           setCompanyname(response.data.company_name);
@@ -237,7 +265,7 @@ export default function AdditionalInfo({
 
         <Form>
           <Container>
-            <TitleInto> Pessoa Jurídica </TitleInto>
+            {/* <TitleInto> Pessoa Jurídica </TitleInto>
 
             <Switch
               trackColor={{ false: '#767577', true: '#81b0ff' }}
@@ -245,7 +273,29 @@ export default function AdditionalInfo({
               ios_backgroundColor="#3e3e3e"
               onValueChange={toggleSwitch}
               value={isEnabled}
-            />
+            /> */}
+
+            <View style={styles.container}>
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  value={isCnpjEnabled}
+                  onValueChange={togglePessoa}
+                  style={styles.checkbox}
+                />
+                <Text style={styles.label}> Pessoa Jurídica</Text>
+              </View>
+            </View>
+
+            <View style={styles.container}>
+              <View style={styles.checkboxContainer}>
+                <CheckBox
+                  value={isCpfEnabled}
+                  onValueChange={togglePessoa}
+                  style={styles.checkbox}
+                />
+                <Text style={styles.label}> Pessoa Fisica</Text>
+              </View>
+            </View>
           </Container>
 
           <Separator />
@@ -268,7 +318,7 @@ export default function AdditionalInfo({
             />
           </Container>
           <Separator />
-          {isEnabled === true ? (
+          {isCnpjEnabled === true ? (
             <>
               <FormInput
                 icon="person-outline"

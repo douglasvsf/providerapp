@@ -16,14 +16,11 @@ export function* signIn({ payload }) {
     });
 
     const { token, user } = response.data;
-    /* //parte para FORNEC
-        if (user.provider) {
-          Alert.alert(
-            'Erro no login',
-            'O usuário não pode ser prestador de serviços'
-          );
-          return;
-        } */
+    // é cliente
+    if (user.provider === false) {
+      Alert.alert('Erro no login', 'O email ja possui cadastro como cliente');
+      return;
+    }
 
     auth()
       .signInWithEmailAndPassword(email, password)
@@ -39,10 +36,7 @@ export function* signIn({ payload }) {
 
     // history.push('/dashboard');
   } catch (err) {
-    Alert.alert(
-      'Falha na autenticação',
-      'Houve um erro no login, verifique seus dados'
-    );
+    Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
     yield put(signFailure());
   }
 }
@@ -58,16 +52,11 @@ export function* activeRequest({ payload }) {
 
     const { active } = response.data;
 
-    console.log('kkkksofalta', response);
     yield put(ActiveSuccess(active));
-
-    // history.push('/dashboard');
   } catch (err) {
-    console.log('kakatey', err);
-    Alert.alert(
-      'Falha na autenticação',
-      'Houve um erro no login, verifique seus dados'
-    );
+
+    Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
+
     yield put(signFailure());
   }
 }
@@ -86,10 +75,14 @@ export function* signUp({ payload, navigation }) {
     Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');
     navigation.navigate('SignIn');
   } catch (err) {
-    Alert.alert(
-      'Falha no cadastro',
-      'Houve um erro no cadastro, verifique seus dados'
-    );
+    if (err.response.data.error === 'User already exists') {
+      Alert.alert('Falha no cadastro', 'Email ja utilizado');
+    } else if (err.response.data.error === 'Validation Fails') {
+      Alert.alert(
+        'Falha no cadastro',
+        'Senha deve possuir no mínimo 7 caracteres'
+      );
+    }
 
     yield put(signFailure());
   }

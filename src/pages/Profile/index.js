@@ -21,6 +21,7 @@ import { colors } from '~/values/colors';
 export default function Profile() {
   const dispatch = useDispatch();
   const profile = useSelector(state => state.user.profile);
+  const active = useSelector(state => state.auth.active);
 
   const emailRef = useRef();
   const oldPasswordRef = useRef();
@@ -48,6 +49,7 @@ export default function Profile() {
         password,
         confirmPassword,
         profileid,
+        active,
       })
     );
   }
@@ -94,7 +96,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua senha atual"
             ref={oldPasswordRef}
             returnKeyType="next"
@@ -105,7 +107,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua nova senha"
             ref={passwordRef}
             returnKeyType="next"
@@ -116,7 +118,7 @@ export default function Profile() {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Confirmação de senha"
             ref={confirmPasswordRef}
             returnKeyType="send"

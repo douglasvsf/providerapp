@@ -277,7 +277,7 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
 
     if (responseSubmitNew === 0) {
       Snackbar.show({
-        text: 'Certifique-se que todos campos estão preenchidos',
+        text: 'Certifique-se que possui pelo menos uma qualificação',
         duration: Snackbar.LENGTH_LONG,
       });
     }

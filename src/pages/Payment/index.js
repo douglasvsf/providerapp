@@ -105,16 +105,18 @@ class Payment extends PureComponent {
     await api
       .get(`providers/${profileid}/allowed_card_banners`)
       .then(response => {
-        this.setState({
-          visacredit: response.data.allowedCreditBanners.visa,
-          mastercredit: response.data.allowedCreditBanners.mastercard,
-          americancredit: response.data.allowedCreditBanners.american_express,
-          hipercredit: response.data.allowedCreditBanners.hipercard,
-          elocredit: response.data.allowedCreditBanners.elo,
-          visadebit: response.data.allowedDebitBanners.visa,
-          masterdebit: response.data.allowedDebitBanners.mastercard,
-          elodebit: response.data.allowedDebitBanners.elo,
-        });
+        if (response.data !== null) {
+          this.setState({
+            visacredit: response.data.allowedCreditBanners.visa,
+            mastercredit: response.data.allowedCreditBanners.mastercard,
+            americancredit: response.data.allowedCreditBanners.american_express,
+            hipercredit: response.data.allowedCreditBanners.hipercard,
+            elocredit: response.data.allowedCreditBanners.elo,
+            visadebit: response.data.allowedDebitBanners.visa,
+            masterdebit: response.data.allowedDebitBanners.mastercard,
+            elodebit: response.data.allowedDebitBanners.elo,
+          });
+        }
       })
       .catch(err => {
         Snackbar.show({
@@ -133,7 +135,7 @@ class Payment extends PureComponent {
     const responseSubmitNew = await onSubmitNewProvider(this.state);
     if (responseSubmitNew === 0) {
       Snackbar.show({
-        text: 'Certifique-se que todos campos estão preenchidos',
+        text: 'Certifique-se que possui pelo menos um método de pagamento',
         duration: Snackbar.LENGTH_LONG,
       });
     } else {
@@ -259,7 +261,7 @@ class Payment extends PureComponent {
         });
     } catch (ex) {
       Snackbar.show({
-        text: 'Certifique-se que todos campos estão preenchidos',
+        text: 'Certifique-se que possui pelo menos um método de pagamento',
         duration: Snackbar.LENGTH_LONG,
       });
     }

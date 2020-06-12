@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import Snackbar from 'react-native-snackbar';
 import {
   View,
   Text,
@@ -140,10 +141,12 @@ export default function SignUp({ navigation }) {
 
   const emailRef = useRef();
   const passwordRef = useRef();
-
+  const passwordCheckRef = useRef();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordCheck, setPasswordCheck] = useState('');
+
   const [isModalVisible, setisModalVisible] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
@@ -151,7 +154,14 @@ export default function SignUp({ navigation }) {
   const loading = useSelector(state => state.auth.loading);
 
   function handleSubmit() {
-    setisModalVisible(!isModalVisible);
+    if (password === passwordCheck) {
+      setisModalVisible(!isModalVisible);
+    } else {
+      Snackbar.show({
+        text: 'Senhas não conferem',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }
 
   function handleLogin() {
@@ -539,13 +549,24 @@ export default function SignUp({ navigation }) {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua senha"
             ref={passwordRef}
-            returnKeyType="send"
-            onSubmitEditing={handleSubmit}
+            returnKeyType="next"
+            onSubmitEditing={() => passwordCheckRef.current.focus()}
             value={password}
             onChangeText={setPassword}
+          />
+
+          <FormInput
+            icon="lock-outline"
+            passwordField
+            placeholder="Confirme sua senha"
+            ref={passwordCheckRef}
+            returnKeyType="send"
+            onSubmitEditing={handleSubmit}
+            value={passwordCheck}
+            onChangeText={setPasswordCheck}
           />
 
           <SubmitButton loading={loading} onPress={handleSubmit}>

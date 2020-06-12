@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import BackgroundInitial from '~/components/BackgroundInitial';
 import { signInRequest } from '~/store/modules/auth/actions';
 
@@ -74,6 +74,7 @@ export default function SignIn({ navigation }) {
   const dispatch = useDispatch();
   const passwordRef = useRef();
 
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -83,7 +84,19 @@ export default function SignIn({ navigation }) {
     dispatch(signInRequest(email, password));
   }
 
+  // const showPassword = () => {
+  //   setShowPassword(previousState => !previousState);
+  //   if (!isEnabled === true) {
+  //     setType('cnpj');
+  //     setPlaceholder('CNPJ');
+  //   } else {
+  //     setType('cpf');
+  //     setPlaceholder('CPF');
+  //   }
+  // };
+
   return (
+
     <BackgroundInitial>
       <Container>
         <Cima xml={xmlCima} />
@@ -106,7 +119,7 @@ export default function SignIn({ navigation }) {
 
           <FormInput
             icon="lock-outline"
-            secureTextEntry
+            passwordField
             placeholder="Sua senha"
             ref={passwordRef}
             returnKeyType="send"
@@ -114,6 +127,7 @@ export default function SignIn({ navigation }) {
             value={password}
             onChangeText={setPassword}
           />
+
 
           <SubmitButton loading={loading} onPress={handleSubmit}>
             Acessar
@@ -125,5 +139,6 @@ export default function SignIn({ navigation }) {
         </SignLink>
       </Container>
     </BackgroundInitial>
+
   );
 }
