@@ -24,6 +24,7 @@ export default class NotificationManager {
   showSnackBar(remoteMessage) {
     switch (remoteMessage?.data?.type) {
       case 'new-appointment-chat':
+      case 'new-solicitation':
         Snackbar.show({
           text: remoteMessage.notification.body,
           duration: Snackbar.LENGTH_LONG,
@@ -52,6 +53,7 @@ export default class NotificationManager {
   onPushNotificationClick(remoteMessage) {
     switch (remoteMessage?.data?.type) {
       case 'new-appointment-chat':
+      case 'new-solicitation':
         this.openChat(
           JSON.parse(remoteMessage.data.user),
           JSON.parse(remoteMessage.data.customer)
