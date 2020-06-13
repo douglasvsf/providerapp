@@ -105,7 +105,7 @@ class Payment extends PureComponent {
     await api
       .get(`providers/${profileid}/allowed_card_banners`)
       .then(response => {
-        if (response.data !== null) {
+        if (response.data.allowedCreditBanners !== null) {
           this.setState({
             visacredit: response.data.allowedCreditBanners.visa,
             mastercredit: response.data.allowedCreditBanners.mastercard,

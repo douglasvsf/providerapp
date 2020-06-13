@@ -93,7 +93,7 @@ export default (isSigned = false,token,profileid,active) =>
                       Chat,
                     }),
                     navigationOptions: {
-                      tabBarLabel: 'Solicitações',
+                      tabBarLabel: 'Chats',
                       tabBarOptions: {
                         activeTintColor: '#4BB196',
                       },

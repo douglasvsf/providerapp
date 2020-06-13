@@ -50,7 +50,7 @@ export default function Appointment({ data, onCancel }) {
         </Left>
 
         <TouchableOpacity onPress={showOrderModal}>
-          <Icon name="event-busy" size={20} color="#f64c75" />
+          <Icon name="info" size={20} color="#0000ff" />
         </TouchableOpacity>
 
         {data.cancelable && !data.canceled_at && (

@@ -370,7 +370,7 @@ export default function enterRoom({ navigation }) {
 
   return (
     <Background>
-      <Title>Solicitações</Title>
+      <Title>Chats</Title>
 
       <Separator />
       <TabView

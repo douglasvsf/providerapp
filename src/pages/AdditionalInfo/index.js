@@ -120,11 +120,12 @@ export default function AdditionalInfo({
     setIsCpfEnabled(previousState => !previousState);
     setIsCnpjEnabled(previousState => !previousState);
     if (isCnpjEnabled === true) {
-      setType('cnpj');
-      setPlaceholder('CNPJ');
-    } else {
       setType('cpf');
       setPlaceholder('CPF');
+    } else {
+      setType('cnpj');
+      setPlaceholder('CNPJ');
+
     }
   };
   const token = useSelector(state => state.auth.token);
