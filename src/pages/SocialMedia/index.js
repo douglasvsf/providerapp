@@ -111,7 +111,7 @@ export default function SocialMedia({
   return (
     <Background>
       <Container>
-        <Title>Redes Sociais</Title>
+        <Title>Contatos</Title>
 
         <Form>
           <FormInput
@@ -169,7 +169,7 @@ export default function SocialMedia({
             </SubmitButton>
           ) : (
             <SubmitButton onPress={UpdateSocialMedia}>
-              Atualizar Redes Sociais
+              Atualizar Contatos
             </SubmitButton>
           )}
         </Form>
