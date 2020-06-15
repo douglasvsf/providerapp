@@ -172,7 +172,7 @@ export default class Chat extends Component {
     const user = navigation.getParam('user');
 
     messages[0].messageType = 'message';
-    messages[0].from = user._id;
+    messages[0].from = user._id.toString();
     messages[0].createdAt = new Date().toISOString();
 
     delete messages[0].user;
@@ -638,7 +638,7 @@ export default class Chat extends Component {
             }
           }}
           user={{
-            _id: user._id,
+            _id: user._id.toString(),
             name: `${user.firstName}`,
             avatar: user.avatar,
           }}
