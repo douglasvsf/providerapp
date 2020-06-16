@@ -121,6 +121,20 @@ export default class BankAccount extends PureComponent {
       accountType,
     } = this.state;
 
+    if (
+      !selectedBank ||
+      !agencia.length ||
+      !agenciaDv.length ||
+      !conta.length ||
+      !contaDv.length ||
+      !documentNumber.length ||
+      !legalName.length ||
+      !accountType.length
+    ) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
+      return;
+    }
+
     this.setState({ loading: true });
 
     try {
@@ -142,7 +156,10 @@ export default class BankAccount extends PureComponent {
         duration: Snackbar.LENGTH_LONG,
       });
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível cadastrar a conta bancária');
+      Alert.alert(
+        'Erro',
+        'Não foi possível cadastrar a conta bancária, verifique os campos e tente novamente'
+      );
     } finally {
       this.setState({ loading: false });
     }
