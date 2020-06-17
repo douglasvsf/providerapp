@@ -1,40 +1,32 @@
 import React, { PureComponent } from 'react';
-
 import {
-  Keyboard,
-  StyleSheet,
-  FlatList,
-  Text,
-  View,
-  TouchableNativeFeedback,
+  ActivityIndicator,
   Alert,
   Button,
+  StyleSheet,
   Switch,
+  Text,
+  View,
 } from 'react-native';
-
+import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-import AsyncStorage from '@react-native-community/async-storage';
-import { estados } from '../../jsons/estados-cidades.json';
-import SelectEstados from '../../components/Estados';
-import SelectCidades from '../../components/Cidades';
+import Bancos from '~/components/Bancos';
+import api from '~/services/api';
+import { colors } from '~/values/colors';
 import Background from '../../components/Background';
-
 import {
   Container,
+  ContainerSwitch,
   Form,
+  FormInput,
+  NewPicker,
+  Row,
   Separator,
+  TInput,
   Title,
   TitleInto,
-  Row,
-  FormInput,
-  ContainerSwitch,
   TitleIntoSwitch,
-  TInput,
-  NewPicker,
 } from './styles';
-import { colors } from '~/values/colors';
-import AreaAtuacao from '~/components/Bancos';
 
 const KEY_EXTRACTOR = item => item.city;
 
@@ -97,74 +89,89 @@ const styles = StyleSheet.create({
   },
 });
 
-const WORK_CITY_LIMIT = 3;
-
 export default class BankAccount extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      actuations: [],
-      selectedAreaAtuacao: [],
       switchValue: false,
       type: 'cpf',
       placeHolderS: 'cpf',
-      fullname: '',
-      companyname: '',
+      selectedBank: '',
+      agencia: '',
+      agenciaDv: '',
+      conta: '',
+      contaDv: '',
       accountType: '',
+      documentNumber: '',
+      legalName: '',
+      loading: false,
     };
   }
 
-  async componentDidMount() {
-    const actuations = await AsyncStorage.getItem('actuations');
+  handleSubmitNewBankAccount = async () => {
+    const {
+      selectedBank,
+      agencia,
+      agenciaDv,
+      conta,
+      contaDv,
+      documentNumber,
+      legalName,
+      accountType,
+    } = this.state;
 
-    if (actuations) {
-      this.setState({ actuations: JSON.parse(actuations) });
+    if (
+      !selectedBank ||
+      !agencia.length ||
+      !agenciaDv.length ||
+      !conta.length ||
+      !contaDv.length ||
+      !documentNumber.length ||
+      !legalName.length ||
+      !accountType.length
+    ) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
+      return;
     }
-  }
 
-  async componentDidUpdate(_, prevState) {
-    const { actuations } = this.state;
+    this.setState({ loading: true });
 
-    if (prevState.actuations !== actuations) {
-      AsyncStorage.setItem('actuations', JSON.stringify(actuations));
+    try {
+      const payload = {
+        bank_code: selectedBank.value,
+        agencia,
+        agencia_dv: agenciaDv,
+        conta,
+        conta_dv: contaDv,
+        type: accountType,
+        document_number: documentNumber.replace(/[^\w\s]|_/g, ''),
+        legal_name: legalName,
+      };
+
+      await api.post('/gateway/recipient', payload);
+
+      Snackbar.show({
+        text: 'Conta bancária cadastrada',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    } catch (error) {
+      Alert.alert(
+        'Erro',
+        'Não foi possível cadastrar a conta bancária, verifique os campos e tente novamente'
+      );
+    } finally {
+      this.setState({ loading: false });
     }
-  }
-
-  handleSubmitNewProvider = () => {
-    const { onSubmitNewProvider } = this.props;
-    const { selectedAreaAtuacao } = this.state;
-
-    onSubmitNewProvider({ selectedAreaAtuacao });
-  };
-
-  handleSelectItem = (item, index) => {
-    const { actuations } = this.state;
-
-    // const response = await api.get(`/users/${newUser}`);
-
-    const data = {
-      item,
-      index,
-    };
-
-    this.setState({
-      actuations: [...actuations, data],
-    });
-
-    Keyboard.dismiss();
   };
 
   renderSeparator = () => {
     return <View style={styles.separator} />;
   };
 
-  onSelectAreaAtuacao = areaAtuacao => {
-    // const { selectedAreaAtuacao } = this.state;
-
-    // Request pro back aqui
+  onSelectBank = bank => {
     this.setState({
-      selectedAreaAtuacao: [areaAtuacao],
+      selectedBank: bank,
     });
   };
 
@@ -183,70 +190,33 @@ export default class BankAccount extends PureComponent {
     // which will result in re-render the text
   };
 
-  //  toggleSwitch = () => {
-  //   setIsEnabled(previousState => !previousState);
-  //   if (!isEnabled === true) {
-  //     setType('cnpj');
-  //     setPlaceholder('CNPJ');
-  //   } else {
-  //     setType('cpf');
-  //     setPlaceholder('CPF');
-  //   }
-  // };
-
-  removeAreaAtuacao = index => {
-    const { selectedAreaAtuacao } = this.state;
-    const newSelectedAreasAtuacao = [...selectedAreaAtuacao];
-    newSelectedAreasAtuacao.splice(index, 1);
-    this.setState({ selectedAreaAtuacao: newSelectedAreasAtuacao });
-  };
-
-  renderAreaAtuacao = (areaAtuacao, index) => {
-    return (
-      <View key={areaAtuacao.value} style={styles.areaAtuacaoItem}>
-        <Text style={styles.areaAtuacaoTitle}>
-          {areaAtuacao.value} - {areaAtuacao.label}
-        </Text>
-        {/* <TouchableNativeFeedback
-          onPress={() =>
-            Alert.alert(
-              'Remover área de atuação',
-              'Você tem certeza que deseja remover esta área de atuação?',
-              [
-                {
-                  text: 'Não',
-                },
-                {
-                  text: 'Sim',
-                  onPress: () => this.removeAreaAtuacao(index),
-                },
-              ]
-            )
-          }
-        >
-          <Icon name="delete-outline" size={28} color="red" />
-        </TouchableNativeFeedback> */}
-      </View>
-    );
-  };
-
   render() {
-    const { selectedAreaAtuacao } = this.state;
-
-    const { isNewProvider } = this.props;
+    const {
+      selectedBank,
+      agencia,
+      agenciaDv,
+      conta,
+      contaDv,
+      type,
+      documentNumber,
+      legalName,
+      accountType,
+      loading,
+    } = this.state;
 
     return (
       <Background>
         <Container>
           <Title> Conta Bancaria </Title>
           <Form keyboardShouldPersistTaps="handled">
-            <TitleInto>Banco </TitleInto>
-            {selectedAreaAtuacao.map(this.renderAreaAtuacao)}
+            <TitleInto>Banco</TitleInto>
+            <View key={selectedBank.value} style={styles.areaAtuacaoItem}>
+              <Text style={styles.areaAtuacaoTitle}>
+                {selectedBank.value} - {selectedBank.label}
+              </Text>
+            </View>
             <Separator />
-            <AreaAtuacao
-              selectedAreaAtuacao={selectedAreaAtuacao}
-              onSelect={this.onSelectAreaAtuacao}
-            />
+            <Bancos selectedBanco={selectedBank} onSelect={this.onSelectBank} />
 
             <TitleInto>Agência </TitleInto>
 
@@ -257,6 +227,8 @@ export default class BankAccount extends PureComponent {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Código Agência"
+                value={agencia}
+                onChangeText={text => this.setState({ agencia: text })}
               />
 
               <FormInput
@@ -265,6 +237,8 @@ export default class BankAccount extends PureComponent {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Dig Verif"
+                value={agenciaDv}
+                onChangeText={text => this.setState({ agenciaDv: text })}
               />
             </Row>
 
@@ -276,6 +250,8 @@ export default class BankAccount extends PureComponent {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Código Conta"
+                value={conta}
+                onChangeText={text => this.setState({ conta: text })}
               />
 
               <FormInput
@@ -284,6 +260,8 @@ export default class BankAccount extends PureComponent {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Dig Verif"
+                value={contaDv}
+                onChangeText={text => this.setState({ contaDv: text })}
               />
             </Row>
 
@@ -308,12 +286,12 @@ export default class BankAccount extends PureComponent {
               />
 
               <TInput
-                type={this.state.type}
+                type={type}
                 autoCorrect={false}
-                value={this.state.cpf}
                 autoCapitalize="none"
                 placeholder={this.state.placeHolderS}
-                onChangeText={cpf => this.setState({ cpf })}
+                value={documentNumber}
+                onChangeText={text => this.setState({ documentNumber: text })}
               />
             </ContainerSwitch>
             <Separator />
@@ -324,8 +302,8 @@ export default class BankAccount extends PureComponent {
                   autoCorrect={false}
                   autoCapitalize="none"
                   placeholder="Razão Social"
-                  value={this.state.companyname}
-                  onChangeText={companyname => this.setState({ companyname })}
+                  value={legalName}
+                  onChangeText={text => this.setState({ legalName: text })}
                 />
 
                 <Separator />
@@ -337,19 +315,18 @@ export default class BankAccount extends PureComponent {
                   autoCorrect={false}
                   autoCapitalize="none"
                   placeholder="Nome Completo"
-                  value={this.state.fullname}
-                  onChangeText={fullname => this.setState({ fullname })}
+                  value={legalName}
+                  onChangeText={text => this.setState({ legalName: text })}
                 />
 
                 <Separator />
-
               </>
             )}
 
             <ContainerSwitch>
               <TitleIntoSwitch> Tipo da Conta: </TitleIntoSwitch>
               <NewPicker
-                selectedValue={this.state.accountType}
+                selectedValue={accountType}
                 style={{
                   height: 50,
                   width: 100,
@@ -359,23 +336,33 @@ export default class BankAccount extends PureComponent {
                 }}
               >
                 <NewPicker.Item label="Selecione" value="" />
-                <NewPicker.Item label="Conta Corrente" value="CC" />
-                <NewPicker.Item label="Conta Corrente Conjunta" value="CCC" />
-                <NewPicker.Item label="Conta Poupança" value="CP" />
-                <NewPicker.Item label="Conta Poupança Conjunta" value="CPC" />
+                <NewPicker.Item label="Conta Corrente" value="conta_corrente" />
+                <NewPicker.Item
+                  label="Conta Corrente Conjunta"
+                  value="conta_corrente_conjunta"
+                />
+                <NewPicker.Item label="Conta Poupança" value="conta_poupanca" />
+                <NewPicker.Item
+                  label="Conta Poupança Conjunta"
+                  value="conta_poupanca_conjunta"
+                />
               </NewPicker>
             </ContainerSwitch>
 
-            {isNewProvider ? (
-              <>
-                <Separator />
+            <Separator />
 
-                <Button
-                  style={styles.submitNewProviderButton}
-                  title="Próximo"
-                  onPress={this.handleSubmitNewProvider}
-                />
-              </>
+            <Button
+              style={styles.submitNewProviderButton}
+              title="Próximo"
+              onPress={this.handleSubmitNewBankAccount}
+            />
+            {loading ? (
+              <ActivityIndicator
+                color="black"
+                animating
+                size="large"
+                style={{ marginTop: 12 }}
+              />
             ) : null}
           </Form>
         </Container>
