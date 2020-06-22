@@ -76,7 +76,7 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
           </DetailsText>
           <Title>Preço</Title>
           <DetailsText>
-            {Number(solicitation.value).toLocaleString('pt-br', {
+            {(solicitation.value / 100).toLocaleString('pt-br', {
               style: 'currency',
               currency: 'BRL',
             })}
@@ -90,8 +90,8 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
               <Title>Precisa de troco?</Title>
               <DetailsText style={{ marginBottom: 0 }}>
                 {solicitation.change_money
-                  ? `Sim, para ${Number(
-                      solicitation.change_money
+                  ? `Sim, para ${(
+                      solicitation.change_money / 100
                     ).toLocaleString('pt-br', {
                       style: 'currency',
                       currency: 'BRL',
