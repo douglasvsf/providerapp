@@ -1,19 +1,19 @@
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
+import { Alert } from 'react-native';
+import api from '~/services/api';
 import {
-  CenterContent,
-  ButtonsContainer,
-  RefuseButton,
   AcceptButton,
-  RefuseButtonText,
   AcceptButtonText,
+  ButtonsContainer,
   Content,
   ContentTitle,
   DetailsContainer,
   DetailsText,
   NoteInput,
+  RefuseButton,
+  RefuseButtonText,
   SolicitationIdText,
   SolicitationModal,
   Title,
@@ -27,7 +27,7 @@ const PaymentMethod = {
   DEBIT_CARD: 'machine_debit',
 };
 
-const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
+const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
   function paymentMethodToString(paymentMethod) {
     switch (paymentMethod) {
       case PaymentMethod.ONLINE:
@@ -42,23 +42,66 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
         return 'Tipo de pagamento inválido';
     }
   }
+
+  async function requestSetPaymentStatus(status) {
+    try {
+      await api.put(
+        `/appointments/${appointment.id}/set_payment_status/${status}`
+      );
+      onDismiss();
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível finalizar o serviço');
+    }
+  }
+
+  function finishService() {
+    Alert.alert(
+      'Finalizar serviço',
+      'O pagamento do serviço foi realizado?',
+      [
+        {
+          text: 'Voltar',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Não',
+          onPress: () => requestSetPaymentStatus('refused'),
+        },
+        {
+          text: 'Sim',
+          onPress: () => requestSetPaymentStatus('success'),
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <SolicitationModal
       isVisible={isVisible}
       onDismiss={onDismiss}
+      onBackButtonPress={onDismiss}
+      onBackdropPress={onDismiss}
       useNativeDriver
     >
       <Content>
         <TitleContainer>
           <ContentTitle>Detalhes da solicitação </ContentTitle>
-          <SolicitationIdText>#{solicitation.id}</SolicitationIdText>
+          <SolicitationIdText>
+            #{appointment.solicitation.id}
+          </SolicitationIdText>
         </TitleContainer>
         <DetailsContainer>
           <Title>Data</Title>
           <DetailsText>
-            {format(new Date(solicitation.date), "dd 'de' MMMM 'de' yyyy", {
-              locale: pt,
-            })}
+            {format(
+              new Date(appointment.solicitation.date),
+              "dd 'de' MMMM 'de' yyyy",
+              {
+                locale: pt,
+              }
+            )}
           </DetailsText>
           <Title>Observações</Title>
           <NoteInput
@@ -68,30 +111,31 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
             max
             maxLength={120}
             textAlignVertical="top"
-            value={solicitation.note}
+            value={appointment.solicitation.note}
           />
           <Title>Localização</Title>
           <DetailsText>
-            {solicitation.address_text || 'Localização não encontrada'}
+            {appointment.solicitation.address_text ||
+              'Localização não encontrada'}
           </DetailsText>
           <Title>Preço</Title>
           <DetailsText>
-            {(solicitation.value / 100).toLocaleString('pt-br', {
+            {(appointment.solicitation.value / 100).toLocaleString('pt-br', {
               style: 'currency',
               currency: 'BRL',
             })}
           </DetailsText>
           <Title>Método de pagamento</Title>
           <DetailsText>
-            {paymentMethodToString(solicitation.payment_method)}
+            {paymentMethodToString(appointment.solicitation.payment_method)}
           </DetailsText>
-          {solicitation.payment_method === PaymentMethod.MONEY ? (
+          {appointment.solicitation.payment_method === PaymentMethod.MONEY ? (
             <>
               <Title>Precisa de troco?</Title>
               <DetailsText style={{ marginBottom: 0 }}>
-                {solicitation.change_money
+                {appointment.solicitation.change_money
                   ? `Sim, para ${(
-                      solicitation.change_money / 100
+                      appointment.solicitation.change_money / 100
                     ).toLocaleString('pt-br', {
                       style: 'currency',
                       currency: 'BRL',
@@ -106,11 +150,7 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, solicitation }) => {
           <RefuseButton onPress={() => onDismiss()}>
             <RefuseButtonText>Fechar</RefuseButtonText>
           </RefuseButton>
-          <AcceptButton
-            onPress={() =>
-              Alert.alert('Atenção', 'Funcionalidade em fase de implementação')
-            }
-          >
+          <AcceptButton onPress={() => finishService()}>
             <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
           </AcceptButton>
         </ButtonsContainer>

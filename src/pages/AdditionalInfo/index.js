@@ -1,34 +1,24 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Switch,
-  CheckBox,
-  Text,
-} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { CheckBox, StyleSheet, Text, TextInput, View } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import { useSelector } from 'react-redux';
-
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Background from '../../components/Background';
+import { useSelector } from 'react-redux';
 import DateInput from '~/components/DateInput';
-
+import { colors } from '~/values/colors';
+import Background from '../../components/Background';
 import api from '../../services/api';
-
 import {
   Container,
   ContainerFull,
-  TInput,
-  Separator,
-  Title,
   Form,
   FormInput,
-  TitleInto,
-  SubmitButton,
   NewPicker,
+  Separator,
+  SubmitButton,
+  TInput,
+  Title,
+  TitleInto,
 } from './styles';
-import { colors } from '~/values/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -76,6 +66,7 @@ export default function AdditionalInfo({
   const briefref = useRef();
   const generalref = useRef();
   const fullnameref = useRef();
+  const telephoneNumberRef = useRef();
   const profileName = useSelector(state => state.user.profile.name);
   const [isCpfEnabled, setIsCpfEnabled] = useState(true);
   const [isCnpjEnabled, setIsCnpjEnabled] = useState(false);
@@ -90,6 +81,7 @@ export default function AdditionalInfo({
   const [briefdesc, setBriefdesc] = useState('');
   const [placeholder, setPlaceholder] = useState('CPF');
   const [birthday, setBirthday] = useState(new Date());
+  const [telephoneNumber, setTelephoneNumber] = useState('');
 
   const [additionalCpf, setAdditionalCpf] = useState([]);
   const [additionalCnpj, setAdditionalCnpj] = useState([]);
@@ -108,6 +100,7 @@ export default function AdditionalInfo({
     genre,
     birthday,
     briefDescription: briefdesc,
+    telephoneNumber,
   });
 
   additionalCnpjArray.push({
@@ -115,6 +108,7 @@ export default function AdditionalInfo({
     companyName: companyname,
     fantasyName: fantasyname,
     briefDescription: briefdesc,
+    telephoneNumber,
   });
   const togglePessoa = () => {
     setIsCpfEnabled(previousState => !previousState);
@@ -125,7 +119,6 @@ export default function AdditionalInfo({
     } else {
       setType('cnpj');
       setPlaceholder('CNPJ');
-
     }
   };
   const token = useSelector(state => state.auth.token);
@@ -152,6 +145,7 @@ export default function AdditionalInfo({
               setPlaceholder('CPF');
               // console.log(new Date(newData.birthday));
               setBirthday(new Date(response.data.birthday));
+              setTelephoneNumber(response.data.telephone_number);
 
               const verifyIsBack = !!isNewProvider;
               setIsBack(verifyIsBack);
@@ -167,6 +161,7 @@ export default function AdditionalInfo({
               setPlaceholder('CNPJ');
               const verifyIsBack = !!isNewProvider;
               setIsBack(verifyIsBack);
+              setTelephoneNumber(response.data.telephone_number);
             }
           }
         })
@@ -212,6 +207,7 @@ export default function AdditionalInfo({
           setPlaceholder('CPF');
           // console.log(new Date(newData.birthday));
           setBirthday(new Date(response.data.birthday));
+          setTelephoneNumber(response.data.telephone_number);
 
           const verifyIsBack = !!isNewProvider;
 
@@ -219,7 +215,7 @@ export default function AdditionalInfo({
             navigation.navigate('SocialMediaScreen');
           }
         } else if (type === 'cnpj') {
-          //setIsEnabled(true);
+          // setIsEnabled(true);
           setIsCpfEnabled(false);
           setIsCnpjEnabled(true);
           setType('cnpj');
@@ -228,6 +224,7 @@ export default function AdditionalInfo({
           setFantasyname(response.data.fantasy_name);
           setBriefdesc(response.data.brief_description);
           setPlaceholder('CNPJ');
+          setTelephoneNumber(response.data.telephone_number);
 
           const verifyIsBack = !!isNewProvider;
 
@@ -314,11 +311,28 @@ export default function AdditionalInfo({
               value={cpf}
               autoCapitalize="none"
               placeholder={placeholder}
-              onSubmitEditing={() => generalref.current.focus()}
+              onSubmitEditing={() => telephoneNumberRef.current.focus()}
               onChangeText={setCpf}
             />
           </Container>
           <Separator />
+          <FormInput
+            icon="phone"
+            type="cel-phone"
+            keyboardType="numeric"
+            options={{
+              maskType: 'BRL',
+              withDDD: true,
+              dddMask: '(99) ',
+            }}
+            placeholder="Telefone"
+            ref={telephoneNumberRef}
+            returnKeyType="next"
+            value={telephoneNumber}
+            onChangeText={setTelephoneNumber}
+            onSubmitEditing={() => generalref.current.focus()}
+          />
+
           {isCnpjEnabled === true ? (
             <>
               <FormInput
