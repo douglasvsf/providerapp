@@ -16,7 +16,6 @@ export const Panel = styled.View`
   margin: 40px 0;
 `;
 
-
 export const Title = styled.Text`
   font-size: 20px;
   color: #000;
@@ -80,4 +79,12 @@ export const Message = styled.Text`
   margin: 5px 0;
   font-size: 18px;
   color: #999;
+`;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 24px;
 `;

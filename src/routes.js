@@ -4,6 +4,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MIcon from 'react-native-vector-icons/MaterialIcons';
+
 
 import {
   createAppContainer,
@@ -35,6 +37,7 @@ import SignUp from './pages/SignUp';
 import SocialMedia from './pages/SocialMedia';
 import Statistics from './pages/Statistics';
 import Wallet from './pages/Wallet';
+import WalletDetailsScreen from './pages/Wallet/Details'
 import { colors } from './values/colors';
 
 export default (isSigned = false,token,profileid,active) =>
@@ -193,13 +196,19 @@ export default (isSigned = false,token,profileid,active) =>
                     screen: Qualification,
                   },
                   Wallet: {
-                    screen: Wallet,
+                    screen: createStackNavigator({Wallet, WalletDetails: WalletDetailsScreen}, {headerMode: 'none'}),
+                    navigationOptions : {
 
+                      tabBarOptions: {
+                        activeTintColor: colors.primary,
+                      },
+                      tabBarLabel: 'Carteira',
+                      tabBarIcon: ({ tintColor }) => (
+                        <MIcon name="account-balance-wallet" size={20} color={tintColor} />
+                      ),
+                    },
                   },
-
-
                   }),
-
               },
               {
                 contentComponent: ContentMenu,

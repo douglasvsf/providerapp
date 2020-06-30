@@ -1,58 +1,90 @@
-import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  TabView,
-  SceneMap,
-  TabBar,
-  SceneRendererProps,
-} from 'react-native-tab-view';
-import BankAccount from '~/pages/BankAccount';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import Background from '~/components/Background';
-
+import BankAccount from '~/pages/BankAccount';
+import api from '~/services/api';
+import { centsToNumberString } from '~/utils/formatNumber';
 import {
-  Container,
-  BackButton,
   Balance,
+  Container,
+  Info,
+  LoadingContainer,
+  Message,
+  Money,
+  Option,
+  Options,
+  Panel,
+  QrCode,
   Title,
   Value,
-  QrCode,
-  Options,
-  Option,
-  Message,
-  Panel,
-  Info,
-  Money,
-  Separator,
 } from './styles';
-
-import { colors } from '~/utils/colors';
+import WalletDetailsScreen from './Details';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-export default function Wallet() {
+export default function Wallet({ navigation }) {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'first', title: 'Carteira' },
     { key: 'second', title: 'Conta Bancaria' },
   ]);
+  const [walletHistory, setWalletHistory] = useState({});
+  const [loadingWalletHistory, setloadingWalletHistory] = useState(false);
 
-  const FirstRoute = (props: SceneRendererProps) => (
+  async function loadWalletHistory() {
+    setloadingWalletHistory(true);
+    try {
+      const { data: userWalletHistory } = await api.get('/user/wallet_history');
+
+      setWalletHistory(userWalletHistory);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível trazer os dados da carteira');
+    }
+
+    setloadingWalletHistory(false);
+  }
+
+  function openWalletDetails() {
+    navigation.navigate('WalletDetails', { walletHistory });
+  }
+
+  useEffect(() => {
+    loadWalletHistory();
+  }, []);
+
+  const FirstRoute = props => (
     <Container>
-      <Panel>
-        <Balance>
-          <Title>Seu saldo na carteira</Title>
-          <Money>
-            <Value>R$ 52,70</Value>
-            <Icon name="keyboard-arrow-right" size={20} color="#F00" />
-          </Money>
-        </Balance>
-        <QrCode>
-          <Icon name="info" color="#999" size={28} />
-          <Title>Detalhes</Title>
-        </QrCode>
-      </Panel>
+      {loadingWalletHistory ? (
+        <LoadingContainer>
+          <ActivityIndicator color="black" animating size="large" />
+          <Text>Carregando</Text>
+        </LoadingContainer>
+      ) : (
+        <TouchableOpacity onPress={openWalletDetails}>
+          <Panel>
+            <Balance>
+              <Title>Seu saldo na carteira</Title>
+              <Money>
+                <Value>{centsToNumberString(walletHistory.balance)}</Value>
+                <Icon name="keyboard-arrow-right" size={20} color="#F00" />
+              </Money>
+            </Balance>
+            <QrCode>
+              <Icon name="info" color="#999" size={28} />
+              <Title>Detalhes</Title>
+            </QrCode>
+          </Panel>
+        </TouchableOpacity>
+      )}
 
       <Options horizontal>
         <Option onPress={() => {}}>
@@ -120,13 +152,3 @@ export default function Wallet() {
     </Background>
   );
 }
-
-Wallet.navigationOptions = {
-  tabBarOptions: {
-    activeTintColor: colors.primary,
-  },
-  tabBarLabel: 'Carteira',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="account-balance-wallet" size={20} color={tintColor} />
-  ),
-};
