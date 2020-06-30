@@ -19,6 +19,7 @@ import {
   Title,
   TitleContainer,
 } from './styles';
+import { centsToNumberString } from '~/utils/formatNumber';
 
 const PaymentMethod = {
   ONLINE: 'online_payment',
@@ -50,6 +51,7 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
       );
       onDismiss();
     } catch (error) {
+      console.log(error.response);
       Alert.alert('Erro', 'Não foi possível finalizar o serviço');
     }
   }
@@ -120,10 +122,7 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
           </DetailsText>
           <Title>Preço</Title>
           <DetailsText>
-            {(appointment.solicitation.value / 100).toLocaleString('pt-br', {
-              style: 'currency',
-              currency: 'BRL',
-            })}
+            {centsToNumberString(appointment.solicitation.value)}
           </DetailsText>
           <Title>Método de pagamento</Title>
           <DetailsText>
@@ -134,12 +133,9 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
               <Title>Precisa de troco?</Title>
               <DetailsText style={{ marginBottom: 0 }}>
                 {appointment.solicitation.change_money
-                  ? `Sim, para ${(
-                      appointment.solicitation.change_money / 100
-                    ).toLocaleString('pt-br', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    })}`
+                  ? `Sim, para ${centsToNumberString(
+                      appointment.solicitation.change_money
+                    )} `
                   : 'Não'}
               </DetailsText>
             </>
