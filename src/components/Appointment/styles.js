@@ -41,3 +41,16 @@ export const Time = styled.Text`
   font-size: 13px;
   margin-top: 4px;
 `;
+
+export const PaymentStatusContainer = styled.View`
+  margin-top: 4px;
+  padding: 0px 4px 2px 4px;
+  border-radius: 4px;
+  background-color: #80deea;
+`;
+
+export const InfoView = styled.View`
+  flex: 1;
+  align-items: center;
+  flex-direction: column;
+`;

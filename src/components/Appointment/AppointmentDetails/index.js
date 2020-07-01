@@ -1,8 +1,10 @@
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Text } from 'react-native';
 import api from '~/services/api';
+import { centsToNumberString } from '~/utils/formatNumber';
+import { PaymentStatusContainer } from '../styles';
 import {
   AcceptButton,
   AcceptButtonText,
@@ -19,7 +21,6 @@ import {
   Title,
   TitleContainer,
 } from './styles';
-import { centsToNumberString } from '~/utils/formatNumber';
 
 const PaymentMethod = {
   ONLINE: 'online_payment',
@@ -93,6 +94,11 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
           <SolicitationIdText>
             #{appointment.solicitation.id}
           </SolicitationIdText>
+          {appointment.payment_status === 'success' ? (
+            <PaymentStatusContainer>
+              <Text>pago</Text>
+            </PaymentStatusContainer>
+          ) : null}
         </TitleContainer>
         <DetailsContainer>
           <Title>Data</Title>
@@ -146,9 +152,12 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
           <RefuseButton onPress={() => onDismiss()}>
             <RefuseButtonText>Fechar</RefuseButtonText>
           </RefuseButton>
-          <AcceptButton onPress={() => finishService()}>
-            <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
-          </AcceptButton>
+          {appointment.solicitation.payment_method !== PaymentMethod.ONLINE &&
+          appointment.payment_status !== 'success' ? (
+            <AcceptButton onPress={() => finishService()}>
+              <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
+            </AcceptButton>
+          ) : null}
         </ButtonsContainer>
       </Content>
     </SolicitationModal>

@@ -1,8 +1,17 @@
 import { format, parseISO } from 'date-fns';
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Avatar, Container, Info, Left, Name, Time } from './styles';
+import {
+  Avatar,
+  Container,
+  Info,
+  InfoView,
+  Left,
+  Name,
+  PaymentStatusContainer,
+  Time,
+} from './styles';
 
 export default function Appointment({ data, onCancel }) {
   const dateParsed = useMemo(() => {
@@ -27,8 +36,14 @@ export default function Appointment({ data, onCancel }) {
           <Time>{dateParsed}</Time>
         </Info>
       </Left>
-
-      <Icon name="info" size={20} color="#0000ff" />
+      <InfoView>
+        <Icon name="info" size={20} color="#0000ff" />
+        {data.payment_status === 'success' ? (
+          <PaymentStatusContainer>
+            <Text>pago</Text>
+          </PaymentStatusContainer>
+        ) : null}
+      </InfoView>
 
       {data.cancelable && !data.canceled_at && (
         <TouchableOpacity onPress={onCancel}>

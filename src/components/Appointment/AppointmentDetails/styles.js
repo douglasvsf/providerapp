@@ -42,6 +42,7 @@ export const ContentTitle = styled.Text`
 
 export const SolicitationIdText = styled.Text`
   font-size: 18px;
+  margin-right: 8px;
 `;
 
 export const Title = styled.Text`
@@ -99,4 +100,10 @@ export const AcceptButton = styled.TouchableOpacity`
 
 export const AcceptButtonText = styled.Text`
   color: #fff;
+`;
+
+export const PaymentStatusContainer = styled.View`
+  padding: 0px 4px 2px 4px;
+  border-radius: 4px;
+  background-color: #80deea;
 `;
