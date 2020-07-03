@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  CheckBox,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -90,6 +91,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: 15,
   },
+  containerC: {
+    marginTop: 5,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
     fontSize: 22,
     alignSelf: 'center',
@@ -123,16 +130,28 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 
+  buttonAgree: {
+    backgroundColor: '#136AC7',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+
   buttonC: {
     backgroundColor: '#4EAD93',
     borderRadius: 5,
     padding: 10,
   },
-
   buttonLabel: {
     fontSize: 14,
     color: '#FFF',
     alignSelf: 'center',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+  },
+  label: {
+    margin: 8,
   },
 });
 
@@ -163,6 +182,12 @@ export default function SignUp({ navigation }) {
       });
     }
   }
+
+  const toggleAccepted = () => {
+    setAccepted(previousState => !previousState);
+    setConfirmed(previousState => !previousState);
+  };
+
 
   function handleLogin() {
     setisModalVisible(!isModalVisible);
@@ -496,14 +521,14 @@ export default function SignUp({ navigation }) {
               </Text>
             </ScrollView>
 
-            <TouchableOpacity
-              disabled={!accepted}
-              onPress={handleConfirm}
-              style={accepted ? styles.button : styles.buttonDisabled}
-            >
-              <Text style={styles.buttonLabel}>Concordo</Text>
+            <TouchableOpacity disabled style={styles.buttonAgree}>
+              <View style={styles.checkboxContainer}>
+                <CheckBox value={accepted} onValueChange={toggleAccepted} />
+                <Text style={styles.buttonLabel}>
+                  Eu li e concordo com os termos de uso
+                </Text>
+              </View>
             </TouchableOpacity>
-
             <TouchableOpacity
               disabled={!confirmed}
               onPress={handleLogin}

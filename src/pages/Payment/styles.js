@@ -13,6 +13,49 @@ export const Container = styled.ScrollView.attrs({
   width: 100%;
 `;
 
+export const BrandsModalContent = styled.View`
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 16px;
+`;
+
+export const BrandsModalHeader = styled.View`
+  flex-direction: row;
+  margin-bottom: 16px;
+`;
+
+export const BrandsModalTitle = styled.Text`
+  font-size: 15px;
+  font-weight: bold;
+`;
+
+export const BrandsModalList = styled.ScrollView.attrs({
+  contentContainerStyle: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
+})`
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const BrandRow = styled.View`
+  width: 100%;
+  height: 45px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 8px;
+`;
+
+export const BrandLabel = styled.Text`
+  margin-left: 8px;
+  color: black;
+`;
+
+
 export const Separator = styled.View`
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
@@ -84,7 +127,7 @@ export const LogoutButton = styled(Button)`
 `;
 
 export const Header = styled.View`
-  margin-left: 20px;
+  margin-left: 5px;
   margin-top: 15px;
 `;
 
