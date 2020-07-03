@@ -537,8 +537,10 @@ class Service extends PureComponent {
     return (
       <Background>
         <Container>
-          <Title> Área de Atuação </Title>
           <Form keyboardShouldPersistTaps="handled">
+
+          <TitleInto>Cidades que atende </TitleInto>
+          <Separator />
             <TitleInto> Estado </TitleInto>
             <SelectEstados
               selectedValue={selectedValueEstado}
@@ -571,7 +573,7 @@ class Service extends PureComponent {
 
             <Separator />
 
-            <TitleInto> Area de Atuação </TitleInto>
+            <TitleInto> Serviços que presta </TitleInto>
 
             <Separator />
 

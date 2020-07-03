@@ -9,6 +9,12 @@ import Background from '~/components/Background';
 import CardBrands from '~/components/CardBrands';
 import api from '../../services/api';
 import {
+  BrandLabel,
+  BrandRow,
+  BrandsModalContent,
+  BrandsModalHeader,
+  BrandsModalList,
+  BrandsModalTitle,
   Container,
   Title,
   Separator,
@@ -301,7 +307,60 @@ class Payment extends PureComponent {
             <TitleMethods>Padrões</TitleMethods>
           </Header>
 
-          <View
+          <BrandsModalContent>
+            <BrandsModalHeader>
+              <BrandsModalTitle style={{ flex: 1 }}>
+                Outras Formas de Pagamento
+              </BrandsModalTitle>
+            </BrandsModalHeader>
+            <BrandsModalList>
+              <BrandRow>
+                <CardBrands
+                  brand={`ONLINE_PAYMENT_${onlinepayment}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={onlinepayment}
+                    onValueChange={() =>
+                      this.setState({ onlinepayment: !onlinepayment })
+                    }
+                  />
+                  <ItemTitle>Tecne App</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`CASH_PAYMENT_${cashpayment}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={cashpayment}
+                    onValueChange={() =>
+                      this.setState({ cashpayment: !cashpayment })
+                    }
+                  />
+                  <ItemTitle>Dinheiro</ItemTitle>
+                </View>
+              </BrandRow>
+            </BrandsModalList>
+          </BrandsModalContent>
+
+          {/* <View
             style={{
               height: 110,
               marginLeft: 20,
@@ -370,11 +429,131 @@ class Payment extends PureComponent {
                 </View>
               </Item>
             </CategoriesList>
-          </View>
+          </View> */}
           <Header>
             <TitleMethods>Máquina Cartão de Crédito</TitleMethods>
           </Header>
-          <View
+
+          <BrandsModalContent>
+            <BrandsModalHeader>
+              <BrandsModalTitle style={{ flex: 1 }}>
+                Bandeiras Aceitas Crédito
+              </BrandsModalTitle>
+            </BrandsModalHeader>
+            <BrandsModalList>
+              <BrandRow>
+                <CardBrands
+                  brand={`AMERICAN_EXPRESS_${americancredit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={americancredit}
+                    onValueChange={() =>
+                      this.setState({ americancredit: !americancredit })
+                    }
+                  />
+                  <ItemTitle>American Express</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`ELO_${elocredit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={elocredit}
+                    onValueChange={() =>
+                      this.setState({ elocredit: !elocredit })
+                    }
+                  />
+                  <ItemTitle>Elo</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`HIPERCARD_${hipercredit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={hipercredit}
+                    onValueChange={() =>
+                      this.setState({ hipercredit: !hipercredit })
+                    }
+                  />
+                  <ItemTitle>HiperCard</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`MASTERCARD_${mastercredit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={mastercredit}
+                    onValueChange={() =>
+                      this.setState({ mastercredit: !mastercredit })
+                    }
+                  />
+                  <ItemTitle>Mastercard</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`VISA_${visacredit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={visacredit}
+                    onValueChange={() =>
+                      this.setState({ visacredit: !visacredit })
+                    }
+                  />
+                  <ItemTitle>Visa</ItemTitle>
+                </View>
+              </BrandRow>
+            </BrandsModalList>
+          </BrandsModalContent>
+
+          {/* <View
             style={{
               height: 110,
               marginLeft: 20,
@@ -536,12 +715,86 @@ class Payment extends PureComponent {
                 </View>
               </Item>
             </CategoriesList>
-          </View>
+          </View> */}
 
           <Header>
             <TitleMethods>Máquina Cartão de Débito</TitleMethods>
           </Header>
-          <View
+
+          <BrandsModalContent>
+            <BrandsModalHeader>
+              <BrandsModalTitle style={{ flex: 1 }}>
+                Bandeiras Aceitas Débito
+              </BrandsModalTitle>
+            </BrandsModalHeader>
+            <BrandsModalList>
+              <BrandRow>
+                <CardBrands
+                  brand={`VISA_${visadebit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={visadebit}
+                    onValueChange={() =>
+                      this.setState({ visadebit: !visadebit })
+                    }
+                  />
+                  <ItemTitle>Visa</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`MASTERCARD_${masterdebit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={masterdebit}
+                    onValueChange={() =>
+                      this.setState({ masterdebit: !masterdebit })
+                    }
+                  />
+                  <ItemTitle>Mastercard</ItemTitle>
+                </View>
+              </BrandRow>
+
+              <BrandRow>
+                <CardBrands
+                  brand={`ELO_${elodebit}`}
+                  width={100}
+                  height={33}
+                  marginTop={5}
+                />
+
+                <View style={{ flexDirection: 'row' }}>
+                  <CheckBox
+                    style={{
+                      marginTop: 5,
+                    }}
+                    value={elodebit}
+                    onValueChange={() => this.setState({ elodebit: !elodebit })}
+                  />
+                  <ItemTitle>Elo</ItemTitle>
+                </View>
+              </BrandRow>
+            </BrandsModalList>
+          </BrandsModalContent>
+
+          {/* <View
             style={{
               height: 110,
               marginRight: 20,
@@ -639,7 +892,7 @@ class Payment extends PureComponent {
                 </View>
               </Item>
             </CategoriesList>
-          </View>
+          </View> */}
 
           {isNewProvider && !isBack ? (
             <SubmitButton onPress={() => this.handleSubmitNewProvider()}>
