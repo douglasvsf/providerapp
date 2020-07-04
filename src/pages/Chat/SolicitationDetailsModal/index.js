@@ -4,6 +4,7 @@ import pt from 'date-fns/locale/pt';
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
 import api from '~/services/api';
+import { centsToNumberString } from '~/utils/formatNumber';
 import {
   AcceptButton,
   AcceptButtonText,
@@ -170,12 +171,7 @@ const SolicitationDetailsModal = ({
               {solicitation.address_text || 'Localização não encontrada'}
             </DetailsText>
             <Title>Preço</Title>
-            <DetailsText>
-              {(solicitation.value / 100).toLocaleString('pt-br', {
-                style: 'currency',
-                currency: 'BRL',
-              })}
-            </DetailsText>
+            <DetailsText>{centsToNumberString(solicitation.value)}</DetailsText>
             <Title>Método de pagamento</Title>
             <DetailsText>
               {paymentMethodToString(solicitation.payment_method)}
@@ -185,12 +181,9 @@ const SolicitationDetailsModal = ({
                 <Title>Precisa de troco?</Title>
                 <DetailsText style={{ marginBottom: 0 }}>
                   {solicitation.change_money
-                    ? `Sim, para ${(
-                        solicitation.change_money / 100
-                      ).toLocaleString('pt-br', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      })}`
+                    ? `Sim, para ${centsToNumberString(
+                        solicitation.change_money
+                      )}`
                     : 'Não'}
                 </DetailsText>
               </>
