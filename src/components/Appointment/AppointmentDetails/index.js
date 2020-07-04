@@ -146,9 +146,12 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
           <RefuseButton onPress={() => onDismiss()}>
             <RefuseButtonText>Fechar</RefuseButtonText>
           </RefuseButton>
-          <AcceptButton onPress={() => finishService()}>
-            <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
-          </AcceptButton>
+          {appointment.solicitation.payment_method !== PaymentMethod.ONLINE &&
+          appointment.payment_status !== 'success' ? (
+            <AcceptButton onPress={() => finishService()}>
+              <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
+            </AcceptButton>
+          ) : null}
         </ButtonsContainer>
       </Content>
     </SolicitationModal>
