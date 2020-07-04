@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   tcContainer: {
     marginTop: 15,
     marginBottom: 15,
-    height: height * 0.7,
+    height: '70%',
   },
 
   button: {
@@ -188,7 +188,6 @@ export default function SignUp({ navigation }) {
     setConfirmed(previousState => !previousState);
   };
 
-
   function handleLogin() {
     setisModalVisible(!isModalVisible);
     dispatch(signUpRequest(name, email, password, navigation));
@@ -218,7 +217,10 @@ export default function SignUp({ navigation }) {
   };
   return (
     <BackgroundInitial>
-      <Modal isVisible={isModalVisible}>
+      <Modal
+        isVisible={isModalVisible}
+        onBackButtonPress={() => setisModalVisible(false)}
+      >
         <View style={{ flex: 1 }}>
           <View style={styles.container}>
             <Text style={styles.title}>Termos e Condições</Text>
