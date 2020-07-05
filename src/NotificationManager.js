@@ -27,6 +27,10 @@ export default class NotificationManager {
     });
   }
 
+  static openWallet() {
+    NavigationService.navigate('Wallet', {});
+  }
+
   showSnackBar(remoteMessage) {
     switch (remoteMessage?.data?.type) {
       case 'new-appointment-chat':
@@ -63,7 +67,17 @@ export default class NotificationManager {
           },
         });
         break;
-
+      case 'payment-slip-success':
+        Snackbar.show({
+          text: remoteMessage.notification.body,
+          duration: Snackbar.LENGTH_LONG,
+          action: {
+            text: 'Abrir carteira',
+            textColor: 'green',
+            onPress: () => NotificationManager.openWallet(),
+          },
+        });
+        break;
       default:
     }
   }
@@ -91,6 +105,9 @@ export default class NotificationManager {
         NotificationManager.openAppointmentDetails(
           JSON.parse(remoteMessage.data.appointment)
         );
+        break;
+      case 'payment-slip-success':
+        NotificationManager.openWallet();
         break;
       default:
     }
