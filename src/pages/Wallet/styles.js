@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { colors } from '~/values/colors';
 
 export const Container = styled.ScrollView`
   flex: 1;
@@ -87,4 +88,33 @@ export const LoadingContainer = styled.View`
   justify-content: center;
   align-items: center;
   margin: 24px;
+`;
+
+export const BoletoContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 16px;
+`;
+
+export const BoletoButton = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  width: 75%;
+  background-color: ${colors.primary};
+  padding: 10px;
+  border-radius: 4px;
+  height: 50px;
+  text-align: center;
+  margin-bottom: 8px;
+`;
+
+export const BoletoButtonText = styled.Text`
+  color: white;
+`;
+
+export const PendingBoletoText = styled.Text`
+  text-align: center;
 `;
