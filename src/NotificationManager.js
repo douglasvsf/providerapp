@@ -1,6 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import Snackbar from 'react-native-snackbar';
 import NavigationService from './NavigationService';
+import { updateAppointmentsRequest } from './store/modules/user/actions';
+import { store } from './store';
 
 export default class NotificationManager {
   constructor(profile) {
@@ -29,6 +31,12 @@ export default class NotificationManager {
 
   static openWallet() {
     NavigationService.navigate('Wallet', {});
+  }
+
+  static notificationReceived(remoteMessage) {
+    switch (remoteMessage.data.type) {
+      default:
+    }
   }
 
   showSnackBar(remoteMessage) {
@@ -82,9 +90,17 @@ export default class NotificationManager {
     }
   }
 
+  static listenBackgroundNotifications() {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      console.log('ihaaa');
+      NotificationManager.notificationReceived(remoteMessage);
+    });
+  }
+
   listenForegroundNotifications() {
     messaging().onMessage(async remoteMessage => {
       this.showSnackBar(remoteMessage);
+      NotificationManager.notificationReceived(remoteMessage);
     });
   }
 

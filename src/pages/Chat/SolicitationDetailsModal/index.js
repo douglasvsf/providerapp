@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import React from 'react';
 import { ActivityIndicator, Alert } from 'react-native';
+import { useDispatch } from 'react-redux';
 import api from '~/services/api';
 import { centsToNumberString } from '~/utils/formatNumber';
 import {
@@ -22,6 +23,7 @@ import {
   Title,
   TitleContainer,
 } from './styles';
+import { updateAppointmentsRequest } from '~/store/modules/user/actions';
 
 const PaymentMethod = {
   ONLINE: 'online_payment',
@@ -36,6 +38,8 @@ const SolicitationDetailsModal = ({
   isLoading,
   solicitation,
 }) => {
+  const dispatch = useDispatch();
+
   function paymentMethodToString(paymentMethod) {
     switch (paymentMethod) {
       case PaymentMethod.ONLINE:
@@ -100,6 +104,7 @@ const SolicitationDetailsModal = ({
       }
 
       updateSolicitationOnFirebase('accepted');
+      dispatch(updateAppointmentsRequest());
 
       onDismiss();
     } catch (error) {

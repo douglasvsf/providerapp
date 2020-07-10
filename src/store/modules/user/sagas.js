@@ -1,8 +1,13 @@
 import { Alert } from 'react-native';
-import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import api from '~/services/api';
-
-import { updateProfileSuccess, updateProfileFailure } from './actions';
+import {
+  updateAppointmentsFailure,
+  updateAppointmentsSuccess,
+  updateProfileFailure,
+  updateProfileSuccess,
+  updateWalletSuccess,
+} from './actions';
 
 export function* updateProfile({ payload }) {
   try {
@@ -33,4 +38,21 @@ export function* updateProfile({ payload }) {
   }
 }
 
-export default all([takeLatest('@user/UPDATE_PROFILE_REQUEST', updateProfile)]);
+export function* updateAppointments({ payload }) {
+  try {
+    const response = yield call(
+      api.get,
+      `providers/${payload.profileId}/appointments`
+    );
+
+    yield put(updateAppointmentsSuccess(response.data));
+  } catch (error) {
+    Alert.alert('Erro', 'Erro ao atualizar as solicitações');
+    yield put(updateAppointmentsFailure());
+  }
+}
+
+export default all([
+  takeLatest('@user/UPDATE_PROFILE_REQUEST', updateProfile),
+  takeLatest('@user/UPDATE_APPOINTMENTS_REQUEST', updateAppointments),
+]);
