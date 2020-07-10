@@ -33,9 +33,20 @@ export default class NotificationManager {
     NavigationService.navigate('Wallet', {});
   }
 
+  static dispatchUpdateAppointments() {
+    store.dispatch(updateAppointmentsRequest(store.getState().user.profile.id));
+  }
+
   static notificationReceived(remoteMessage) {
     switch (remoteMessage.data.type) {
+      case 'payment-confirmation':
+      case 'payment-sucess':
+      case 'payment-refused':
+      case 'payment-error':
+        NotificationManager.dispatchUpdateAppointments();
+        break;
       default:
+        break;
     }
   }
 
@@ -92,7 +103,6 @@ export default class NotificationManager {
 
   static listenBackgroundNotifications() {
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('ihaaa');
       NotificationManager.notificationReceived(remoteMessage);
     });
   }
