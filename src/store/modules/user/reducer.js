@@ -2,6 +2,8 @@ import produce from 'immer';
 
 const INITIAL_STATE = {
   profile: null,
+  appointments: [],
+  loadingAppointments: false,
 };
 
 export default function user(state = INITIAL_STATE, action) {
@@ -17,6 +19,19 @@ export default function user(state = INITIAL_STATE, action) {
       }
       case '@auth/SIGN_OUT': {
         draft.profile = null;
+        break;
+      }
+      case '@user/UPDATE_APPOINTMENTS_REQUEST': {
+        draft.loadingAppointments = true;
+        break;
+      }
+      case '@user/UPDATE_APPOINTMENTS_SUCCESS': {
+        draft.appointments = action.payload.appointments;
+        draft.loadingAppointments = false;
+        break;
+      }
+      case '@user/UPDATE_APPOINTMENTS_FAILURE': {
+        draft.loadingAppointments = false;
         break;
       }
       default:

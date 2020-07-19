@@ -18,6 +18,7 @@ export default function App() {
     const notificationManager = new NotificationManager(profile);
 
     notificationManager.listenForegroundNotifications();
+    NotificationManager.listenBackgroundNotifications();
     notificationManager.listenToNotificationClick();
   }, [profile]);
 

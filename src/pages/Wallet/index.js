@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+import { pt } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -6,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -15,6 +18,9 @@ import api from '~/services/api';
 import { centsToNumberString } from '~/utils/formatNumber';
 import {
   Balance,
+  BoletoButton,
+  BoletoButtonText,
+  BoletoContainer,
   Container,
   Info,
   LoadingContainer,
@@ -23,11 +29,11 @@ import {
   Option,
   Options,
   Panel,
+  PendingBoletoText,
   QrCode,
   Title,
   Value,
 } from './styles';
-import WalletDetailsScreen from './Details';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -38,28 +44,75 @@ export default function Wallet({ navigation }) {
     { key: 'second', title: 'Conta Bancaria' },
   ]);
   const [walletHistory, setWalletHistory] = useState({});
-  const [loadingWalletHistory, setloadingWalletHistory] = useState(false);
-
-  async function loadWalletHistory() {
-    setloadingWalletHistory(true);
-    try {
-      const { data: userWalletHistory } = await api.get('/user/wallet_history');
-
-      setWalletHistory(userWalletHistory);
-    } catch (error) {
-      Alert.alert('Erro', 'Não foi possível trazer os dados da carteira');
-    }
-
-    setloadingWalletHistory(false);
-  }
+  const [loadingWalletHistory, setLoadingWalletHistory] = useState(false);
+  const [loadingPaymentSlip, setLoadingPaymentSlip] = useState(false);
+  const [paymentSlipLimitDate, setPaymentSlipLimitDate] = useState(null);
 
   function openWalletDetails() {
     navigation.navigate('WalletDetails', { walletHistory });
   }
 
+  async function checkIfHasPendingPaymentSlip() {
+    setLoadingPaymentSlip(true);
+    try {
+      const { data } = await api.get('/gateway/has_pending_payment_slip');
+
+      if (data && data.pending && data.limit) {
+        setPaymentSlipLimitDate(data.limit);
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao carregar boletos pendentes');
+    }
+    setLoadingPaymentSlip(false);
+  }
+
+  async function processPaymentSlip() {
+    setLoadingPaymentSlip(true);
+
+    try {
+      await api.post('/gateway/payment_slip');
+
+      Snackbar.show({
+        text: 'Um link para o pagamento do boleto será enviado ao seu email',
+        duration: Snackbar.LENGTH_LONG,
+      });
+
+      setTimeout(async () => {
+        await checkIfHasPendingPaymentSlip();
+      }, 2000);
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível gerar o boleto');
+    }
+
+    setLoadingPaymentSlip(false);
+  }
+
   useEffect(() => {
+    async function loadWalletHistory() {
+      setLoadingWalletHistory(true);
+      try {
+        checkIfHasPendingPaymentSlip();
+
+        const { data: userWalletHistory } = await api.get(
+          '/user/wallet_history'
+        );
+
+        setWalletHistory(userWalletHistory);
+      } catch (error) {
+        Alert.alert('Erro', 'Não foi possível trazer os dados da carteira');
+      }
+
+      setLoadingWalletHistory(false);
+    }
+
+    const focusListener = navigation.addListener('didFocus', () => {
+      loadWalletHistory();
+    });
+
     loadWalletHistory();
-  }, []);
+
+    return () => focusListener.remove();
+  }, [navigation]);
 
   const FirstRoute = props => (
     <Container>
@@ -85,6 +138,35 @@ export default function Wallet({ navigation }) {
           </Panel>
         </TouchableOpacity>
       )}
+
+      {walletHistory.balance < 0 ? (
+        <BoletoContainer>
+          <BoletoButton
+            onPress={() => processPaymentSlip()}
+            disabled={paymentSlipLimitDate !== null}
+            style={{ opacity: paymentSlipLimitDate !== null ? 0.6 : 1 }}
+          >
+            {loadingPaymentSlip ? (
+              <ActivityIndicator color="white" animating size="small" />
+            ) : (
+              <BoletoButtonText>Gerar boleto</BoletoButtonText>
+            )}
+          </BoletoButton>
+          {paymentSlipLimitDate !== null ? (
+            <PendingBoletoText>
+              Aguardando o pagamento do boleto, o qual pode ser realizado até
+              dia{' '}
+              {format(
+                new Date(paymentSlipLimitDate),
+                "dd 'de' MMMM 'de' yyyy",
+                {
+                  locale: pt,
+                }
+              )}
+            </PendingBoletoText>
+          ) : null}
+        </BoletoContainer>
+      ) : null}
 
       <Options horizontal>
         <Option onPress={() => {}}>

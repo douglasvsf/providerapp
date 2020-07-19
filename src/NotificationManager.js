@@ -1,6 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import Snackbar from 'react-native-snackbar';
 import NavigationService from './NavigationService';
+import { updateAppointmentsRequest } from './store/modules/user/actions';
+import { store } from './store';
 
 export default class NotificationManager {
   constructor(profile) {
@@ -25,6 +27,27 @@ export default class NotificationManager {
     NavigationService.navigate('Agendamentos', {
       appointment,
     });
+  }
+
+  static openWallet() {
+    NavigationService.navigate('Wallet', {});
+  }
+
+  static dispatchUpdateAppointments() {
+    store.dispatch(updateAppointmentsRequest(store.getState().user.profile.id));
+  }
+
+  static notificationReceived(remoteMessage) {
+    switch (remoteMessage.data.type) {
+      case 'payment-confirmation':
+      case 'payment-sucess':
+      case 'payment-refused':
+      case 'payment-error':
+        NotificationManager.dispatchUpdateAppointments();
+        break;
+      default:
+        break;
+    }
   }
 
   showSnackBar(remoteMessage) {
@@ -63,14 +86,31 @@ export default class NotificationManager {
           },
         });
         break;
-
+      case 'payment-slip-success':
+        Snackbar.show({
+          text: remoteMessage.notification.body,
+          duration: Snackbar.LENGTH_LONG,
+          action: {
+            text: 'Abrir carteira',
+            textColor: 'green',
+            onPress: () => NotificationManager.openWallet(),
+          },
+        });
+        break;
       default:
     }
+  }
+
+  static listenBackgroundNotifications() {
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      NotificationManager.notificationReceived(remoteMessage);
+    });
   }
 
   listenForegroundNotifications() {
     messaging().onMessage(async remoteMessage => {
       this.showSnackBar(remoteMessage);
+      NotificationManager.notificationReceived(remoteMessage);
     });
   }
 
@@ -91,6 +131,9 @@ export default class NotificationManager {
         NotificationManager.openAppointmentDetails(
           JSON.parse(remoteMessage.data.appointment)
         );
+        break;
+      case 'payment-slip-success':
+        NotificationManager.openWallet();
         break;
       default:
     }

@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigationFocus } from 'react-navigation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Appointment from '~/components/Appointment';
 import AppointmentDetailsModal from '~/components/Appointment/AppointmentDetails';
 import Background from '~/components/Background';
 import api from '~/services/api';
 import { colors } from '~/values/colors';
 import { Container, List, Title } from './styles';
+import { updateAppointmentsRequest } from '~/store/modules/user/actions';
 
 function Dashboard({ isFocused, navigation }) {
-  const [appointments, setAppointments] = useState([]);
+  const appointments = useSelector(state => state.user.appointments);
   const [
     showSolicitationDetailsModal,
     setShowSolicitationDetailsModal,
@@ -19,6 +20,7 @@ function Dashboard({ isFocused, navigation }) {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   const profileId = useSelector(state => state.user.profile.id);
+  const dispatch = useDispatch();
 
   function showOrderModal(appointment) {
     setSelectedAppointment(appointment);
@@ -30,13 +32,11 @@ function Dashboard({ isFocused, navigation }) {
     setShowSolicitationDetailsModal(false);
   }
 
+  const loadAppointments = useCallback(() => {
+    dispatch(updateAppointmentsRequest(profileId));
+  }, [dispatch, profileId]);
+
   useEffect(() => {
-    async function loadAppointments() {
-      const response = await api.get(`providers/${profileId}/appointments`);
-
-      setAppointments(response.data);
-    }
-
     const appointment = navigation.getParam('appointment');
 
     if (appointment) {
@@ -46,21 +46,12 @@ function Dashboard({ isFocused, navigation }) {
     if (isFocused) {
       loadAppointments();
     }
-  }, [isFocused, navigation, profileId]);
+  }, [isFocused, loadAppointments, navigation, profileId]);
 
   async function handleCancel(id) {
-    const response = await api.delete(`appointments/${id}`);
+    await api.delete(`appointments/${id}`);
 
-    setAppointments(
-      appointments.map(appointment =>
-        appointment.id === id
-          ? {
-              ...appointment,
-              canceled_at: response.data.canceled_at,
-            }
-          : appointment
-      )
-    );
+    dispatch(updateAppointmentsRequest(profileId));
   }
 
   return (
