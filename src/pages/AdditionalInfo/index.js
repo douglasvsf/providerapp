@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { CheckBox, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Alert,
+  CheckBox,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import { cpf as validateCpf, cnpj as validateCnpj } from 'cpf-cnpj-validator';
 import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
@@ -92,6 +100,16 @@ export default function AdditionalInfo({
   newcpf = newcpf.replace('-', '');
   newcpf = newcpf.replace('/', '');
   newcpf = newcpf.replace('.', '');
+
+  if (type == 'cpf') {
+    if (validateCpf.isValid(newcpf) == false) {
+      Alert.alert('Erro', ' Cpf inexistente');
+    }
+  } else if (type == 'cnpj') {
+    if (validateCnpj.isValid(newcpf) == false) {
+      Alert.alert('Erro', 'Cnpj inexistente');
+    }
+  }
 
   additionalCpfArray.push({
     cpf: newcpf,
