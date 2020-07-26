@@ -49,6 +49,20 @@ export const PaymentStatusContainer = styled.View`
   background-color: #80deea;
 `;
 
+export const PaymentStatusContainerR = styled.View`
+  margin-top: 4px;
+  padding: 0px 4px 2px 4px;
+  border-radius: 4px;
+  background-color: #ff0000;
+`;
+
+export const PaymentStatusContainerA = styled.View`
+  margin-top: 4px;
+  padding: 0px 4px 2px 4px;
+  border-radius: 4px;
+  background-color: #ffff00 ;
+`;
+
 export const InfoView = styled.View`
   flex: 1;
   align-items: center;

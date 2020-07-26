@@ -62,6 +62,14 @@ export const TitleInto = styled.Text`
   color: #fff;
   font-weight: bold;
   align-self: flex-start;
+  margin-bottom : 0;
+`;
+
+export const TitleDigit = styled.Text`
+  font-size: 10px;
+  color: red;
+  font-weight: bold;
+  align-self: flex-end;
 `;
 
 export const City = styled.View`

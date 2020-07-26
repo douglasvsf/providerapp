@@ -101,15 +101,6 @@ export default function AdditionalInfo({
   newcpf = newcpf.replace('/', '');
   newcpf = newcpf.replace('.', '');
 
-  if (type == 'cpf') {
-    if (validateCpf.isValid(newcpf) == false) {
-      Alert.alert('Erro', ' Cpf inexistente');
-    }
-  } else if (type == 'cnpj') {
-    if (validateCnpj.isValid(newcpf) == false) {
-      Alert.alert('Erro', 'Cnpj inexistente');
-    }
-  }
 
   additionalCpfArray.push({
     cpf: newcpf,
@@ -194,6 +185,19 @@ export default function AdditionalInfo({
   }, [isNewProvider, profileId, token]);
 
   async function UpdateAdditionalInfo() {
+
+    
+  if (type == 'cpf') {
+    if (validateCpf.isValid(newcpf) == false) {
+      Alert.alert('Erro', ' Cpf inexistente');
+      return false;
+    }
+  } else if (type == 'cnpj') {
+    if (validateCnpj.isValid(newcpf) == false) {
+      Alert.alert('Erro', 'Cnpj inexistente');
+      return false;
+    }
+  }
     const newAdditionalInfo =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
 
@@ -262,6 +266,19 @@ export default function AdditionalInfo({
   const handleSubmitNewProvider = useCallback(async () => {
     const arrayGeneral =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
+
+      if (type == 'cpf') {
+        if (validateCpf.isValid(newcpf) == false) {
+          Alert.alert('Erro', ' Cpf inexistente');
+          return false;
+        }
+      } else if (type == 'cnpj') {
+        if (validateCnpj.isValid(newcpf) == false) {
+          Alert.alert('Erro', 'Cnpj inexistente');
+          return false;
+        }
+      }
+
     const responseSubmitNew = await onSubmitNewProvider(arrayGeneral);
 
     if (responseSubmitNew === 0) {

@@ -10,6 +10,8 @@ import {
   Left,
   Name,
   PaymentStatusContainer,
+  PaymentStatusContainerR,
+  PaymentStatusContainerA,
   Time,
 } from './styles';
 
@@ -32,7 +34,7 @@ export default function Appointment({ data, onCancel }) {
         />
 
         <Info>
-          <Name> Cliente Numero : {data.solicitation.customer_id}</Name>
+          <Name>{data.solicitation.customer.name}</Name>
           <Time>{dateParsed}</Time>
         </Info>
       </Left>
@@ -42,7 +44,13 @@ export default function Appointment({ data, onCancel }) {
           <PaymentStatusContainer>
             <Text>pago</Text>
           </PaymentStatusContainer>
-        ) : null}
+        ) : data.payment_status === 'refused' ? (
+          <PaymentStatusContainerR>
+            <Text>Recusado</Text>
+          </PaymentStatusContainerR>
+        ) : <PaymentStatusContainerA>
+        <Text>Em Andamento</Text>
+      </PaymentStatusContainerA>}
       </InfoView>
 
       {data.cancelable && !data.canceled_at && (

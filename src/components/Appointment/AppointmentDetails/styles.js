@@ -8,6 +8,19 @@ export const SolicitationModal = styled(Modal)`
   margin: 0;
 `;
 
+export const PaymentStatusContainerR = styled.View`
+padding: 0px 4px 2px 4px;
+border-radius: 4px;
+  background-color: #ff0000;
+`;
+
+export const PaymentStatusContainerA = styled.View`
+padding: 0px 4px 2px 4px;
+border-radius: 4px;
+  background-color: #ffff00 ;
+`;
+
+
 export const Content = styled.ScrollView.attrs({
   contentContainerStyle: {
     flexGrow: 1,
