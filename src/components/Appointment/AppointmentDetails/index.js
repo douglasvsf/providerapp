@@ -4,7 +4,7 @@ import React from 'react';
 import { Alert, Text } from 'react-native';
 import api from '~/services/api';
 import { centsToNumberString } from '~/utils/formatNumber';
-import { PaymentStatusContainer } from '../styles';
+import { PaymentStatusContainer,PaymentStatusContainerR,PaymentStatusContainerA } from '../styles';
 import {
   AcceptButton,
   AcceptButtonText,
@@ -94,11 +94,18 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
           <SolicitationIdText>
             #{appointment.solicitation.id}
           </SolicitationIdText>
+
           {appointment.payment_status === 'success' ? (
-            <PaymentStatusContainer>
-              <Text>pago</Text>
-            </PaymentStatusContainer>
-          ) : null}
+          <PaymentStatusContainer>
+            <Text>pago</Text>
+          </PaymentStatusContainer>
+        ) : appointment.payment_status === 'refused' ? (
+          <PaymentStatusContainerR>
+            <Text>Recusado</Text>
+          </PaymentStatusContainerR>
+        ) : <PaymentStatusContainerA>
+        <Text>Em Andamento</Text>
+      </PaymentStatusContainerA>}
         </TitleContainer>
         <DetailsContainer>
           <Title>Data</Title>
@@ -153,7 +160,7 @@ const AppointmentDetailsModal = ({ isVisible, onDismiss, appointment }) => {
             <RefuseButtonText>Fechar</RefuseButtonText>
           </RefuseButton>
           {appointment.solicitation.payment_method !== PaymentMethod.ONLINE &&
-          appointment.payment_status !== 'success' ? (
+          appointment.payment_status === 'waiting' ? (
             <AcceptButton onPress={() => finishService()}>
               <AcceptButtonText>Finalizar Serviço</AcceptButtonText>
             </AcceptButton>

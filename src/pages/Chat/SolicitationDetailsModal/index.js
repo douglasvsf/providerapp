@@ -37,6 +37,7 @@ const SolicitationDetailsModal = ({
   onDismiss,
   isLoading,
   solicitation,
+  navigation,
 }) => {
   const dispatch = useDispatch();
 
@@ -61,6 +62,26 @@ const SolicitationDetailsModal = ({
     });
 
     return appointment;
+  }
+
+  async function verifyOnline() {
+  const result = await api
+    .get(`gateway/verify_recipient `)
+    .then(response => {
+      console.log('responms' , response);
+      console.log('responmseeeeeee' , response.data.message);
+      if(response.data.message === 'Provider gateway not found'){
+        console.log('ENTROIF' , response);
+        return false;
+      }else if(response.data.message == 'Provider gateway found'){
+        return true;
+      }
+    })
+    .catch(err => {
+      console.log('erro' , err);
+    });
+ return result;
+    
   }
 
   async function updateSolicitationOnFirebase(status) {
@@ -96,6 +117,36 @@ const SolicitationDetailsModal = ({
 
   async function acceptSolicitation() {
     try {
+
+      if(solicitation.payment_method == 'online_payment'){
+
+        const verifyBank = await verifyOnline();
+        console.log('verifyBank', verifyBank);
+        if (!verifyBank) {
+          Alert.alert(
+            'Aviso',
+            'É necessário cadastrar uma conta bancária para aceitar solicitações online',
+            [
+              {
+                text: 'Voltar',
+                onPress: () => {},
+                style: 'cancel',
+              },
+              {
+                text: 'Ir para o cadastro',
+                onPress: () => {
+                  onDismiss();
+                  navigation.navigate('Wallet');
+               },
+              },
+            ],
+            { cancelable: true }
+          );
+          return;
+        }
+        
+      }
+
       const appointment = await requestCreateAppointment();
 
       if (!appointment) {

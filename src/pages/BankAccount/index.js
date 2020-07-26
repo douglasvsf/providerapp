@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  CheckBox,
   View,
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
@@ -26,9 +27,11 @@ import {
   Title,
   TitleInto,
   TitleIntoSwitch,
+  TitleDigit,
 } from './styles';
 
 const KEY_EXTRACTOR = item => item.city;
+
 
 const styles = StyleSheet.create({
   autocompletesContainer: {
@@ -36,6 +39,16 @@ const styles = StyleSheet.create({
     zIndex: 1,
     width: '100%',
     paddingHorizontal: 8,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginLeft : '65 %',
+  },
+  checkbox: {
+    alignSelf: 'flex-end',
+  },
+  label: {
+    margin: 8,
   },
   input: { maxHeight: 40 },
   inputContainer: {
@@ -106,6 +119,7 @@ export default class BankAccount extends PureComponent {
       documentNumber: '',
       legalName: '',
       loading: false,
+      agenciaDvEnable : false,
     };
   }
 
@@ -190,11 +204,23 @@ export default class BankAccount extends PureComponent {
     // which will result in re-render the text
   };
 
+
+  toggleCheck = value => {
+    // onValueChange of the switch this function will be called
+    this.setState({ agenciaDvEnable: value });
+
+    // state changes according to switch
+    // which will result in re-render the text
+  };
+
+  
+
   render() {
     const {
       selectedBank,
       agencia,
       agenciaDv,
+      agenciaDvEnable,
       conta,
       contaDv,
       type,
@@ -204,12 +230,16 @@ export default class BankAccount extends PureComponent {
       loading,
     } = this.state;
 
+
+
     return (
       <Background>
         <Container>
           <Title> Conta Bancaria </Title>
           <Form keyboardShouldPersistTaps="handled">
-            <TitleInto>Banco</TitleInto>
+            <TitleInto>Banco
+
+            </TitleInto>
             <View key={selectedBank.value} style={styles.areaAtuacaoItem}>
               <Text style={styles.areaAtuacaoTitle}>
                 {selectedBank.value} - {selectedBank.label}
@@ -218,9 +248,25 @@ export default class BankAccount extends PureComponent {
             <Separator />
             <Bancos selectedBanco={selectedBank} onSelect={this.onSelectBank} />
 
-            <TitleInto>Agência </TitleInto>
+            <TitleInto>Agência 
+            <TitleDigit>  (Dig Verif não obrigatório )</TitleDigit>
+            
+
+            </TitleInto>
+
+            {/* <View style={styles.checkboxContainer}>
+                <CheckBox
+                  value={agenciaDvEnable}
+                  onValueChange={this.toggleCheck}
+                  style={styles.checkbox}
+                />
+                <Text style={styles.label}>teste</Text>
+              </View> */}
 
             <Row>
+
+
+              
               <FormInput
                 style={{ width: '48%', marginRight: '10%' }}
                 name="cod_agencia"
@@ -230,6 +276,9 @@ export default class BankAccount extends PureComponent {
                 value={agencia}
                 onChangeText={text => this.setState({ agencia: text })}
               />
+
+
+    
 
               <FormInput
                 style={{ width: '37%' }}
@@ -242,8 +291,10 @@ export default class BankAccount extends PureComponent {
               />
             </Row>
 
-            <TitleInto>Conta </TitleInto>
+            <TitleInto>Conta</TitleInto>
+
             <Row>
+         
               <FormInput
                 style={{ width: '48%', marginRight: '10%' }}
                 name="cod_conta"
@@ -353,7 +404,7 @@ export default class BankAccount extends PureComponent {
 
             <Button
               style={styles.submitNewProviderButton}
-              title="Próximo"
+              title="Cadastrar"
               onPress={this.handleSubmitNewBankAccount}
             />
             {loading ? (

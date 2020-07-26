@@ -124,7 +124,7 @@ export default function WalletDetailsScreen({ navigation }) {
             <WalletItemSolicitationText>
               {item.appointment.solicitation.id}
               {' - '}
-              {item.appointment.solicitation.provider.name}
+              {item.appointment.solicitation.customer.name}
             </WalletItemSolicitationText>
             <WalletItemDateText>
               {format(new Date(item.created_at), 'dd/MM - HH:mm')}

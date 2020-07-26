@@ -246,12 +246,16 @@ export default class Chat extends Component {
       solicitation,
     } = this.state;
 
+    const { navigation } = this.props;
+
+
     return (
       <SolicitationDetailsModal
         isVisible={showSolicitationDetailsModal}
         onDismiss={this.hideSolicitationDetailsModal}
         isLoading={isLoadingSolicitation}
         solicitation={solicitation}
+        navigation = {navigation}
       />
     );
   };

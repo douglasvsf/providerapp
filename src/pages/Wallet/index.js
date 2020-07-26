@@ -43,6 +43,8 @@ export default function Wallet({ navigation }) {
     { key: 'first', title: 'Carteira' },
     { key: 'second', title: 'Conta Bancaria' },
   ]);
+
+
   const [walletHistory, setWalletHistory] = useState({});
   const [loadingWalletHistory, setLoadingWalletHistory] = useState(false);
   const [loadingPaymentSlip, setLoadingPaymentSlip] = useState(false);
@@ -99,6 +101,7 @@ export default function Wallet({ navigation }) {
 
         setWalletHistory(userWalletHistory);
       } catch (error) {
+
         Alert.alert('Erro', 'Não foi possível trazer os dados da carteira');
       }
 
@@ -115,6 +118,7 @@ export default function Wallet({ navigation }) {
   }, [navigation]);
 
   const FirstRoute = props => (
+
     <Container>
       {loadingWalletHistory ? (
         <LoadingContainer>
@@ -192,7 +196,13 @@ export default function Wallet({ navigation }) {
 
           <Info>
             O Saldo da sua carteira é o valor recebido via aplicativo, já
-            descontado a taxa. Caso o pagamento for fora do app, será cobrado
+            descontado a taxa. 
+
+          </Info>
+
+          <Info>
+            
+          Caso o pagamento for fora do app, será cobrado
             apenas a taxa do valor do serviço prestado. Para mais informações
             clique em 'Detalhes'.
           </Info>
@@ -220,6 +230,7 @@ export default function Wallet({ navigation }) {
       indicatorStyle={{ backgroundColor: 'white' }}
       style={{ backgroundColor: '#4ead93' }}
     />
+
   );
 
   return (
