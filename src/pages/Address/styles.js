@@ -8,7 +8,7 @@ export const Container = styled.SafeAreaView`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162C;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -22,7 +22,7 @@ export const Form = styled.ScrollView.attrs({
 `;
 
 export const SubmitButton = styled(Button)`
-  margin-top: 5px;
+  margin-top: 15px;
 `;
 
 export const Separator = styled.View`

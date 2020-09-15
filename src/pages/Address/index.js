@@ -3,7 +3,7 @@ import { Keyboard, Alert, ScrollView } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import Snackbar from 'react-native-snackbar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import InputD from '../../components/Input-d';
 import cepApi from '../../services/cep';
 import Background from '../../components/Background';
 import api from '../../services/api';
@@ -152,11 +152,26 @@ class Address extends PureComponent {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ padding: 30 }}
           >
+
+{/* <InputD              onChangeText={text => this.setState({ cep: text })}
+              value={cep}
+              name="cep"
+              autoCapitalize="none"
+              placeholderTextColor= "#FFFFFF"
+              autoCorrect={false}
+              placeholder="Digite seu CEP"
+              keyboardType="numeric"
+              maxLength={9}/> */}
+
             <FormInput
+             icon="search"
+             style={{ backgroundColor: '#15162C', color: '#FFFFFF', placeholderTextColor:'#FFFFFF' }}
+              inputStyle={{ backgroundColor: '#15162C', color: '#FFFFFF', placeholderTextColor:'#FFFFFF' }}
               onChangeText={text => this.setState({ cep: text })}
               value={cep}
               name="cep"
               autoCapitalize="none"
+              placeholderTextColor= "#FFFFFF"
               autoCorrect={false}
               placeholder="Digite seu CEP"
               keyboardType="numeric"
