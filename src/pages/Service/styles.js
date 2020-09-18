@@ -10,10 +10,10 @@ export const Container = styled.SafeAreaView`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
   align-self: center;
-  margin-top: 30px;
+  margin-top: 8px;
 `;
 
 export const ContainerText = styled.View`
@@ -27,7 +27,7 @@ export const ContainerText = styled.View`
 
 export const TitleInto = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
   align-self: flex-start;
 `;

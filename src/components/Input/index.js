@@ -34,13 +34,7 @@ function Input(
 
   return (
     <Container style={style}>
-      {icon && (
-        <Icon
-          name={icon}
-          size={20}
-          color={iconColor || 'rgba(255, 255, 255, 0.8)'}
-        />
-      )}
+      {icon && <Icon name={icon} size={20} color={iconColor || '#7CB496'} />}
       {fixedplaceholder ? (
         <>
           <FixedPlaceholder>{fixedplaceholder}</FixedPlaceholder>
@@ -59,11 +53,7 @@ function Input(
 
       {passwordField && (
         <Touchable onPress={togglePassword}>
-          <Icon
-            name={iconPassword}
-            size={20}
-            color={iconColor || 'rgba(255, 255, 255, 0.8)'}
-          />
+          <Icon name={iconPassword} size={20} color={iconColor || '#7CB496'} />
         </Touchable>
       )}
     </Container>

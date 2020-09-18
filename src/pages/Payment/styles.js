@@ -15,7 +15,7 @@ export const Container = styled.ScrollView.attrs({
 
 export const BrandsModalContent = styled.View`
   width: 100%;
-  background-color: white;
+  background-color: #f4f4f4;
   border-radius: 8px;
   justify-content: flex-start;
   align-items: flex-start;
@@ -30,6 +30,7 @@ export const BrandsModalHeader = styled.View`
 export const BrandsModalTitle = styled.Text`
   font-size: 15px;
   font-weight: bold;
+  color: #15162c;
 `;
 
 export const BrandsModalList = styled.ScrollView.attrs({
@@ -55,7 +56,6 @@ export const BrandLabel = styled.Text`
   color: black;
 `;
 
-
 export const Separator = styled.View`
   height: 1px;
   background: rgba(255, 255, 255, 0.2);
@@ -64,9 +64,9 @@ export const Separator = styled.View`
 
 export const VerticalSeparator = styled.View`
   height: 120px;
-  borderRightWidth: 3;
-  borderRightColor: rgba(255, 255, 255, 0.2);
-  borderRadius: 4;
+  borderrightwidth: 3;
+  borderrightcolor: rgba(255, 255, 255, 0.2);
+  borderradius: 4;
 `;
 
 export const SeparatorModal = styled.View`
@@ -77,7 +77,7 @@ export const SeparatorModal = styled.View`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -134,6 +134,7 @@ export const Header = styled.View`
 export const TitleMethods = styled.Text`
   font-size: 23px;
   font-weight: bold;
+  color: #15162c;
 `;
 
 export const CategoriesList = styled.ScrollView.attrs({

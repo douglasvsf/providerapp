@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#F4F4F4',
   },
   textareaContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#F4F4F4',
     borderRadius: 5,
     paddingHorizontal: 5,
     width: '100%',
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   textarea: {
     width: '100%',
-    color: 'white',
+    color: '#15162c',
     textAlignVertical: 'top',
   },
   icon: {
@@ -56,12 +57,14 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: 'row',
+    backgroundColor: '#F4F4F4',
   },
   checkbox: {
     alignSelf: 'center',
   },
   label: {
     margin: 8,
+    color: '#15162c',
   },
 });
 
@@ -100,7 +103,6 @@ export default function AdditionalInfo({
   newcpf = newcpf.replace('-', '');
   newcpf = newcpf.replace('/', '');
   newcpf = newcpf.replace('.', '');
-
 
   additionalCpfArray.push({
     cpf: newcpf,
@@ -185,19 +187,17 @@ export default function AdditionalInfo({
   }, [isNewProvider, profileId, token]);
 
   async function UpdateAdditionalInfo() {
-
-    
-  if (type == 'cpf') {
-    if (validateCpf.isValid(newcpf) == false) {
-      Alert.alert('Erro', ' Cpf inexistente');
-      return false;
+    if (type == 'cpf') {
+      if (validateCpf.isValid(newcpf) == false) {
+        Alert.alert('Erro', ' Cpf inexistente');
+        return false;
+      }
+    } else if (type == 'cnpj') {
+      if (validateCnpj.isValid(newcpf) == false) {
+        Alert.alert('Erro', 'Cnpj inexistente');
+        return false;
+      }
     }
-  } else if (type == 'cnpj') {
-    if (validateCnpj.isValid(newcpf) == false) {
-      Alert.alert('Erro', 'Cnpj inexistente');
-      return false;
-    }
-  }
     const newAdditionalInfo =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
 
@@ -267,17 +267,17 @@ export default function AdditionalInfo({
     const arrayGeneral =
       type === 'cpf' ? additionalCpfArray : additionalCnpjArray;
 
-      if (type == 'cpf') {
-        if (validateCpf.isValid(newcpf) == false) {
-          Alert.alert('Erro', ' Cpf inexistente');
-          return false;
-        }
-      } else if (type == 'cnpj') {
-        if (validateCnpj.isValid(newcpf) == false) {
-          Alert.alert('Erro', 'Cnpj inexistente');
-          return false;
-        }
+    if (type == 'cpf') {
+      if (validateCpf.isValid(newcpf) == false) {
+        Alert.alert('Erro', ' Cpf inexistente');
+        return false;
       }
+    } else if (type == 'cnpj') {
+      if (validateCnpj.isValid(newcpf) == false) {
+        Alert.alert('Erro', 'Cnpj inexistente');
+        return false;
+      }
+    }
 
     const responseSubmitNew = await onSubmitNewProvider(arrayGeneral);
 
@@ -334,11 +334,7 @@ export default function AdditionalInfo({
           <Separator />
 
           <Container>
-            <Icon
-              name="lock-outline"
-              size={20}
-              color="rgba(255, 255, 255, 0.6)"
-            />
+            <Icon name="lock-outline" size={20} color="#7CB496" />
 
             <TInput
               type={type}
@@ -346,6 +342,7 @@ export default function AdditionalInfo({
               value={cpf}
               autoCapitalize="none"
               placeholder={placeholder}
+              placeholderTextColor="#15162c"
               onSubmitEditing={() => telephoneNumberRef.current.focus()}
               onChangeText={setCpf}
             />
@@ -425,7 +422,7 @@ export default function AdditionalInfo({
               <Separator />
 
               <Container>
-                <Icon name="wc" size={20} color="rgba(255, 255, 255, 0.8)" />
+                <Icon name="wc" size={20} color="#7CB496" />
                 <TitleInto> Gênero: </TitleInto>
                 <NewPicker
                   selectedValue={genre}
@@ -454,7 +451,7 @@ export default function AdditionalInfo({
               name="subject"
               size={20}
               style={styles.icon}
-              color="rgba(255, 255, 255, 0.8)"
+              color="#7CB496"
             />
             <TextInput
               multiline
@@ -465,7 +462,7 @@ export default function AdditionalInfo({
               value={briefdesc}
               onChangeText={setBriefdesc}
               placeholder="Breve Descrição de Seus Serviços"
-              placeholderTextColor="rgba(255, 255, 255, 0.8)"
+              placeholderTextColor="#15162c"
             />
           </View>
 

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   cityItem: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#F4F4F4',
     paddingVertical: 8,
     paddingHorizontal: 10,
     borderRadius: 4,
@@ -70,6 +70,11 @@ const styles = StyleSheet.create({
   },
   addCityButton: {
     marginTop: 18,
+    height: 46,
+    backgroundColor: '#15162c',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   emptyText: {
     textAlign: 'center',
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   areaAtuacaoItem: {
-    backgroundColor: '#fff',
+    backgroundColor: '#F4F4F4',
     flexDirection: 'row',
     borderRadius: 4,
     alignItems: 'center',
@@ -217,7 +222,7 @@ class Service extends PureComponent {
     }
   };
 
-  onAddCity = () => {
+  onAddCity = async () => {
     const { token, profileid, isNewProvider } = this.props;
 
     const {
@@ -271,7 +276,7 @@ class Service extends PureComponent {
       });
     } else {
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      api
+      await api
         .post(`providers/${profileid}/only_occupation_city`, {
           occupationCities: occupationCitiesArray,
         })
@@ -538,9 +543,8 @@ class Service extends PureComponent {
       <Background>
         <Container>
           <Form keyboardShouldPersistTaps="handled">
-
-          <TitleInto>Cidades que atende </TitleInto>
-          <Separator />
+            <Title>Cidades que atende </Title>
+            <Separator />
             <TitleInto> Estado </TitleInto>
             <SelectEstados
               selectedValue={selectedValueEstado}
@@ -556,12 +560,10 @@ class Service extends PureComponent {
               onValueChange={this.onChangeCity}
             />
             <Separator />
-            <Button
-              style={styles.addCityButton}
-              title="Adicionar"
-              onPress={this.onAddCity}
-            />
 
+            {/* <View style={styles.addCityButton}>
+              <Button title="Adicionar" onPress={this.onAddCity} />
+            </View> */}
             <FlatList
               style={styles.flatList}
               data={selectedCities}
@@ -571,9 +573,13 @@ class Service extends PureComponent {
               ListEmptyComponent={this.emptyContainer}
             />
 
+            <SubmitButton style={styles.addCityButton} onPress={this.onAddCity}>
+              Adicionar
+            </SubmitButton>
+
             <Separator />
 
-            <TitleInto> Serviços que presta </TitleInto>
+            <Title> Serviços que presta </Title>
 
             <Separator />
 

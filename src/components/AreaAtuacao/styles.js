@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import Input from '../Input';
+import Button from '~/components/Button';
 
 export const Container = styled.View`
   padding: 0 15px;
@@ -13,6 +14,10 @@ export const Container = styled.View`
 export const FormInput = styled(Input)`
   font-size: 15px;
   color: #000;
+`;
+
+export const SubmitButton = styled(Button)`
+  margin-top: 5px;
 `;
 
 export const ContainerText = styled.View`

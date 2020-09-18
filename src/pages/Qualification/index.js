@@ -14,7 +14,14 @@ import { Button } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import api from '../../services/api';
 import { colors } from '~/values/colors';
-import { Background, Title, FormInput, Label } from './styles';
+import {
+  Background,
+  Title,
+  FormInput,
+  Label,
+  Submit,
+  SubmitFinish,
+} from './styles';
 
 const styles = StyleSheet.create({
   input: {
@@ -92,7 +99,7 @@ const styles = StyleSheet.create({
   buttonContainer: { flex: 1, marginLeft: 0 },
   listItem: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#F4F4F4',
     alignItems: 'center',
     borderRadius: 4,
     padding: 10,
@@ -329,7 +336,9 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
     return (
       <View>
         <Title>Qualificações</Title>
-        <Button disabled={disabled} onPress={showModal} title="Adicionar" />
+        <Submit disabled={disabled} onPress={showModal}>
+          Adicionar
+        </Submit>
       </View>
     );
   }, [qualificacoes]);
@@ -346,7 +355,9 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
       />
       <View style={styles.saveButtonContainer}>
         {isNewProvider ? (
-          <Button onPress={handleSubmitNewProvider} title="Finalizar" />
+          <SubmitFinish onPress={handleSubmitNewProvider}>
+            Finalizar
+          </SubmitFinish>
         ) : null}
       </View>
       <QualificationModal
