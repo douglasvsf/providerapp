@@ -29,7 +29,7 @@ export default function DateInput({ date, onChange }) {
   return (
     // <Container>
     <DateButton onPress={handleOpenPicker}>
-      <Icon name="event" color="#FFF" size={20} />
+      <Icon name="event" color="#7CB496" size={20} />
       <DateText>{dateFormatted}</DateText>
     </DateButton>
     // </Container>

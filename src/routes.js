@@ -6,13 +6,12 @@ import { Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 
-
 import {
   createAppContainer,
   createBottomTabNavigator,
   createDrawerNavigator,
   createStackNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
 } from 'react-navigation';
 import solicitationIcon from '~/assets/solicitation.png';
 import ContentMenu from '~/components/ContentMenu';
@@ -37,11 +36,10 @@ import SignUp from './pages/SignUp';
 import SocialMedia from './pages/SocialMedia';
 import Statistics from './pages/Statistics';
 import Wallet from './pages/Wallet';
-import WalletDetailsScreen from './pages/Wallet/Details'
+import WalletDetailsScreen from './pages/Wallet/Details';
 import { colors } from './values/colors';
 
-export default (isSigned = false,token,profileid,active) =>
-
+export default (isSigned = false, token, profileid, active) =>
   createAppContainer(
     createSwitchNavigator(
       {
@@ -58,12 +56,11 @@ export default (isSigned = false,token,profileid,active) =>
               AditionalInfoScreen,
               SocialMediaScreen,
               QualificationScreen,
-
             },
             {
               defaultNavigationOptions: {
                 headerTransparent: true,
-                headerTintColor: '#FFF',
+                headerTintColor: '#15162c',
                 headerLeftContainerStyle: {
                   marginLeft: 20,
                 },
@@ -102,7 +99,6 @@ export default (isSigned = false,token,profileid,active) =>
                       },
 
                       tabBarIcon: ({ focused }) => {
-
                         if (focused) {
                           return (
                             <Image
@@ -127,12 +123,8 @@ export default (isSigned = false,token,profileid,active) =>
                           );
                         }
                       },
-
-     
                     },
-
-                    },
-                
+                  },
 
                   Estatisticas: {
                     screen: Statistics,
@@ -146,10 +138,14 @@ export default (isSigned = false,token,profileid,active) =>
                     screen: SocialMedia,
                   },
                   Address: {
-
-                    screen:  props => <Address {...props} token={token} profileid={profileid.id} />, 
-                    navigationOptions : {
-
+                    screen: props => (
+                      <Address
+                        {...props}
+                        token={token}
+                        profileid={profileid.id}
+                      />
+                    ),
+                    navigationOptions: {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -157,18 +153,22 @@ export default (isSigned = false,token,profileid,active) =>
                       tabBarIcon: ({ tintColor }) => (
                         <Icon name="home" size={20} color={tintColor} />
                       ),
-                    }
+                    },
                   },
                   AdditionalInfo: {
                     screen: AdditionalInfo,
                   },
                 }),
                 Serviços: createBottomTabNavigator({
-
-                  Service :  {
-                    screen:  props => <Service {...props} token={token} profileid={profileid.id} />, 
-                    navigationOptions : {
-
+                  Service: {
+                    screen: props => (
+                      <Service
+                        {...props}
+                        token={token}
+                        profileid={profileid.id}
+                      />
+                    ),
+                    navigationOptions: {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -176,13 +176,17 @@ export default (isSigned = false,token,profileid,active) =>
                       tabBarIcon: ({ tintColor }) => (
                         <Icon name="briefcase" size={20} color={tintColor} />
                       ),
-                    }
+                    },
                   },
                   Payment: {
-
-                    screen:  props => <Payment {...props} token={token} profileid={profileid.id} />, 
-                    navigationOptions : {
-
+                    screen: props => (
+                      <Payment
+                        {...props}
+                        token={token}
+                        profileid={profileid.id}
+                      />
+                    ),
+                    navigationOptions: {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
@@ -190,25 +194,31 @@ export default (isSigned = false,token,profileid,active) =>
                       tabBarIcon: ({ tintColor }) => (
                         <Icon name="credit-card" size={20} color={tintColor} />
                       ),
-                    }
+                    },
                   },
                   Qualification: {
                     screen: Qualification,
                   },
                   Wallet: {
-                    screen: createStackNavigator({Wallet, WalletDetails: WalletDetailsScreen}, {headerMode: 'none'}),
-                    navigationOptions : {
-
+                    screen: createStackNavigator(
+                      { Wallet, WalletDetails: WalletDetailsScreen },
+                      { headerMode: 'none' }
+                    ),
+                    navigationOptions: {
                       tabBarOptions: {
                         activeTintColor: colors.primary,
                       },
                       tabBarLabel: 'Carteira',
                       tabBarIcon: ({ tintColor }) => (
-                        <MIcon name="account-balance-wallet" size={20} color={tintColor} />
+                        <MIcon
+                          name="account-balance-wallet"
+                          size={20}
+                          color={tintColor}
+                        />
                       ),
                     },
                   },
-                  }),
+                }),
               },
               {
                 contentComponent: ContentMenu,
@@ -260,7 +270,12 @@ export default (isSigned = false,token,profileid,active) =>
         ),
       },
       {
-        initialRouteName: (isSigned && active) ? 'NewApp' : ((isSigned && !active) ? 'NewProvider' : 'Sign'),
+        initialRouteName:
+          isSigned && active
+            ? 'NewApp'
+            : isSigned && !active
+            ? 'NewProvider'
+            : 'Sign',
       }
     )
   );

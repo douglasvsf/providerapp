@@ -23,7 +23,7 @@ export const Meio = styled(SvgXml)`
 
 export const Form = styled.View`
   align-self: stretch;
-  margin-top: 50px;
+  margin-top: 35px;
 `;
 
 export const FormInput = styled(Input)`
@@ -47,5 +47,5 @@ export const SignLinkText = styled.Text`
 export const Separator = styled.View`
   height: 1px;
   background: #fff;
-  margin: 20px 0 30px;
+  margin: 10px 0 30px;
 `;

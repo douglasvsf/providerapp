@@ -8,7 +8,7 @@ export const Container = styled.SafeAreaView`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #15162C;
+  color: #15162c;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -36,9 +36,9 @@ export const FormInput = styled(Input)`
 `;
 
 export const Submit = styled(Button)`
-  background: #6bd4c1;
+  background: #7cb496;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 12px;
   padding: 0 14px;
 `;
 

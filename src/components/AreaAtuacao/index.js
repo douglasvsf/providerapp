@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { FormInput } from './styles';
+import { FormInput, SubmitButton } from './styles';
 
 const styles = StyleSheet.create({
   input: {
@@ -66,15 +66,26 @@ const styles = StyleSheet.create({
   areaAtuacaoItem: {
     flex: 1,
     paddingVertical: 8,
+    backgroundColor: '#F4F4F4',
+    marginBottom: 10,
   },
   flatlist: {
     width: '100%',
   },
   button: {
     width: '100%',
+    marginTop: 10,
   },
   areaAtuacaoButton: {
     marginTop: 16,
+  },
+  addCityButton: {
+    marginTop: 18,
+    height: 46,
+    backgroundColor: '#15162c',
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
@@ -138,11 +149,15 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   return (
     <View>
       {selectedAreaAtuacao.length < 3 ? (
-        <Button
-          style={styles.areaAtuacaoButton}
-          title="Selecionar atuação"
-          onPress={toggleModalVisible}
-        />
+        // <Button
+        //   style={styles.areaAtuacaoButton}
+        //   title="Selecionar atuação"
+        //   onPress={toggleModalVisible}
+        // />
+
+        <SubmitButton style={styles.addCityButton} onPress={toggleModalVisible}>
+          Selecionar atuação
+        </SubmitButton>
       ) : (
         <Text>Você só pode selecionar até 3 areas de atuação</Text>
       )}
@@ -177,7 +192,12 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
             keyboardShouldPersistTaps="handled"
           />
 
-          <Button style={styles.button} title="Fechar" onPress={onDismiss} />
+          <Button
+            color="#15162c"
+            style={styles.button}
+            title="Fechar"
+            onPress={onDismiss}
+          />
         </View>
       </Modal>
     </View>

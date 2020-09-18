@@ -142,11 +142,7 @@ export default function SocialMedia({
           <Separator />
 
           <ContainerTelephone>
-            <Icon
-              name="smartphone"
-              size={20}
-              color="rgba(255, 255, 255, 0.6)"
-            />
+            <Icon name="smartphone" size={20} color="#7CB496" />
 
             <TelephoneInput
               type="cel-phone"
@@ -156,6 +152,7 @@ export default function SocialMedia({
                 dddMask: '(99) ',
               }}
               placeholder="() 9 9999-9999"
+              placeholderTextColor="#15162c"
               ref={whatsRef}
               returnKeyType="next"
               value={phonenumber}

@@ -152,8 +152,7 @@ class Address extends PureComponent {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ padding: 30 }}
           >
-
-{/* <InputD              onChangeText={text => this.setState({ cep: text })}
+            {/* <InputD              onChangeText={text => this.setState({ cep: text })}
               value={cep}
               name="cep"
               autoCapitalize="none"
@@ -164,14 +163,23 @@ class Address extends PureComponent {
               maxLength={9}/> */}
 
             <FormInput
-             icon="search"
-             style={{ backgroundColor: '#15162C', color: '#FFFFFF', placeholderTextColor:'#FFFFFF' }}
-              inputStyle={{ backgroundColor: '#15162C', color: '#FFFFFF', placeholderTextColor:'#FFFFFF' }}
+              icon="search"
+              style={{
+                backgroundColor: '#15162C',
+                color: '#FFFFFF',
+                placeholderTextColor: '#FFFFFF',
+                borderRadius: 20,
+              }}
+              inputStyle={{
+                backgroundColor: '#15162C',
+                color: '#FFFFFF',
+                placeholderTextColor: '#FFFFFF',
+              }}
               onChangeText={text => this.setState({ cep: text })}
               value={cep}
               name="cep"
               autoCapitalize="none"
-              placeholderTextColor= "#FFFFFF"
+              placeholderTextColor="#FFFFFF"
               autoCorrect={false}
               placeholder="Digite seu CEP"
               keyboardType="numeric"

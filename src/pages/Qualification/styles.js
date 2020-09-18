@@ -6,7 +6,7 @@ import Button from '~/components/Button';
 import Estados from '~/components/Estados';
 
 export const Background = styled(LinearGradient).attrs({
-  colors: ['#4ead93', '#87c598'],
+  colors: ['#E5E5E5', '#E5E5E5'],
 })`
   flex: 1;
 `;
@@ -17,7 +17,7 @@ export const Container = styled.SafeAreaView`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -41,10 +41,18 @@ export const PickerEstado = styled(Estados)`
 `;
 
 export const Submit = styled(Button)`
-  background: #6bd4c1;
+  background: #15162c;
   margin-left: 10px;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 20px;
+  padding: 0 14px;
+`;
+
+export const SubmitFinish = styled(Button)`
+  background: #7cb496;
+  margin-left: 10px;
+  justify-content: center;
+  border-radius: 20px;
   padding: 0 14px;
 `;
 

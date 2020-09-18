@@ -6,7 +6,7 @@ import Button from '~/components/Button';
 export const Container = styled.View`
   padding: 0 15px;
   height: 46px;
-  background: rgba(0, 0, 0, 0.1);
+  background: #f4f4f4;
   border-radius: 4px;
   flex-direction: row;
   align-items: center;
@@ -21,7 +21,7 @@ export const ContainerText = styled.View`
 
 export const TitleInto = styled.Text`
   font-size: 15px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
 `;
 
@@ -36,7 +36,7 @@ export const TInput = styled(TextInputMask)`
   flex: 1;
   font-size: 15px;
   margin-left: 10px;
-  color: #fff;
+  color: #15162c;
 `;
 
 export const FormInput = styled(Input)`
@@ -49,7 +49,7 @@ export const ContainerFull = styled.SafeAreaView`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162c;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -66,12 +66,12 @@ export const Separator = styled.View`
 `;
 
 export const NewPicker = styled.Picker.attrs({
-  placeholderTextColor: 'rgba(255, 255, 255, 0.8)',
+  placeholderTextColor: '#15162c',
 })`
   flex: 1;
   font-size: 15px;
   margin-left: 1px;
-  color: #fff;
+  color: #15162c;
 `;
 
 export const Submit = styled(Button)`
