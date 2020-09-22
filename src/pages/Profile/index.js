@@ -65,9 +65,6 @@ export default function Profile() {
 
         <AvatarInput name="avatar_id" />
         <Form>
-
-       
-
           <FormInput
             icon="person-outline"
             autoCorrect={false}
@@ -139,7 +136,7 @@ Profile.navigationOptions = {
   tabBarOptions: {
     activeTintColor: colors.primary,
   },
-  tabBarLabel: 'Meu perfil',
+  tabBarLabel: 'Perfil',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="person" size={20} color={tintColor} />
   ),
