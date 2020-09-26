@@ -16,7 +16,7 @@ export default function ContentMenu({ ...props }) {
       <Left>
         <Avatar
           source={{
-            uri: `https://api.adorable.io/avatar/50/teste.png`,
+            uri: `https://www.iconfinder.com/data/icons/user-pictures/100/unknown-512.png`,
           }}
         />
 

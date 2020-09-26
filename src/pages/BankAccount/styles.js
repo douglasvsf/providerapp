@@ -12,7 +12,7 @@ export const Container = styled.SafeAreaView`
 export const ContainerSwitch = styled.View`
   padding: 0 15px;
   height: 46px;
-  background: rgba(0, 0, 0, 0.1);
+  background: #F4F4F4;
   border-radius: 4px;
   flex-direction: row;
   align-items: center;
@@ -24,12 +24,12 @@ export const NewPicker = styled.Picker.attrs({
   flex: 1;
   font-size: 15px;
   margin-left: 1px;
-  color: #fff;
+  color: #15162C;
 `;
 
 export const TitleIntoSwitch = styled.Text`
   font-size: 15px;
-  color: #fff;
+  color: #15162C;
   font-weight: bold;
 `;
 
@@ -37,12 +37,13 @@ export const TInput = styled(TextInputMask)`
   flex: 1;
   font-size: 15px;
   margin-left: 10px;
-  color: #fff;
+  color: #15162C;
+  background: #f4f4f4;
 `;
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162C;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -59,7 +60,7 @@ export const ContainerText = styled.View`
 
 export const TitleInto = styled.Text`
   font-size: 20px;
-  color: #fff;
+  color: #15162C;
   font-weight: bold;
   align-self: flex-start;
   margin-bottom : 0;
@@ -74,7 +75,7 @@ export const TitleDigit = styled.Text`
 
 export const City = styled.View`
   border-radius: 4px;
-  background: #fff;
+  background: #15162C;
   flex: 1;
 `;
 

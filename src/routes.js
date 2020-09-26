@@ -46,6 +46,7 @@ import Wallet from './pages/Wallet';
 import WalletDetailsScreen from './pages/Wallet/Details';
 import { colors } from './values/colors';
 
+
 export default (isSigned = false, token, profileid, active) =>
   createAppContainer(
     createSwitchNavigator(
@@ -92,7 +93,140 @@ export default (isSigned = false, token, profileid, active) =>
             App: createDrawerNavigator(
               {
                 Painel: {
-                  screen: Dashboard,
+                  screen: createBottomTabNavigator(
+                    {
+                      Agendamentos: {
+                        screen: Dashboard,
+                        navigationOptions: {
+                          tabBarOptions: {
+                            activeTintColor: colors.primary,
+                            style: {
+                              backgroundColor: '#201D2E',
+                            },
+                          },
+                        },
+                      },
+                      Solicitations: {
+                        // navigationOptions: {
+                        //   tabBarOptions: {
+                        //     labelStyle: {
+                        //       fontSize: 10,
+                        //     },
+                        //     activeTintColor: '#FFFFFF',
+                        //     inactiveTintColor: '#15162c',
+                        //     indicatorStyle: {
+                        //       height: '100%',
+                        //       backgroundColor: '#15162c',
+                        //     },
+                        //     style: {
+                        //       backgroundColor: '#FFFFFF',
+                        //     },
+                        //   },
+                        // },
+                        screen: createSwitchNavigator({
+                          enterRoom,
+                          Chat,
+                        }),
+                        navigationOptions: {
+                          tabBarLabel: 'Chats',
+                          // tabBarOptions: {
+                          //   activeTintColor: '#4BB196',
+                          // },
+      
+                          tabBarOptions: {
+                            activeTintColor: colors.primary,
+                            style: {
+                              backgroundColor: '#201D2E',
+                            },
+                          },
+                          tabBarIcon: ({ focused }) => {
+                            if (focused) {
+                              return (
+                                <Image
+                                  source={solicitationIcon}
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    tintColor: '#4BB196',
+                                  }}
+                                />
+                              );
+                            } else {
+                              return (
+                                <Image
+                                  source={solicitationIcon}
+                                  style={{
+                                    width: 24,
+                                    height: 24,
+                                    tintColor: '#808080',
+                                  }}
+                                />
+                              );
+                            }
+                          },
+                        },
+                      },
+                      Dashboard: {
+                        screen: Dashboard,
+                        navigationOptions: {
+                          tabBarOptions: {
+                            activeTintColor: colors.primary,
+                            style: {
+                              backgroundColor: '#201D2E',
+                            },
+                          },
+                          tabBarLabel: ' ',
+                          tabBarIcon: ({ tintColor }) => (
+                            <View
+                              style={{
+                                position: 'absolute',
+                                bottom: 3, // space from bottombar
+                                height: 39,
+                                width: 39,
+                                borderRadius: 39,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <MiddleButton
+                                style={{
+                                  width: 39,
+                                  height: 39,
+                                  tintColor,
+                                  alignContent: 'center',
+                                }}
+                              />
+                            </View>
+                          ),
+                        },
+                      },
+                      Estatisticas: {
+                        screen: Statistics,
+                        navigationOptions: {
+                          tabBarOptions: {
+                            activeTintColor: colors.primary,
+                            style: {
+                              backgroundColor: '#201D2E',
+                            },
+                          },
+                        },
+                      },
+                      Profile: {
+                        navigationOptions: {
+                          tabBarOptions: {
+                            activeTintColor: colors.primary,
+                            style: {
+                              backgroundColor: '#201D2E',
+                            },
+                          },
+                        },
+                        screen: Profile,
+                      },
+                    },
+                    {
+                      initialRouteName: 'Dashboard',
+                    }
+                  ),
                 },
                 Perfil: createMaterialTopTabNavigator({
                   Profile: {
@@ -108,7 +242,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                     },
@@ -127,7 +261,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                     },
@@ -153,7 +287,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                       tabBarLabel: 'Endereço',
@@ -175,7 +309,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                     },
@@ -203,7 +337,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                       tabBarLabel: 'Area de Atuação',
@@ -232,7 +366,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                       tabBarLabel: 'Informações de Pagamento',
@@ -254,7 +388,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                     },
@@ -277,7 +411,7 @@ export default (isSigned = false, token, profileid, active) =>
                           backgroundColor: '#15162c',
                         },
                         style: {
-                          backgroundColor: '#E5E5E5',
+                          backgroundColor: '#FFFFFF',
                         },
                       },
                       tabBarLabel: 'Carteira',
@@ -296,144 +430,28 @@ export default (isSigned = false, token, profileid, active) =>
                 contentComponent: ContentMenu,
               }
             ),
-            NewAppBottom: createBottomTabNavigator(
-              {
-                Agendamentos: {
-                  screen: Dashboard,
-                  navigationOptions: {
-                    tabBarOptions: {
-                      activeTintColor: colors.primary,
-                      style: {
-                        backgroundColor: '#201D2E',
-                      },
-                    },
-                  },
-                },
-                Solicitations: {
-                  // navigationOptions: {
-                  //   tabBarOptions: {
-                  //     labelStyle: {
-                  //       fontSize: 10,
-                  //     },
-                  //     activeTintColor: '#FFFFFF',
-                  //     inactiveTintColor: '#15162c',
-                  //     indicatorStyle: {
-                  //       height: '100%',
-                  //       backgroundColor: '#15162c',
-                  //     },
-                  //     style: {
-                  //       backgroundColor: '#E5E5E5',
-                  //     },
-                  //   },
-                  // },
-                  screen: createSwitchNavigator({
-                    enterRoom,
-                    Chat,
-                  }),
-                  navigationOptions: {
-                    tabBarLabel: 'Chats',
-                    // tabBarOptions: {
-                    //   activeTintColor: '#4BB196',
-                    // },
-
-                    tabBarOptions: {
-                      activeTintColor: colors.primary,
-                      style: {
-                        backgroundColor: '#201D2E',
-                      },
-                    },
-                    tabBarIcon: ({ focused }) => {
-                      if (focused) {
-                        return (
-                          <Image
-                            source={solicitationIcon}
-                            style={{
-                              width: 24,
-                              height: 24,
-                              tintColor: '#4BB196',
-                            }}
-                          />
-                        );
-                      } else {
-                        return (
-                          <Image
-                            source={solicitationIcon}
-                            style={{
-                              width: 24,
-                              height: 24,
-                              tintColor: '#808080',
-                            }}
-                          />
-                        );
-                      }
-                    },
-                  },
-                },
-                Dashboard: {
-                  screen: Dashboard,
-                  navigationOptions: {
-                    tabBarOptions: {
-                      activeTintColor: colors.primary,
-                      style: {
-                        backgroundColor: '#201D2E',
-                      },
-                    },
-                    tabBarLabel: ' ',
-                    tabBarIcon: ({ tintColor }) => (
-                      <View
-                        style={{
-                          position: 'absolute',
-                          bottom: 3, // space from bottombar
-                          height: 39,
-                          width: 39,
-                          borderRadius: 39,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <MiddleButton
-                          style={{
-                            width: 39,
-                            height: 39,
-                            tintColor,
-                            alignContent: 'center',
-                          }}
-                        />
-                      </View>
-                    ),
-                  },
-                },
-                Estatisticas: {
-                  screen: Statistics,
-                  navigationOptions: {
-                    tabBarOptions: {
-                      activeTintColor: colors.primary,
-                      style: {
-                        backgroundColor: '#201D2E',
-                      },
-                    },
-                  },
-                },
-                Profile: {
-                  navigationOptions: {
-                    tabBarOptions: {
-                      activeTintColor: colors.primary,
-                      style: {
-                        backgroundColor: '#201D2E',
-                      },
-                    },
-                  },
-                  screen: Profile,
-                },
-              },
-              {
-                initialRouteName: 'Dashboard',
-              }
-            ),
           },
           {
             defaultNavigationOptions: ({ navigation }) => {
-              //  navigation.navigate('NewAppBottom');
+                //navigation.navigate('App');
+
+
+              async function navigateNewMenu() {
+
+                if((navigation.state.isDrawerOpen == undefined) || (navigation.state.isDrawerOpen == false)){//se ao clicar no menu estiver undefined ou fechado, ele abre
+                  navigation.navigate('App');                                                                       
+                  navigation.dispatch(DrawerActions.toggleDrawer());
+                }else if(navigation.state.isDrawerOpen == true){//
+                  navigation.navigate('NewAppBottom'); 
+                }
+
+              //  navigation.navigate('App');                                                                       
+               // navigation.dispatch(DrawerActions.toggleDrawer());
+                //alert(navigation.state.isDrawerOpen);
+                //navigation.navigate('NewAppBottom');                                                  
+              }
+
+
               const pathAndParams =
                 navigation.router.getPathAndParamsForState(navigation.state) ||
                 {};
@@ -454,7 +472,7 @@ export default (isSigned = false, token, profileid, active) =>
                 headerLeft: (
                   <Touchable
                     onPress={
-                      () => navigation.dispatch(DrawerActions.toggleDrawer())
+                      () =>  navigateNewMenu()
                       //  navigation.navigate('NewAppBottom')
                     }
                   >

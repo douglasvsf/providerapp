@@ -136,7 +136,7 @@ export default function Wallet({ navigation }) {
               </Money>
             </Balance>
             <QrCode>
-              <Icon name="info" color="#999" size={28} />
+              <Icon name="info" color="#7CB496" size={28} />
               <Title>Detalhes</Title>
             </QrCode>
           </Panel>
@@ -174,15 +174,15 @@ export default function Wallet({ navigation }) {
 
       <Options horizontal>
         <Option onPress={() => {}}>
-          <Icon name="credit-card" size={35} color="#999" />
+          <Icon name="credit-card" size={35} color="#7CB496" />
           <Message>Formas de pagamento</Message>
         </Option>
         <Option onPress={() => {}}>
-          <Icon name="help" size={35} color="#999" />
+          <Icon name="help" size={35} color="#7CB496" />
           <Message>Como Sacar</Message>
         </Option>
         <Option onPress={() => props.jumpTo('second')}>
-          <Icon name="account-balance" size={35} color="#999" />
+          <Icon name="account-balance" size={35} color="#7CB496" />
           <Message>Conta Bancaria</Message>
         </Option>
       </Options>
@@ -191,7 +191,7 @@ export default function Wallet({ navigation }) {
         <Balance>
           <Money>
             <Title>Como funciona o saldo na minha carteira</Title>
-            <MIcon name="cash-refund" size={40} color="#999" />
+            <MIcon name="cash-refund" size={40} color="#7CB496" />
           </Money>
 
           <Info>

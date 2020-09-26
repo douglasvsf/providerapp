@@ -10,6 +10,8 @@ import api from '~/services/api';
 import { colors } from '~/values/colors';
 import { Container, List, Title } from './styles';
 import { updateAppointmentsRequest } from '~/store/modules/user/actions';
+import Emptyagenda from '~/assets/no-agenda.svg';
+
 
 function Dashboard({ isFocused, navigation }) {
   const appointments = useSelector(state => state.user.appointments);
@@ -65,17 +67,26 @@ function Dashboard({ isFocused, navigation }) {
       ) : null}
 
       <Container>
-        <Title>Agendamentos</Title>
+      
 
+
+        {selectedAppointment ? (
         <List
-          data={appointments}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => showOrderModal(item)}>
-              <Appointment onCancel={() => handleCancel(item.id)} data={item} />
-            </TouchableOpacity>
-          )}
-        />
+        data={appointments}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => showOrderModal(item)}>
+            <Appointment onCancel={() => handleCancel(item.id)} data={item} />
+          </TouchableOpacity>
+        )}
+      />
+      ) :   
+      <>
+      <Title>Sem Agendamentos</Title>
+       <Emptyagenda/>
+                </>}
+
+
       </Container>
     </Background>
   );

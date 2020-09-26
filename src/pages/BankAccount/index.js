@@ -28,6 +28,7 @@ import {
   TitleInto,
   TitleIntoSwitch,
   TitleDigit,
+  SubmitButton,
 } from './styles';
 
 const KEY_EXTRACTOR = item => item.city;
@@ -242,7 +243,11 @@ export default class BankAccount extends PureComponent {
             </TitleInto>
             <View key={selectedBank.value} style={styles.areaAtuacaoItem}>
               <Text style={styles.areaAtuacaoTitle}>
-                {selectedBank.value} - {selectedBank.label}
+
+                {
+                  selectedBank.value ?   selectedBank.value+' - '+selectedBank.label : 'Selecione um banco no botão abaixo'
+                }
+              
               </Text>
             </View>
             <Separator />
@@ -321,7 +326,7 @@ export default class BankAccount extends PureComponent {
 
               <Switch
                 trackColor={{ false: '#767577', true: '#81b0ff' }}
-                thumbColor={this.state.switchValue ? '#f5dd4b' : '#f4f3f4'}
+                thumbColor={this.state.switchValue ? '#F4F4F4' : '#F4F4F4'}
                 ios_backgroundColor="#3e3e3e"
                 onValueChange={this.toggleSwitch}
                 value={this.state.switchValue}
@@ -333,7 +338,7 @@ export default class BankAccount extends PureComponent {
               <Icon
                 name="lock-outline"
                 size={20}
-                color="rgba(255, 255, 255, 0.6)"
+                color="#7CB496"
               />
 
               <TInput
@@ -341,6 +346,7 @@ export default class BankAccount extends PureComponent {
                 autoCorrect={false}
                 autoCapitalize="none"
                 placeholder={this.state.placeHolderS}
+                placeholderTextColor="#15162c"
                 value={documentNumber}
                 onChangeText={text => this.setState({ documentNumber: text })}
               />
@@ -401,12 +407,14 @@ export default class BankAccount extends PureComponent {
             </ContainerSwitch>
 
             <Separator />
-
-            <Button
+            <SubmitButton  onPress={this.handleSubmitNewBankAccount}>
+            Cadastrar
+        </SubmitButton>
+            {/* <Button
               style={styles.submitNewProviderButton}
               title="Cadastrar"
               onPress={this.handleSubmitNewBankAccount}
-            />
+            /> */}
             {loading ? (
               <ActivityIndicator
                 color="black"

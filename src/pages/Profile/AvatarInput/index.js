@@ -165,8 +165,6 @@ export default function AvatarInput() {
       urlAvatar,
     });
 
-    console.log(response, 'RESPONSE CARAUI');
-
     const { url } = response.data;
 
     // setFile(id);
@@ -180,7 +178,7 @@ export default function AvatarInput() {
           source={{
             uri:
               preview ||
-              'https://api.adorable.io/avatars/120/abott@adorable.png',
+              'https://www.iconfinder.com/data/icons/user-pictures/100/unknown-512.png',
           }}
           style={styles.profileImage}
         />
