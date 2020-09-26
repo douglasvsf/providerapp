@@ -19,7 +19,7 @@ export const Panel = styled.View`
 
 export const Title = styled.Text`
   font-size: 20px;
-  color: #000;
+  color: #15162C;
   font-weight: bold;
   align-self: center;
   margin-top: 30px;
@@ -61,12 +61,12 @@ export const QrCode = styled.View`
 export const Options = styled.ScrollView.attrs({
   showsHorizontalScrollIndicator: false,
 })`
-  background: #eee;
+  background: #F4F4F4;
   padding: 20px 5px;
 `;
 
 export const Option = styled.TouchableOpacity`
-  background: #fff;
+  background: #F4F4F4;
   margin: 5px;
   width: 120px;
   height: 110px;
@@ -79,7 +79,7 @@ export const Option = styled.TouchableOpacity`
 export const Message = styled.Text`
   margin: 5px 0;
   font-size: 18px;
-  color: #999;
+  color: #15162C;
 `;
 
 export const LoadingContainer = styled.View`

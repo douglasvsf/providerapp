@@ -12,7 +12,7 @@ import Modal from 'react-native-modal';
 
 import { Bancos } from '../../jsons/banco_codigo.json';
 
-import { FormInput } from './styles';
+import { FormInput, Submit } from './styles';
 
 const styles = StyleSheet.create({
   input: {
@@ -137,11 +137,15 @@ const Banco = ({ onSelect, selectedBanco }) => {
 
   return (
     <View>
-      <Button
+
+<Submit onPress={toggleModalVisible}>
+          Selecionar Banco
+        </Submit>
+      {/* <Button
         style={styles.bancoButton}
         title="Selecionar Banco"
         onPress={toggleModalVisible}
-      />
+      /> */}
 
       <Modal
         isVisible={modalVisible}
