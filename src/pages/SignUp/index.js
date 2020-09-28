@@ -189,8 +189,15 @@ export default function SignUp({ navigation }) {
   };
 
   function handleLogin() {
-    setisModalVisible(!isModalVisible);
-    dispatch(signUpRequest(name, email, password, navigation));
+    //setisModalVisible(!isModalVisible);
+    if (password === passwordCheck) {
+      dispatch(signUpRequest(name, email, password, navigation));
+    } else {
+      Snackbar.show({
+        text: 'Senhas não conferem',
+        duration: Snackbar.LENGTH_LONG,
+      });
+    }
   }
 
   function handleConfirm() {
@@ -591,12 +598,12 @@ export default function SignUp({ navigation }) {
             placeholder="Confirme sua senha"
             ref={passwordCheckRef}
             returnKeyType="send"
-            onSubmitEditing={handleSubmit}
+            onSubmitEditing={handleLogin}
             value={passwordCheck}
             onChangeText={setPasswordCheck}
           />
 
-          <SubmitButton loading={loading} onPress={handleSubmit}>
+          <SubmitButton loading={loading} onPress={handleLogin}>
             Criar conta
           </SubmitButton>
         </Form>
