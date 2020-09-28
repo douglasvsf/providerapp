@@ -198,6 +198,7 @@ class Address extends PureComponent {
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Logradouro"
+              onChangeText={logradouro => this.setState({ logradouro })}
             />
 
             <FormInput
