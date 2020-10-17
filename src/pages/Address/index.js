@@ -216,6 +216,7 @@ class Address extends PureComponent {
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Bairro"
+              onChangeText={bairro => this.setState({ bairro })}
             />
 
             <FormInput
