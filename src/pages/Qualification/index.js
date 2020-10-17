@@ -335,7 +335,7 @@ export default function Qualification({ onSubmitNewProvider, isNewProvider }) {
     const disabled = qualificacoes.length >= 3;
     return (
       <View>
-        <Title>Qualificações</Title>
+        <Title>Experiências/Qualificações</Title>
         <Submit disabled={disabled} onPress={showModal}>
           Adicionar
         </Submit>
@@ -374,7 +374,7 @@ Qualification.navigationOptions = {
   tabBarOptions: {
     activeTintColor: colors.primary,
   },
-  tabBarLabel: 'Qualificações',
+  tabBarLabel: 'Experiências',
   tabBarIcon: ({ tintColor }) => (
     <Icon name="school" size={20} color={tintColor} />
   ),

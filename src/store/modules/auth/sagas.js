@@ -75,12 +75,13 @@ export function* signUp({ payload, navigation }) {
     Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');
     navigation.navigate('SignIn');
   } catch (err) {
-    if (err.response.data.error === 'User already exists') {
+    console.log(err.response.data);
+    if (err.response.data.error === 'User already exists.') {
       Alert.alert('Falha no cadastro', 'Email ja utilizado');
-    } else if (err.response.data.error === 'Validation Fails') {
+    } else if (err.response.data.error === 'Validation fails') {
       Alert.alert(
         'Falha no cadastro',
-        'Senha deve possuir no mínimo 7 caracteres'
+        'Senha deve possuir no mínimo 6 caracteres'
       );
     }
 

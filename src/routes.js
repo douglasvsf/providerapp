@@ -110,7 +110,7 @@ export default (isSigned = false, token, profileid, active) =>
                         // navigationOptions: {
                         //   tabBarOptions: {
                         //     labelStyle: {
-                        //       fontSize: 10,
+                        //       fontSize: 9,
                         //     },
                         //     activeTintColor: '#FFFFFF',
                         //     inactiveTintColor: '#15162c',
@@ -233,7 +233,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -252,7 +252,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -278,7 +278,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -300,7 +300,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -328,7 +328,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -357,7 +357,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -379,7 +379,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
@@ -402,7 +402,7 @@ export default (isSigned = false, token, profileid, active) =>
                     navigationOptions: {
                       tabBarOptions: {
                         labelStyle: {
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                         activeTintColor: '#FFFFFF',
                         inactiveTintColor: '#15162c',
