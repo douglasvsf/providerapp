@@ -45,6 +45,7 @@ import Statistics from './pages/Statistics';
 import Wallet from './pages/Wallet';
 import WalletDetailsScreen from './pages/Wallet/Details';
 import { colors } from './values/colors';
+import ValidAccount from './pages/ValidAccount';
 
 
 export default (isSigned = false, token, profileid, active) =>
@@ -54,6 +55,7 @@ export default (isSigned = false, token, profileid, active) =>
         Sign: createSwitchNavigator({
           SignIn,
           SignUp,
+          ValidAccount,
         }),
         NewProvider: {
           screen: createStackNavigator(

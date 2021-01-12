@@ -3,12 +3,14 @@ import { takeLatest, call, put, all } from 'redux-saga/effects';
 import auth from '@react-native-firebase/auth';
 
 import api from '~/services/api';
-
 import { signInSuccess, signFailure, ActiveSuccess } from './actions';
+import NavigationService from "~/NavigationService";
+
 
 export function* signIn({ payload }) {
+  const { email, password } = payload;
+
   try {
-    const { email, password } = payload;
 
     const response = yield call(api.post, 'sessions', {
       email,
@@ -36,7 +38,14 @@ export function* signIn({ payload }) {
 
     // history.push('/dashboard');
   } catch (err) {
-    Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
+
+    if(err.response.status === 406) {
+      NavigationService.navigate("ValidAccount", { email, password });
+    } else {
+
+      Alert.alert('Falha na autenticação', 'Email ou senha incorretos');
+    }
+
     yield put(signFailure());
   }
 }
@@ -73,7 +82,9 @@ export function* signUp({ payload, navigation }) {
     });
 
     Alert.alert('Sucesso!', 'Cadastro realizado com sucesso');
-    navigation.navigate('SignIn');
+
+    NavigationService.navigate("ValidAccount", { email, password });
+
   } catch (err) {
     console.log(err.response.data);
     if (err.response.data.error === 'User already exists.') {

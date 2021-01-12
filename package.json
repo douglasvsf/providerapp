@@ -88,5 +88,8 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "metro-config": "bluelovers/metro-config-hotfix-0.56.x"
   }
 }
