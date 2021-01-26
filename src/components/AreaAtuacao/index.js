@@ -11,6 +11,7 @@ import {
 import Modal from 'react-native-modal';
 
 import { FormInput, SubmitButton } from './styles';
+import api from '~/services/api';
 
 const styles = StyleSheet.create({
   input: {
@@ -89,16 +90,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const DATA = [
-  { id: 1, label: 'Assistência Técnica' },
-  { id: 2, label: 'Mão de Obra' },
-  { id: 3, label: 'Serviços Domésticos' },
-  { id: 4, label: 'Saúde e Bem estar' },
-  { id: 5, label: 'Tecnologia' },
-  { id: 6, label: 'Mobilidade' },
-  { id: 7, label: 'Eventos' },
-  { id: 8, label: 'Outros' },
-];
+
+async function getProfessionsByCaracters( caracters ) {
+  const body = { word: caracters };
+  const res = await api.post(`occupation_area_cbo`, body);
+  return res.data;
+};
 
 const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -113,7 +110,6 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
 
   const onDismiss = () => {
     Keyboard.dismiss();
-    setFilteredAreaAtuacao(DATA);
     setModalVisible(false);
   };
 
@@ -126,7 +122,7 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
           onDismiss();
         }}
       >
-        <Text>{item.label}</Text>
+        <Text>{item.title}</Text>
       </TouchableOpacity>
     );
   };
@@ -136,13 +132,15 @@ const AreaAtuacao = ({ onSelect, selectedAreaAtuacao }) => {
   };
 
   useEffect(() => {
-    if (areaAtuacaoQuery.length >= 2) {
-      const dataFiltered = DATA.filter(area =>
-        area.label.toUpperCase().includes(areaAtuacaoQuery.toUpperCase())
-      );
-      setFilteredAreaAtuacao(dataFiltered);
-    } else {
-      setFilteredAreaAtuacao(DATA);
+    if (areaAtuacaoQuery.length >= 3) {
+
+      async function loadAreaAtuacao() {
+        const dataFiltered = await getProfessionsByCaracters(areaAtuacaoQuery);
+        console.log(dataFiltered)
+        setFilteredAreaAtuacao(dataFiltered.data);
+      }
+      
+      loadAreaAtuacao();
     }
   }, [areaAtuacaoQuery]);
 

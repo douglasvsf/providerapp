@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import NavigationService from './NavigationService';
 import NotificationManager from './NotificationManager';
 import createRouter from './routes';
-
+import api from '~/services/api';
 export default function App() {
   const signed = useSelector(state => state.auth.signed);
   const token = useSelector(state => state.auth.token);
@@ -43,7 +43,7 @@ export default function App() {
       const fcmToken = await messaging().getToken();
 
       saveTokenToDatabase(fcmToken);
-
+      api.defaults.headers.Authorization = `Bearer ${token}`;
       messaging().onTokenRefresh(newToken => {
         saveTokenToDatabase(newToken);
       });

@@ -142,39 +142,38 @@ class Service extends PureComponent {
 
     const { token, profileid, isNewProvider } = this.props;
     api.defaults.headers.Authorization = `Bearer ${token}`;
-    await api
-      .get(`providers/${profileid}/occupation_areas`)
-      .then(response => {
-        const occupationAreasArray = Array.from(this.state.occupationAreas);
+    await api.get(`providers/${profileid}/occupation_areas`).then(response => {
 
-        if (response.data !== null) {
-          const list = response.data.userOccupationArea.map((details, i) => {
-            occupationAreasArray.push({
-              id: details.occupation_area_id,
-              idTable: details.id,
-              label: details.occupation_area.title,
-            });
+      const occupationAreasArray = Array.from(this.state.occupationAreas);
+
+      if (response.data !== null) {
+        response.data.userOccupationArea.map((details) => {
+          occupationAreasArray.push({
+            id: details.occupation_area_id,
+            idTable: details.id,
+            title: details.occupationArea.title,
           });
-
-          this.setState({
-            selectedAreaAtuacao: occupationAreasArray,
-            selectedCities: response.data.userOccupationCity,
-          });
-        }
-
-        const verifyIsBack = !!(
-          isNewProvider &&
-          response.data.userOccupationArea.length > 0 &&
-          response.data.userOccupationCity.length > 0
-        );
-        this.setState({ isBack: verifyIsBack });
-      })
-      .catch(err => {
-        Snackbar.show({
-          text: 'Certifique-se que possui conexão com internet',
-          duration: Snackbar.LENGTH_LONG,
         });
+
+        this.setState({
+          selectedAreaAtuacao: occupationAreasArray,
+          selectedCities: response.data.userOccupationCity,
+        });
+      }
+
+      const verifyIsBack = !!(
+        isNewProvider &&
+        response.data.userOccupationArea.length > 0 &&
+        response.data.userOccupationCity.length > 0
+      );
+      this.setState({ isBack: verifyIsBack });
+    })
+    .catch(err => {
+      Snackbar.show({
+        text: 'Certifique-se que possui conexão com internet',
+        duration: Snackbar.LENGTH_LONG,
       });
+    });
   }
 
   async componentDidUpdate(_, prevState) {
@@ -275,9 +274,7 @@ class Service extends PureComponent {
         selectedCities: [...selectedCities, newCity],
       });
     } else {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-      await api
-        .post(`providers/${profileid}/only_occupation_city`, {
+      await api.post(`providers/${profileid}/only_occupation_city`, {
           occupationCities: occupationCitiesArray,
         })
         .then(response => {
@@ -442,7 +439,7 @@ class Service extends PureComponent {
                   occupationAreasArray.push({
                     id: details.occupation_area_id,
                     idTable: details.id,
-                    label: details.occupation_area.title,
+                    title: details.occupationArea.title,
                   });
                 }
               );
@@ -477,7 +474,7 @@ class Service extends PureComponent {
     );
   };
 
-  removeAreaAtuacao = async ({ index, areaAtuacao }) => {
+  async removeAreaAtuacao({ index, areaAtuacao }) {
     const { profileid, isNewProvider } = this.props;
     const { selectedAreaAtuacao, isBack } = this.state;
     const newSelectedAreasAtuacao = [...selectedAreaAtuacao];
@@ -502,7 +499,7 @@ class Service extends PureComponent {
   renderAreaAtuacao = (areaAtuacao, index) => {
     return (
       <View key={areaAtuacao.id} style={styles.areaAtuacaoItem}>
-        <Text style={styles.areaAtuacaoTitle}>{areaAtuacao.label}</Text>
+        <Text style={styles.areaAtuacaoTitle}>{areaAtuacao.title}</Text>
         <TouchableNativeFeedback
           onPress={() =>
             Alert.alert(
